@@ -1,7 +1,7 @@
 #pragma ocne
 
 #include <array>
-#include "func.h"
+#include "utilFunc.h"
 
 
 // CASE 1. ParamType is a Reference or Pointer, but not a Universal Reference
@@ -55,13 +55,13 @@ void deduceTemplateThree() {
   int const cx = x;
   int const& rcx = cx;
 
-  f(x);   // T - int, ParamType - int
-  f(cx);  // T - int, ParamType - int
-  f(rcx); // T - int, ParamType - int
+  fVal(x);   // T - int, ParamType - int
+  fVal(cx);  // T - int, ParamType - int
+  fVal(rcx); // T - int, ParamType - int
 
   // VOLATILE and CONST are ignored only for by-value parameters.
   const char* const ptr = "Fun with pointers";
-  f(ptr); // T - const char*, ParamType - const char
+  fVal(ptr); // T - const char*, ParamType - const char
 }
 
 

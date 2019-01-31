@@ -1,14 +1,14 @@
 #pragma once
 
 #include <array>
-#include <func.h>
+#include <utilFunc.h>
 
 // Array Arguments
 const char name[] = "J. P. Briggs"; // const char[13]
 const char* prtToName = name; // because of the array-to-pointer decay rule, the code compiles.
 
 void foo() {
-  f(name);    // name is array, T - const char*
+  fVal(name); // name is array, T - const char*
   fRef(name); // name is array, T - const char [13]
   // IMPORTANT: Type of Reference to array: const char (&) [13]
 }
