@@ -2,6 +2,7 @@
 #include "ArgsAsArrays.h"
 #include "ArgsAsFuncs.h"
 #include "AutoTypeDeducing.h"
+#include "Decltype.h"
 
 int main() {
   deduceTemplatOne();
@@ -10,7 +11,7 @@ int main() {
   checkTypes();
   conceptualCalls();
   autoDeducing();
-  initializerListDeducing();
+  autoSpecialDeducingRule();
+  decltypeForRValueParams();
   return 0;
-
 }

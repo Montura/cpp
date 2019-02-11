@@ -46,9 +46,7 @@ void deduceTemplateTwo() {
 
 // CASE 3. ParamType is Neither a Pointer nor a Reference
 // 1) As before, if expr’s type is a reference, ignore the reference part.
-// 2) If, after ignoring expr’s reference-ness, expr is const, ignore that, too. If it’s
-//    volatile, also ignore that. (volatile objects are uncommon. They’re generally
-//    used only for implementing device drivers. For details, see Item 40.)
+// 2) If, after ignoring expr’s reference-ness, expr is const, ignore that, too. If it’s volatile, also ignore that.
 
 void deduceTemplateThree() {
   int x = 27;

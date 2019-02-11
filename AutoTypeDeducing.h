@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "utilFunc.h"
 // !!! Only one curious exception, auto type deduction is template type deduction.
 
@@ -67,7 +68,7 @@ void autoDeducing() {
 
 // So, auto type deduction works like template type deduction. They’re essentially two sides of the same coin.
 
-void initializerListDeducing() {
+void autoSpecialDeducingRule() {
   //C++ 98
   int x1 = 27;
   int x2(27);
@@ -85,3 +86,39 @@ void initializerListDeducing() {
 //  checkTypeName<decltype(ax3)>();
 //  checkTypeName<decltype(ax4)>();
 }
+
+template <typename T>
+void f(T param) {};
+
+template <typename T>
+void g(std::initializer_list<T> param) {};
+
+void autoInitializerListAndFunction() {
+  //  auto x5 = {3, 7, 5.0}; // error -> can't deduce type
+  auto x = {1, 2, 3}; // std::initializer_list<int>
+  f(x); // ok
+  //  f({1, 2, 3}); // error -> no matching function for call to 'f(<brace-enclosed initializer list>)'
+  g(x); // ok
+  g({1, 2, 3}); // ok, T -> int  
+};
+
+
+// C++ 14
+// C++14 permits auto to indicate that a function’s return type should be deduced (see Item 3), and
+// C++14 lambdas may use auto in parameter declarations. However, these uses of auto employ template type deduction,
+// not auto type deduction.
+
+auto createInitialzierList() -> void {
+//  return {1, 2, 3}; // er ror: can't deduce type from initializer_list
+}
+
+void lambda() {
+  std::vector<int> v;
+//  auto resetV = [&v](const auto& newValue) { v = newValue; };
+//  resetV({1, 2, 3}); // error -> can't deduce type for {1, 2, 3}
+}
+
+//  Things to Remember:
+//  - auto type deduction is usually the same as template type deduction, but auto type deduction assumes that
+//    a braced initializer represents a std::initializer_list, and template type deduction doesn’t.
+//  - auto in a function return type or a lambda parameter implies template type deduction, not auto type deduction.
