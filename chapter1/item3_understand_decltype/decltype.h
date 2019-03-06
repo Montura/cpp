@@ -44,7 +44,7 @@ struct Element {};
 
 void decltypeAuto() {
   std::vector<int> v;
-//  updateValue(v, 5) = 10; // error for c++14 declaration without trailing type!!!!
+  // updateValue_14(v, 5) = 10; // error for c++14 declaration without trailing type!!!!
   // v[5] returns int&, but auto return type will strip off the reference, thus yielding a return type of int.
   // So we got the assigning 10 to an r-value int
 
@@ -59,8 +59,8 @@ void decltypeAuto() {
 
   auto myElem1 = eCRef;           // auto type deduction -> myElem1's type is Element
   decltype(auto) myElem2 = eCRef; // decltype type deduction -> myElem2's type is Element const&
-//  checkTypeName<decltype(myElem1)>();
-//  checkTypeName<decltype(myElem2)>();
+  // checkTypeName<decltype(myElem1)>();
+  // checkTypeName<decltype(myElem2)>();
 }
 
 

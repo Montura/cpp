@@ -32,11 +32,6 @@ void fVal(T param) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 };
 
-template<typename T, std::size_t N>
-static constexpr std::size_t arraySize(T (&)[N]) noexcept {
-  return N;
-}
-
 void someFunc(int, double) {};
 
 template<typename T>
