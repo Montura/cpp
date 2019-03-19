@@ -29,28 +29,28 @@ void initializing() {
 
   // comparison function for values pointed to by anything pointer-like
   auto derefUPLess_14 = [](const auto& p1, const auto& p2) { return *p1 < *p2; };
-}
 
-void autoVsStdFunction() {
+
   // Perhaps we don’t really need auto to declare a variable that holds a closure, because we can use a std::function object.
   // std::function is a template in the C++11 Standard Library that generalizes the idea of a function pointer.
   // Whereas function pointers can point only to functions, however,
   // std::function objects can refer to any callable object, i.e., to anything that can be invoked like a function.
 
+  // using std::function
   std::function<bool(const std::unique_ptr<Widget>&, const std::unique_ptr<Widget>&)> func;
-  // Because lambda expressions yield callable objects, closures can be stored in std::function objects.
-  // That means we could declare the C++11 version of derefUPLess without using auto as follows:
-  std::function<bool(const std::unique_ptr<Widget>&, const std::unique_ptr<Widget>&)> derefUPLess_function =
-    [](const std::unique_ptr<Widget>& p1, const std::unique_ptr<Widget>& p2) { return *p1 < *p2; };
+  func = [](std::unique_ptr<Widget> const& p1, std::unique_ptr<Widget> const& p2) { return *p1 < *p2; };
 
-  // An auto-declared variable holding a closure has the same type as the closure, and as such it uses only
-  // as much memory as the closure requires.
+  // using auto
+  auto autoDerefUPLess = [](std::unique_ptr<Widget> const& p1, std::unique_ptr<Widget> const& p2) { return *p1 < *p2; };
 
-  // The type of a std::function-declared variable holding a closure is an instantiation of the std::function template,
-  // and that has a fixed size for any given signature. This size may not be adequate for the closure it’s asked to store,
-  // and when that’s the case, the std::function constructor will allocate HEAP MEMORY to store the closure.
-
-  // The result is that the std::function object typically uses more memory than the auto-declared object.
+  // Using std::function is not the same as using auto.
+  // -- An auto-declared variable holding a closure has the same type as the closure, and as such it uses only as much
+  //    memory as the closure requires.
+  // -- The type of a std::function declared variable holding a closure is an instantiation of the std::function template,
+  //    and that has a fixed size for any given signature. This size may not be adequate for the closure it’s asked to
+  //    store, and when that’s the case, the std::function constructor will allocate HEAP MEMORY to store the closure.
+  // Result:
+  // -- std::function object typically uses more memory than the auto-declared object.
 }
 
 void typeShortcuts() {
