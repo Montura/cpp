@@ -1,7 +1,9 @@
 #pragma once
 
 #include <array>
-#include <utilFunc.h>
+#include <Resume.h>
+#include "case1.h"
+#include "case3.h"
 
 // Array Arguments
 const char name[] = "J. P. Briggs"; // const char[13]

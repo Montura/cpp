@@ -6,10 +6,7 @@
 #include <functional>
 #include <vector>
 #include <unordered_map>
-
-struct Widget {
-  bool operator<(Widget const& rhs) { return false; }
-};
+#include "Widget.h"
 
 template <typename It>
 void work(It begin, It end) {

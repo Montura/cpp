@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "utilFunc.h"
+#include <TypeChecker.h>
+#include "Resume.h"
 // !!! Only one curious exception, auto type deduction is template type deduction.
 
 // In Item 1, template type deduction is explained using this general function template

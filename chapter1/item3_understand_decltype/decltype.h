@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilFunc.h"
+#include "Resume.h"
 #include <vector>
 // Primary use for decltype is declaring function templates where the function’s return type depends on its parameter types.
 
@@ -40,8 +40,6 @@ auto updateValueTrailingType_14(Container& c, Idx i) -> decltype(auto) {
   return c[i];
 }
 
-struct Element {};
-
 void decltypeAuto() {
   std::vector<int> v;
   // updateValue_14(v, 5) = 10; // error for c++14 declaration without trailing type!!!!
@@ -54,8 +52,8 @@ void decltypeAuto() {
   updateValueTrailingType_11(v, 3) = 7;
   updateValueTrailingType_14(v, 3) = 7;
 
-  Element e;
-  Element const& eCRef = e;
+  Widget e;
+  Widget const& eCRef = e;
 
   auto myElem1 = eCRef;           // auto type deduction -> myElem1's type is Element
   decltype(auto) myElem2 = eCRef; // decltype type deduction -> myElem2's type is Element const&

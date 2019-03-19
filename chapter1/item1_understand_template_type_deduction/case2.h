@@ -1,5 +1,10 @@
 #pragma once
-#include "utilFunc.h"
+#include "Resume.h"
+
+template <typename T>
+void fUniRef(T && param) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
 
 // CASE 2. ParamType is a Universal Reference
 // 1) If expr is an lvalue, both T and ParamType are deduced to be lvalue references.

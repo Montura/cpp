@@ -1,5 +1,10 @@
 #pragma once
-#include "utilFunc.h"
+#include "Resume.h"
+
+template <typename T>
+void fVal(T param) {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+};
 
 // CASE 3. ParamType is Neither a Pointer nor a Reference
 // 1) As before, if expr’s type is a reference, ignore the reference part.
