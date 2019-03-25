@@ -8,6 +8,8 @@
 #include <chapter1/item3_understand_decltype/decltype.h>
 #include <chapter2/item5_prefer_auto_to_explicit_type_declarations/autoVsExpilicitTypes.h>
 #include <chapter2/item6_explicitly_typed_initializer_idiom/explicitlyTypedInitializer.h>
+#include <chapter3/item7_creating_objects/InitializerList.h>
+
 
 int main() {
   deduceTemplatOne();
@@ -18,5 +20,7 @@ int main() {
   autoDeducing();
   autoSpecialDeducingRule();
   decltypeForRValueParams();
+
+  std::cout << 1;http://ya.ru
   return 0;
 }
