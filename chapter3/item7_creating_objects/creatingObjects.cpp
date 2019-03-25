@@ -5,13 +5,7 @@
 #include <atomic>
 #include "InitializerList.h"
 
-struct Point {
-  int x{ 0 }; // fine, x's default value is 0
-  int y = 0; // also fine
-//  int z(0); // error!
-};
-
-static void foo() {
+void braced_primitive_initialization() {
   int x(0);       // initializer is in parentheses
   int y = 0;      // initializer follows "="
   int z{ 0 };     // initializer is in braces
@@ -53,10 +47,9 @@ static void foo() {
 }
 
 
-
 // Relationship among braced initializers, std::initializer_lists, and constructor overload resolution.
 
-void bracedInitializer() {
+void ctor_overloading_with_initializer_list() {
   ElementA a1(10, true);   // calls first ctor
   ElementA a2{10, true};   // also calls first ctor
   ElementA a3(10, 5.0);    // calls second ctor
@@ -96,4 +89,39 @@ void bracedInitializer() {
   // by putting the empty braces inside the parentheses or braces demarcating what you’re passing:
   ElementE e4({}); // calls std::initializer_list ctor with empty list
   ElementE e5{{}}; // calls std::initializer_list ctor with empty list
+}
+
+void vector_initialization() {
+  std::vector<int> v1(10, 20); // non-std::initializer_list ctor: create 10-element std::vector, all elements have value of 20
+  std::vector<int> v2{10, 20}; // std::initializer_list ctor: create 2-element std::vector, element values are 10 and 20
+
+   // You need to be aware that if your set of overloaded constructors includes one or more functions taking a
+   // std::initializer_list, client code using braced initialization may see only the std::initializer_list overloads.
+
+   // !!! It’s best to design your constructors so that the overload called isn’t affected by whether clients use parentheses or braces.
+}
+
+template<typename>
+struct is_std_vector : std::false_type {};
+
+template<typename T, typename A>
+struct is_std_vector<std::vector<T,A>> : std::true_type {};
+
+template<
+  typename T, // type of object to create
+  typename... Ts> // types of arguments to use
+void doSomeWork(Ts&&... params) {
+  T localObject_parens(std::forward<Ts> (params) ...); // using parens
+  T localObject_braces{std::forward<Ts> (params) ...}; // using braces
+
+  // localObject_parens -> for any T calls non-std::initializer_list ctor ()
+  // localObject_parens -> for any T calls std::initializer_list ctor ()
+
+  std::cout << (is_std_vector<T>::value ?  localObject_parens.size() : 0) << std::endl; // for T - std::vector the result is a std::vector with 10 elements
+  std::cout << (is_std_vector<T>::value ? localObject_braces.size() : 0) << std::endl; // the T - std::vector the result is a std::vector with 2 elements
+}
+
+void templates_initialization() {
+  std::vector<int> v;
+  doSomeWork<std::vector<int>>(10, 20);
 }

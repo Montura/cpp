@@ -51,7 +51,8 @@ struct ElementE {
   ElementE(initializer_list<int> il) {};
 };
 
-void bracedInitializer();
+void braced_primitive_initialization();
+void ctor_overloading_with_initializer_list();
 
 
 // Things to Remember:

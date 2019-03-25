@@ -10,6 +10,8 @@
 #include <chapter2/item6_explicitly_typed_initializer_idiom/explicitlyTypedInitializer.h>
 #include <chapter3/item7_creating_objects/InitializerList.h>
 
+void array_decay_example();
+void templates_initialization();
 
 int main() {
   deduceTemplatOne();
@@ -20,7 +22,11 @@ int main() {
   autoDeducing();
   autoSpecialDeducingRule();
   decltypeForRValueParams();
+  array_decay_example();
 
-  std::cout << 1;http://ya.ru
+  braced_primitive_initialization();
+  ctor_overloading_with_initializer_list();
+
+  templates_initialization();
   return 0;
 }

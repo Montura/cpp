@@ -13,4 +13,4 @@ include_directories("chapter2/item5_prefer_auto_to_explicit_type_declarations")
 include_directories("chapter2/item6_use_the_explicitly_typed_initializer_idiom_when_auto_deduces_undesired_types")
 include_directories("chapter3/item7_creating_objects")
 
-add_executable(cpp main.cpp chapter3/item7_creating_objects/creatingObjects.cpp)
+add_executable(cpp main.cpp chapter3/item7_creating_objects/creatingObjects.cpp array_decay.cpp)
