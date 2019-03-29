@@ -51,9 +51,6 @@ struct ElementE {
   ElementE(initializer_list<int> il) {};
 };
 
-void braced_primitive_initialization();
-void ctor_overloading_with_initializer_list();
-
 
 // Things to Remember:
 //  - Braced initialization is the most widely usable initialization syntax, it prevents narrowing conversions,

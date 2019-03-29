@@ -1,6 +1,6 @@
 #include <iostream>
 
-static void by_value(int array[10]) {
+static void by_value(const int array[]) {
   std::cout << __PRETTY_FUNCTION__ << ", array_size is: " << sizeof(array) << std::endl;
 }
 
