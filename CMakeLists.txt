@@ -10,15 +10,14 @@ if (MSVC)
 endif(MSVC)
 
 include_directories(.)
-include_directories("chapter1/item1_understand_template_type_deduction")
-include_directories("chapter1/item2_undrestand_auto_type_deducing")
-include_directories("chapter1/item3_understand_decltype")
-include_directories("chapter1/item4_how_to_view_deduced_types")
-include_directories("chapter2/item5_prefer_auto_to_explicit_type_declarations")
-include_directories("chapter2/item6_use_the_explicitly_typed_initializer_idiom_when_auto_deduces_undesired_types")
-include_directories("chapter3/item7_creating_objects")
-include_directories("chapter3/item8_prefer_nullptr_to_zero_and_NULL")
 
-add_executable(cpp main.cpp
-               chapter3/item7_creating_objects/creatingObjects.cpp array_decay.cpp
-               chapter3/item8_prefer_nullptr_to_zero_and_NULL/nullptr.cpp list_test.cpp)
+add_executable(cpp main.cpp array_decay.cpp
+               chapter1/item1_understand_template_type_deduction/item1.cpp
+               chapter1/item2_undrestand_auto_type_deducing/item2.cpp
+               chapter1/item3_understand_decltype/item3.cpp
+               chapter2/item5_prefer_auto_to_explicit_type_declarations/item5.cpp
+               chapter2/item6_explicitly_typed_initializer_idiom/item6.cpp
+               chapter3/item7_creating_objects/item7.cpp
+               chapter3/item7_creating_objects/creatingObjects.cpp
+               chapter3/item8_prefer_nullptr_to_zero_and_NULL/nullptr.cpp
+               chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp list_test.cpp)

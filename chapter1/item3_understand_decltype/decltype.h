@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Resume.h"
-#include <vector>
+#include <Widget.h>
 // Primary use for decltype is declaring function templates where the function’s return type depends on its parameter types.
 
 // !!!! Auto is used not for type deducing
@@ -110,9 +109,3 @@ decltype(auto) decltypeRefToLocalVariable() {
   int x = 0;
   return (x); // decltype ((x)) is int&, func returns int&
 }
-
-// Things to Remember:
-// - decltype almost always yields the type of a variable or expression without any modifications.
-// - For lvalue expressions of type T other than names, decltype always reports a type of T&.
-// - C++14 supports decltype(auto), which, like auto, deduces a type from its initializer,
-//   but it performs the type deduction using the decltype rules.

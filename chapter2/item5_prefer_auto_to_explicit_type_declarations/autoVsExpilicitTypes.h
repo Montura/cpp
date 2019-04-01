@@ -1,13 +1,5 @@
 #pragma once
 
-#include <cstddef>
-#include <iterator>
-#include <memory>
-#include <functional>
-#include <vector>
-#include <unordered_map>
-#include "Widget.h"
-
 template <typename It>
 void work(It begin, It end) {
   while (begin != end) {
@@ -40,28 +32,28 @@ void initializing() {
   // using auto
   auto autoDerefUPLess = [](std::unique_ptr<Widget> const& p1, std::unique_ptr<Widget> const& p2) { return *p1 < *p2; };
 
-  // Using std::function is not the same as using auto.
-  // -- An auto-declared variable holding a closure has the same type as the closure, and as such it uses only as much
-  //    memory as the closure requires.
-  // -- The type of a std::function declared variable holding a closure is an instantiation of the std::function template,
-  //    and that has a fixed size for any given signature. This size may not be adequate for the closure it’s asked to
-  //    store, and when that’s the case, the std::function constructor will allocate HEAP MEMORY to store the closure.
-  // Result:
-  // -- std::function object typically uses more memory than the auto-declared object.
+  /// Using std::function is not the same as using auto.
+  /// -- An auto-declared variable holding a closure has the same type as the closure, and as such it uses only as much
+  ///    memory as the closure requires.
+  /// -- The type of a std::function declared variable holding a closure is an instantiation of the std::function template,
+  ///    and that has a fixed size for any given signature. This size may not be adequate for the closure it’s asked to
+  ///    store, and when that’s the case, the std::function constructor will allocate HEAP MEMORY to store the closure.
+  /// Result:
+  /// -- std::function object typically uses more memory than the auto-declared object.
 }
 
 void typeShortcuts() {
   std::vector<int> v;
-  // The official return type of v.size() is std::vector<int>::size_type
+  /// The official return type of v.size() is std::vector<int>::size_type
 
-  // On 32-bit Windows:
+  /// On 32-bit Windows:
   //  - unsigned is 32 bits
   //  - std::vector<int>::size_type is 32 bits
-  // On 64-bit Windows:
+  /// On 64-bit Windows:
   //  - unsigned is 32 bits
   //  - std::vector<int>::size_type is 64 bits.
-  // This means that code that works under 32-bit Windows may behave incorrectly under 64-bit Windows, and when porting
-  // your application from 32 to 64 bits.
+  /// This means that code that works under 32-bit Windows may behave incorrectly under 64-bit Windows, and when porting
+  /// your application from 32 to 64 bits.
 
   // Using auto ensures that you don’t have to:
   auto size = v.size(); // sz's type is std::vector<int>::size_type
@@ -89,9 +81,3 @@ void typeShortcuts() {
   // In the code not using auto, you’d get a pointer to a temporary object—an object that would be destroyed at the end
   // of the loop iteration.
 }
-
-// Things to Remember
-// - auto variables must be initialized, are generally immune to type mismatches that can lead to portability or
-//   efficiency problems, can ease the process of refactoring, and typically require less typing than variables with
-//   explicitly specified types.
-// - auto-typed variables are subject to the pitfalls described in Items 2 and 6.

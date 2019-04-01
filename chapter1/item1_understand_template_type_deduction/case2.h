@@ -1,17 +1,16 @@
 #pragma once
-#include "Resume.h"
 
 template <typename T>
 void fUniRef(T && param) {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
 };
 
-// CASE 2. ParamType is a Universal Reference
-// 1) If expr is an lvalue, both T and ParamType are deduced to be lvalue references.
-//    That’s doubly unusual. First, it’s the only situation in template type deduction
-//    where T is deduced to be a reference. Second, although ParamType is declared
-//    using the syntax for an rvalue reference, its deduced type is an lvalue reference.
-// 2) If expr is an rvalue, the “normal” (i.e., Case 1) rules apply.
+/// CASE 2. ParamType is a Universal Reference
+/// 1) If expr is an lvalue, both T and ParamType are deduced to be lvalue references.
+///    That’s doubly unusual. First, it’s the only situation in template type deduction
+///    where T is deduced to be a reference. Second, although ParamType is declared
+///    using the syntax for an rvalue reference, its deduced type is an lvalue reference.
+/// 2) If expr is an rvalue, the “normal” (i.e., Case 1) rules apply.
 
 void deduceTemplateTwo() {
   int x = 27;

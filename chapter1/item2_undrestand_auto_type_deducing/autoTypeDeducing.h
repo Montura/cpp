@@ -2,7 +2,6 @@
 
 #include <vector>
 #include <TypeChecker.h>
-#include "Resume.h"
 // !!! Only one curious exception, auto type deduction is template type deduction.
 
 // In Item 1, template type deduction is explained using this general function template
@@ -44,6 +43,8 @@ void conceptualCalls() {
   func_for_cx(cx); // conceptual call" param's deduced type is cx's type
   func_for_rx(rx); // conceptual call" param's deduced type is rx's type
 }
+
+static void someFunc() {};
 
 void autoDeducing() {
   auto        x = 27; // CASE 3 (Is neither ref nor ptr), x's type - int
@@ -118,8 +119,3 @@ void lambda() {
 //  auto resetV = [&v](const auto& newValue) { v = newValue; };
 //  resetV({1, 2, 3}); // error -> can't deduce type for {1, 2, 3}
 }
-
-//  Things to Remember:
-//  - auto type deduction is usually the same as template type deduction, but auto type deduction assumes that
-//    a braced initializer represents a std::initializer_list, and template type deduction doesn’t.
-//  - auto in a function return type or a lambda parameter implies template type deduction, not auto type deduction.

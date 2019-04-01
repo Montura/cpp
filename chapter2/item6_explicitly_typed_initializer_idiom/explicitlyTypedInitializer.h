@@ -1,11 +1,5 @@
 #pragma once
 
-#include <unordered_map>
-#include <vector>
-#include <functional>
-#include <iostream>
-#include "Widget.h"
-
 std::vector<bool> features(Widget const& w) {
   return std::vector<bool> (10);
 };
@@ -23,8 +17,9 @@ void autoDeduceUndesiredTypes() {
   bool highPriority = features(w)[5]; // bool (implicit conversion std::vector<bool>::reference to bool)
   processWidget(w, highPriority); // ok
 
-  auto isHighPriority = features(w)[5]; // std::vector<bool>::reference (no implicit conversion)
-  processWidget(w, isHighPriority); // undefined behaviour: contains a dangling pointer
+  ///  MSVC in debug don't pass an assert: vector<bool> iterator is not dereferencable !!!
+//  auto isHighPriority = features(w)[5]; // std::vector<bool>::reference (no implicit conversion)
+//  processWidget(w, isHighPriority); // undefined behaviour: contains a dangling pointer
 
   // - features(w) returns a temporary std::vector<bool> object - TEMP.
   // - Operator[] is invoked on TEMP returns the std::vector<bool>::reference object.
@@ -35,8 +30,8 @@ void autoDeduceUndesiredTypes() {
   // - At the end of the statement, temp is destroyed, because it’s a temporary object. Therefore, IS_HIGH_PRIORITY
   //   contains a dangling pointer, and that’s the cause of the undefined behavior in the call to processWidget:
 
-  // To AVOID:
-  // auto someVar = expression of "invisible" proxy class type;
+  /// To AVOID:
+  /// auto someVar = expression of "invisible" proxy class type;
 }
 
 // The solution is to force a different type deduction: Explicitly Typed Initializer Idiom.
@@ -48,7 +43,7 @@ void explicitlyTypedInitializerIdiom() {
   auto highPriority = static_cast<bool>(features(w)[5]);
 
   // Applications of the idiom aren’t limited to initializers yielding proxy class types.
-  auto ep = static_cast<float>(calcEpsilon()); // impliclitly convert double → float
+  auto ep = static_cast<float>(calcEpsilon()); // implicitly convert double → float
 
   // Suppose you need to calculate the index of an element in a container with random access iterators
   // (e.g., a std::vector, std::deque, or std::array), and you’re given a double between 0.0 and 1.0 indicating how far
@@ -57,8 +52,3 @@ void explicitlyTypedInitializerIdiom() {
   std::vector<int> c;
   int index = static_cast<int>(pos * c.size());
 }
-
-
-// Things to Remember
-// - “Invisible” proxy types can cause auto to deduce the “wrong” type for an initializing expression.
-// - The explicitly typed initializer idiom forces auto to deduce the type you want it to have.
