@@ -1,6 +1,5 @@
 #pragma once
 
-#include <bits/unique_ptr.h>
 #include <unordered_map>
 #include <vector>
 #include <functional>
@@ -42,7 +41,7 @@ void autoDeduceUndesiredTypes() {
 
 // The solution is to force a different type deduction: Explicitly Typed Initializer Idiom.
 
-double calcEpsilon() {}; // return tolerance value
+double calcEpsilon() { return 0; }; // return tolerance value
 
 void explicitlyTypedInitializerIdiom() {
   Widget w;

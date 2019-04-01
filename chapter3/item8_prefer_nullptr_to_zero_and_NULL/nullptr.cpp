@@ -44,31 +44,26 @@ void test_nullptr() {
 }
 
 /// nullptr shines especially brightly when templates enter the picture.
-template <typename T>
-using MuxGuard = std::lock_guard<std::unique_lock<T>>;
+using MuxGuard = std::lock_guard<std::mutex>;
 
-int f1(std::shared_ptr<Widget> spw); // call these only when
-double f2(std::unique_ptr<Widget> upw); // the appropriate
-bool f3(Widget* pw); // mutex is locked
+int f1(std::shared_ptr<Widget> spw) { return 0; }; // call these only when
+double f2(std::unique_ptr<Widget> upw) { return  0; }; // the appropriate
+bool f3(Widget* pw) { return false; }; // mutex is locked
 
-template <typename T>
-void nullptr_and_templates();
-
-template <>
-void nullptr_and_templates<Widget>() {
-  std::unique_lock<Widget> f1m, f2m, f3m; // mutexes for f1, f2, and f3
+void nullptr_and_templates() {
+  std::mutex f1m, f2m, f3m; // mutexes for f1, f2, and f3
   {
-    MuxGuard<Widget> g(f1m); // lock mutex for f1
+    MuxGuard g(f1m); // lock mutex for f1
     auto result = f1(0); // pass 0 as null ptr to f1
   } // unlock mutex
 
   {
-    MuxGuard<Widget> g(f2m); // lock mutex for f2
+    MuxGuard g(f2m); // lock mutex for f2
     auto result = f2(NULL); // pass NULL as null ptr to f2
   } // unlock mutex
 
   {
-    MuxGuard<Widget> g(f3m); // lock mutex for f3
+    MuxGuard g(f3m); // lock mutex for f3
     auto result = f3(nullptr); // pass nullptr as null ptr to f3
   } //
 

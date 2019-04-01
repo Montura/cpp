@@ -4,6 +4,11 @@ project(cpp)
 set(CMAKE_CXX_STANDARD 14)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 
+if (MSVC)
+  add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
+  message(Compiler MSVC: ${MSVC_VERSION})
+endif(MSVC)
+
 include_directories(.)
 include_directories("chapter1/item1_understand_template_type_deduction")
 include_directories("chapter1/item2_undrestand_auto_type_deducing")

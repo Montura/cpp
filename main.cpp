@@ -10,14 +10,12 @@
 #include <chapter2/item6_explicitly_typed_initializer_idiom/explicitlyTypedInitializer.h>
 #include <chapter3/item7_creating_objects/InitializerList.h>
 
-template <typename T>
-void nullptr_and_templates();
-
 void array_decay_example();
 void templates_initialization();
 void braced_primitive_initialization();
 void ctor_overloading_with_initializer_list();
 void test_zero();
+void nullptr_and_templates();
 
 int main() {
   deduceTemplatOne();
@@ -35,7 +33,7 @@ int main() {
 
   templates_initialization();
 
-  nullptr_and_templates<Widget>();
+  nullptr_and_templates();
   test_zero();
   return 0;
 }
