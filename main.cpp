@@ -17,6 +17,8 @@ void ctor_overloading_with_initializer_list();
 void test_zero();
 void nullptr_and_templates();
 
+void testList();
+
 int main() {
   deduceTemplatOne();
   deduceTemplateTwo();
@@ -31,9 +33,6 @@ int main() {
   braced_primitive_initialization();
   ctor_overloading_with_initializer_list();
 
-  templates_initialization();
-
-  nullptr_and_templates();
-  test_zero();
+  testList();
   return 0;
 }
