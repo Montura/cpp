@@ -20,4 +20,6 @@ add_executable(cpp main.cpp array_decay.cpp
                chapter3/item7_creating_objects/item7.cpp
                chapter3/item7_creating_objects/creatingObjects.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/nullptr.cpp
-               chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp list_test.cpp)
+               chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp
+               list_test.cpp
+               array_algos/array_algo.cpp)

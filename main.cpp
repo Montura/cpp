@@ -10,6 +10,8 @@ void array_decay_example();
 
 void testList();
 
+void array_rotation();
+
 int main() {
   array_decay_example();
   item1();
@@ -21,5 +23,7 @@ int main() {
   item8();
 
   testList();
+
+  array_rotation();
   return 0;
 }
