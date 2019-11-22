@@ -22,4 +22,4 @@ add_executable(cpp main.cpp array_decay.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/nullptr.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp
                list_test.cpp
-               array_algos/array_algo.cpp)
+               array_algos/array_algo.cpp sorting/sorting.cpp templates/tag_dispatching.cpp)

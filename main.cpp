@@ -7,10 +7,9 @@ void item7();
 void item8();
 
 void array_decay_example();
-
 void testList();
-
 void array_rotation();
+void test_tag_dispatching();
 
 int main() {
   array_decay_example();
@@ -25,5 +24,6 @@ int main() {
   testList();
 
   array_rotation();
+  test_tag_dispatching();
   return 0;
 }
