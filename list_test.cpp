@@ -8,38 +8,55 @@ void printList(Node* node) {
   }
 }
 
-void testList() {
+void testNode() {
   Node* head = new Node(1);
   Node* second = new Node(2);
   Node* third = new Node(3);
 
   head->next = second;
   second->next = third;
+}
 
-  List list(head);
+void testList() {
+  List list;
 
-  list.push_front(7);
-  list.push_front(8);
-  list.push_front(11);
-  list.push_front(13);
+  list.pushFront(7);
+  list.pushFront(8);
+  list.pushFront(11);
+  list.pushFront(13);
 
-  head->insertAfter(102);
-  head->insertAfter(106);
-  head->insertAfter(100);
-  head->insertAfter(101);
-  head->insertAfter(103);
-  head->insertAfter(104);
+  list.pushBack(13);
+  list.pushBack(11);
+  list.pushBack(8);
+  list.pushBack(7);
+
+  Node* head = list.begin();
+  list.insertAfter(head, 102);
+  list.insertAfter(head, 106);
+  list.insertAfter(head, 100);
+  list.insertAfter(head, 101);
+  list.insertAfter(head, 103);
+  list.insertAfter(head, 104);
 
   list.print();
-  list.pop_front();
+  list.popFront();
   list.print();
-  list.pop_front();
-  list.print();
-
-  list.pop_back();
-  list.print();
-  list.pop_back();
+  list.popFront();
   list.print();
 
+  list.popBack();
+  list.print();
+  list.popBack();
+  list.print();
+  list.popBack();
+  list.print();
+  list.popBack();
+  list.print();
+  list.popBack();
+  list.print();
+  list.popBack();
+  list.print();
+
+  head = list.begin();
   printList(head);
 }

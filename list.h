@@ -4,36 +4,52 @@
 
 #ifndef CPP_LIST_H
 #define CPP_LIST_H
+#include <cstdint>
 
 struct Node {
   Node* next = nullptr;
-  int const data = 0;
+  int32_t const data = 0;
 
-  explicit Node(int data = 0) : next(nullptr), data(data) {}
-
-  void insertAfter(int newData) {
-    Node* newNode = new Node(newData);
-    newNode->next = this->next;
-    this->next = newNode;
-  }
-
+  explicit Node(int32_t data = 0) : next(nullptr), data(data) {}
 };
 
-struct List {
+class List {
   Node* head = nullptr;
   Node* tail = nullptr;
   int size = 0;
 
-  explicit List(Node* head = nullptr, Node* tail = nullptr) : head(head), tail(head)  {}
+public:
+  explicit List() = default;
 
-  void push_front(int newData) {
+  void pushFront(int32_t newData) {
     Node* newNode = new Node(newData);
     newNode->next = head;
-    tail = head;
     head = newNode;
+    if (tail == nullptr) {
+      tail = newNode;
+    }
+    ++size;
   }
 
-  void push_back(int newData) {
+  bool insertAfter(Node* node, int32_t newData) {
+    Node* current = head;
+    while (current != node) {
+      current = current->next;
+    }
+    if (current != nullptr) {
+      Node* newNode = new Node(newData);
+      if (current == tail) {
+        tail = newNode;
+      }
+      newNode->next = current->next;
+      current->next = newNode;
+      ++size;
+    }
+
+    return false;
+  }
+
+  void pushBack(int32_t newData) {
     Node* newNode = new Node(newData);
     Node* current = head;
     while (current->next != nullptr) {
@@ -41,26 +57,40 @@ struct List {
     }
     current->next = newNode;
     tail = newNode;
+    ++size;
   }
 
-  void pop_front() {
+  void popFront() {
     if (head != nullptr) {
       Node* newHead = head->next;
       delete head;
       head = newHead;
+      if (head == nullptr) {
+        tail = nullptr;
+      }
+      --size;
     }
   }
 
-  void pop_back() {
-    Node* current = head;
-    Node* next = head->next;
-    while (next->next != nullptr) {
-      current = current->next;
-      next = current->next;
+  void popBack() {
+    if (head != nullptr) {
+      Node* curr = head;
+      Node* next = curr->next;
+      while (next != nullptr && next->next != nullptr) {
+        curr = next;
+        next = curr->next;
+      }
+      if (next != nullptr) {
+        tail = curr;
+        tail->next = nullptr;
+        delete next;
+      } else {
+        delete curr;
+        head = tail = nullptr;
+      }
+
+      --size;
     }
-    tail = current;
-    tail->next = nullptr;
-    delete next;
   }
 
   void print() {
@@ -69,9 +99,15 @@ struct List {
       std::cout << curr->data << " ";
       curr = curr->next;
     }
+    std::cout << ", size is " << size;
+    std::cout << ", head is " << head << ": " << ((head != nullptr) ? head->data : -1);
+    std::cout << ", tail is " << tail << ": " << ((tail != nullptr) ? tail->data : -1) << std::endl;
     std::cout << std::endl;
   }
 
+  Node* begin() {
+    return head;
+  }
 };
 
 
