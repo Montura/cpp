@@ -108,6 +108,24 @@ public:
   Node* begin() {
     return head;
   }
+
+  void reverseList() {
+    if (head != nullptr) {
+      Node* curr = head;
+      Node* prev = nullptr;
+      Node* next = nullptr;
+
+      while (curr != nullptr) {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+      }
+
+      tail = head;
+      head =  prev;
+    }
+  }
 };
 
 

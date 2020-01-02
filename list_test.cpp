@@ -38,6 +38,15 @@ void testList() {
   list.insertAfter(head, 103);
   list.insertAfter(head, 104);
 
+  std::cout << "Original list: ";
+  list.print();
+  list.reverseList();
+  std::cout << "Reversed list: ";
+  list.print();
+  list.reverseList();
+  std::cout << "Original list: ";
+  list.print();
+
   list.print();
   list.popFront();
   list.print();
