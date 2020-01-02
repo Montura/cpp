@@ -4,25 +4,19 @@
 
 #ifndef CPP_LIST_H
 #define CPP_LIST_H
-#include <cstdint>
+#include "node.h"
 
-struct Node {
-  Node* next = nullptr;
-  int32_t const data = 0;
-
-  explicit Node(int32_t data = 0) : next(nullptr), data(data) {}
-};
-
+template <typename T>
 class List {
-  Node* head = nullptr;
-  Node* tail = nullptr;
+  Node<T>* head = nullptr;
+  Node<T>* tail = nullptr;
   int size = 0;
 
 public:
   explicit List() = default;
 
-  void pushFront(int32_t newData) {
-    Node* newNode = new Node(newData);
+  void pushFront(T newData) {
+    auto* newNode = new Node<T>(newData);
     newNode->next = head;
     head = newNode;
     if (tail == nullptr) {
@@ -31,13 +25,13 @@ public:
     ++size;
   }
 
-  bool insertAfter(Node* node, int32_t newData) {
-    Node* current = head;
+  bool insertAfter(Node<T>* node, T newData) {
+    auto* current = head;
     while (current != node) {
       current = current->next;
     }
     if (current != nullptr) {
-      Node* newNode = new Node(newData);
+      auto* newNode = new Node<T>(newData);
       if (current == tail) {
         tail = newNode;
       }
@@ -49,9 +43,9 @@ public:
     return false;
   }
 
-  void pushBack(int32_t newData) {
-    Node* newNode = new Node(newData);
-    Node* current = head;
+  void pushBack(T newData) {
+    auto* newNode = new Node<T>(newData);
+    auto* current = head;
     while (current->next != nullptr) {
       current = current->next;
     }
@@ -62,7 +56,7 @@ public:
 
   void popFront() {
     if (head != nullptr) {
-      Node* newHead = head->next;
+      auto* newHead = head->next;
       delete head;
       head = newHead;
       if (head == nullptr) {
@@ -74,8 +68,8 @@ public:
 
   void popBack() {
     if (head != nullptr) {
-      Node* curr = head;
-      Node* next = curr->next;
+      auto* curr = head;
+      auto* next = curr->next;
       while (next != nullptr && next->next != nullptr) {
         curr = next;
         next = curr->next;
@@ -94,7 +88,7 @@ public:
   }
 
   void print() {
-    Node* curr = head;
+    auto* curr = head;
     while(curr != nullptr) {
       std::cout << curr->data << " ";
       curr = curr->next;
@@ -105,15 +99,15 @@ public:
     std::cout << std::endl;
   }
 
-  Node* begin() {
+  Node<T>* begin() {
     return head;
   }
 
   void reverseList() {
     if (head != nullptr) {
-      Node* curr = head;
-      Node* prev = nullptr;
-      Node* next = nullptr;
+      auto* curr = head;
+      Node<T>* prev = nullptr;
+      Node<T>* next = nullptr;
 
       while (curr != nullptr) {
         next = curr->next;

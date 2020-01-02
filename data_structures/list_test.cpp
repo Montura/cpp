@@ -1,24 +1,17 @@
 #include <iostream>
 #include "list.h"
+#include "node.h"
 
-void printList(Node* node) {
+template <class T>
+void printList(Node<T>* node) {
   while(node != nullptr) {
     std::cout << "Node: " << node << ", data = " << node->data << std::endl;
     node = node->next;
   }
 }
 
-void testNode() {
-  Node* head = new Node(1);
-  Node* second = new Node(2);
-  Node* third = new Node(3);
-
-  head->next = second;
-  second->next = third;
-}
-
 void testList() {
-  List list;
+  List<int> list;
 
   list.pushFront(7);
   list.pushFront(8);
@@ -30,7 +23,7 @@ void testList() {
   list.pushBack(8);
   list.pushBack(7);
 
-  Node* head = list.begin();
+  auto* head = list.begin();
   list.insertAfter(head, 102);
   list.insertAfter(head, 106);
   list.insertAfter(head, 100);
