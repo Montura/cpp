@@ -1,3 +1,5 @@
+#include <vector>
+
 void item1();
 void item2();
 void item3();
@@ -10,6 +12,7 @@ void array_decay_example();
 void testList();
 void array_rotation();
 void test_tag_dispatching();
+void test_quick_sort();
 
 int main() {
   array_decay_example();
@@ -25,5 +28,7 @@ int main() {
 
   array_rotation();
   test_tag_dispatching();
+  test_quick_sort();
+
   return 0;
 }
