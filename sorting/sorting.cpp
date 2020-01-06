@@ -101,13 +101,13 @@ void countSort(VecI& arr) {
     count[i] += count[i - 1];
   }
 
-  for (int i = size - 1; i >= 0; --i) {
+  for (int i = 0; i < size; ++i) {
     int pos = arr[i] - minV;
     count[pos] = count[pos] - 1;
     result[count[pos]] = arr[i];
   }
 
-  std::copy(arr.cbegin(), arr.cend(), result.begin());
+  std::copy(result.cbegin(), result.cend(), arr.begin());
 }
 
 
