@@ -76,6 +76,7 @@ void quickSort(VecI& arr, int left, int right) {
 }
 
 void test_quick_sort() {
+  std::cout << "test_quick_sort" << std::endl;
   std::vector<int> arr { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
   int right = static_cast<int>(arr.size()) - 1;
   std::cout << "Before: ";

@@ -13,6 +13,7 @@ void testList();
 void array_rotation();
 void test_tag_dispatching();
 void test_quick_sort();
+void test_merge_sort();
 
 int main() {
   array_decay_example();
@@ -29,6 +30,7 @@ int main() {
   array_rotation();
   test_tag_dispatching();
   test_quick_sort();
+  test_merge_sort();
 
   return 0;
 }
