@@ -1,5 +1,10 @@
 #pragma once
 
+#include <Widget.h>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
 template <typename It>
 void work(It begin, It end) {
   while (begin != end) {
@@ -63,7 +68,7 @@ void typeShortcuts() {
   // the key part of a std::unordered_map is const,
   // so the type of std::pair in the hash table (which is what a std::unordered_map is)
   // isn’t std::pair<std::string, int>, it’s std::pair const std::string, int>.
-  for (const std::pair<std::string, int>& pair : m) {
+  for (const std::pair<const std::string, int>& pair : m) {
     // But that’s not the type declared for the variable p in the loop above.
     // As a result, compilers will strive to find a way to convert std::pair<const std::string, int> objects
     // (i.e., what’s in the hash table) to std::pair<std::string, int> objects (the declared type for p).

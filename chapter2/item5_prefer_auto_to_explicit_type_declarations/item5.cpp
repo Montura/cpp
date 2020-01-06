@@ -1,11 +1,3 @@
-#include <cstddef>
-#include <iterator>
-#include <memory>
-#include <functional>
-#include <vector>
-#include <unordered_map>
-
-#include "Widget.h"
 #include "autoVsExpilicitTypes.h"
 
 void item5() {
