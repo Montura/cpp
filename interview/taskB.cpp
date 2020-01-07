@@ -12,18 +12,16 @@ int main() {
   int n = 0;
   std::cin >> n;
   int currentLen = 0, maxLen = 0;
-  char symbol = -1, prevSymbol = '1';
+  char symbol = -1;
   for (int i = 0; i < n; ++i) {
     std::cin >> symbol;
-    if ( symbol == '1' && symbol == prevSymbol) {
+    if ( symbol == '1') {
       currentLen += 1;
-      prevSymbol = symbol;
-    } else {
       maxLen = max(currentLen, maxLen);
+    } else {
       currentLen = 0;
     }
   }
-  maxLen = max(currentLen, maxLen);
 
   std::cout << maxLen;
 }
