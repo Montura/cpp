@@ -1,4 +1,4 @@
-#include <vector>
+#include <data_structures/graph.h>
 
 void item1();
 void item2();
@@ -31,6 +31,8 @@ int main() {
   test_tag_dispatching();
   test_quick_sort();
   test_merge_sort();
+
+  test_graph_impl();
 
   return 0;
 }
