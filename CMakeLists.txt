@@ -24,6 +24,7 @@ add_executable(cpp main.cpp array_decay.cpp
         array_algos/array_algo.cpp
         data_structures/list_test.cpp
         data_structures/node_test.cpp
+        data_structures/test_graph.cpp
         sorting/tools.cpp
         sorting/merge_sort.cpp
         sorting/quick_sort.cpp

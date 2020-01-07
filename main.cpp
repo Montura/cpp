@@ -1,5 +1,3 @@
-#include <data_structures/graph.h>
-
 void item1();
 void item2();
 void item3();
@@ -14,6 +12,7 @@ void array_rotation();
 void test_tag_dispatching();
 void test_quick_sort();
 void test_merge_sort();
+void test_graph_impl();
 
 int main() {
   array_decay_example();
