@@ -1,9 +1,4 @@
-//
-// Created by elmon on 11.08.2019.
-//
-
-#ifndef CPP_LIST_H
-#define CPP_LIST_H
+#pragma once
 #include "node.h"
 
 template <typename T>
@@ -121,6 +116,3 @@ public:
     }
   }
 };
-
-
-#endif //CPP_LIST_H

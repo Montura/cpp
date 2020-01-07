@@ -1,9 +1,4 @@
-//
-// Created by user on 02.01.2020.
-//
-
-#ifndef CPP_NODE_H
-#define CPP_NODE_H
+#pragma once
 #include <cstdint>
 
 template <class T>
@@ -15,7 +10,3 @@ struct Node {
 
   Node<T>& operator=(const Node<T>* node) {}
 };
-
-#include <cstdint>
-
-#endif //CPP_NODE_H
