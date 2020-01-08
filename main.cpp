@@ -13,6 +13,7 @@ void test_tag_dispatching();
 void test_quick_sort();
 void test_merge_sort();
 void test_graph_impl();
+void test_dsu_size_stat();
 
 int main() {
   array_decay_example();
