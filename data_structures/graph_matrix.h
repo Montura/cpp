@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 #include <list>
+#include "dsu.h"
+#include "Edge.h"
 
 // Adjacency Matrix, space O(|V|^2)
 class GraphM {
@@ -28,6 +30,11 @@ public:
     for (int i = 0; i < vertexCount; ++i) {
       adj[i].resize(vertexCount);
     }
+  }
+
+  void addEdge(int from, int to, int w = 1) {
+    adj[from][to] = w;
+    adj[to][from] = w;
   }
 
   void dfs() {
@@ -65,9 +72,36 @@ public:
     std::cout << std::endl;
   }
 
-  void addEdge(int from, int to) {
-    adj[from][to] = 1;
-    adj[to][from] = 1;
+  // O (E*logE)
+  void kruskalMST() {
+    int minCost = 0;
+    std::vector<Edge> result;
+    DsuTreeSizeHeuristic dsu(vertexCount);
+
+    int edgeCount = 0;
+    while (edgeCount < vertexCount - 1) {
+      int minWeight = INT32_MAX, from = -1, to = -1;
+      for (int i = 0; i < vertexCount; ++i) {
+        for (int j = 0; j < vertexCount; ++j) {
+          int u_set = dsu.find_set(i);
+          int v_set = dsu.find_set(j);
+
+          int edgeWeight = adj[i][j];
+          if (u_set != v_set && edgeWeight > 0 && edgeWeight < minWeight) {
+            from = i;
+            to = j;
+            minWeight = edgeWeight;
+          }
+        }
+      }
+
+      edgeCount++;
+      result.emplace_back(Edge(from, to, minWeight));
+      dsu.union_sets(from, to);
+      minCost += minWeight;
+    }
+
+    printMST(minCost, result);
   }
 
   void print() {

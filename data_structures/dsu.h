@@ -6,7 +6,7 @@ protected:
   std::vector<int> parent;
 
 public:
-  explicit DSU(int size = 0) : parent(size) {
+  explicit DSU(int size) : parent(size) {
     for (int i = 0; i < size; ++i) {
       parent[i] = i;
     }
@@ -37,7 +37,7 @@ class DsuTreeSizeHeuristic : public DSU {
   std::vector<int> size; // or rank, rank [i] = 0;
 
 public:
-  explicit DsuTreeSizeHeuristic(int n = 0) : size(n) {
+  explicit DsuTreeSizeHeuristic(int n) : DSU(n), size(n) {
     for (int i = 0; i < n; ++i) {
       size[i] = 1;
     }
@@ -67,6 +67,8 @@ public:
 
 class DsuPathCompression : DSU {
   // Now std::vector<int> parent - compressed array of ancestors
+
+  explicit DsuPathCompression(int n) : DSU(n) {}
 
   int find_set(int x) override {
     if (x == parent[x]) {
