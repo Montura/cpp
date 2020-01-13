@@ -23,6 +23,7 @@ add_executable(cpp main.cpp array_decay.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp
         array_algos/array_algo.cpp
         data_structures/test_dsu_size_stat.cpp
+        data_structures/test_bin_heap.cpp
         data_structures/list_test.cpp
         data_structures/node_test.cpp
         data_structures/test_graph.cpp

@@ -14,6 +14,7 @@ void test_quick_sort();
 void test_merge_sort();
 void test_graph_impl();
 void test_dsu_size_stat();
+void test_binary_heap();
 
 int main() {
   array_decay_example();
@@ -33,6 +34,7 @@ int main() {
   test_merge_sort();
 
   test_graph_impl();
+  test_binary_heap();
 
   return 0;
 }
