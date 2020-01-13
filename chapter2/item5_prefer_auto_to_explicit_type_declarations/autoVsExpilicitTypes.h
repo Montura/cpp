@@ -4,6 +4,8 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <bits/unique_ptr.h>
+#include <functional>
 
 template <typename It>
 void work(It begin, It end) {

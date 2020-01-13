@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <list>
+#include <algorithm>
 
 struct Vertex {
   int v = 0, w = 1;
