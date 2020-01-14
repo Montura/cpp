@@ -4,7 +4,19 @@
 #include <iostream>
 #include <array>
 
+inline bool min(int a, int b) {
+  return a < b;
+}
+
+inline bool max(int a, int b) {
+  return a > b;
+}
+
+typedef bool(* Comparator)(int, int);
+
+template <Comparator comp>
 class BinaryHeap {
+  Comparator const comparator = comp;
   int* data = nullptr;
   int heapSize = 0;
   int capacity = 0;
@@ -23,7 +35,7 @@ class BinaryHeap {
 
   // O (log n)
   void siftUp(int i) {
-    while (data[i] < data[parentIdx(i)]) {
+    while (comparator(data[i], data[parentIdx(i)])) {
       std::swap(data[i], data[parentIdx(i)]);
       i = parentIdx(i);
     }
@@ -35,10 +47,10 @@ class BinaryHeap {
       int left = leftIdx(i);
       int right = rightIdx(i);
       int smallestChild = left;
-      if (right < heapSize && data[right] < data[left]) {
+      if (right < heapSize && comparator(data[right], data[left])) {
         smallestChild = right;
       }
-      if (data[i] < data[smallestChild]) {
+      if (comparator(data[i], data[smallestChild])) {
         return;
       }
       std::swap(data[i], data[smallestChild]);
