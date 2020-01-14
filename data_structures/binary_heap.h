@@ -130,8 +130,7 @@ public:
     int size = static_cast<int>(array.size());
     BinaryHeap heap(size, array);
     for (int i = 0; i < size; ++i) { // O(n)
-      array[i] = heap.extractMin(); // O(1)
-      heap.siftDown(0); // O(log n)
+      array[i] = heap.extractMin(); // O(log n)
     }
   }
 };
