@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <array>
 
 class BinaryHeap {
   int* data = nullptr;
@@ -37,28 +38,26 @@ class BinaryHeap {
       if (right < heapSize && data[right] < data[left]) {
         smallestChild = right;
       }
+      if (data[i] < data[smallestChild]) {
+        return;
+      }
       std::swap(data[i], data[smallestChild]);
       i = smallestChild;
     }
   }
 
-  static void siftDown(std::vector<int>& arr, int n, int i) {
-    while (leftIdx(i) < n) {
-      int left = leftIdx(i);
-      int right = rightIdx(i);
-      int smallestChild = left;
-      if (right < n && arr[right] > arr[left]) {
-        smallestChild = right;
-      }
-      std::swap(arr[i], arr[smallestChild]);
-      i = smallestChild;
-    }
-  }
-
 public:
-  explicit BinaryHeap(int size) {
+  template <class ArrType = std::array<int, 0>>
+  explicit BinaryHeap(int size, ArrType const& arr = {}) {
     capacity = size;
     data = new int[size];
+
+    if (!arr.empty()) {
+      for (int i = 0; i < size; ++i) {
+        data[i] = arr[i];
+        heapSize++;
+      }
+    }
 
     for (int i = size / 2; i >= 0; --i) {
       siftDown(i);
@@ -114,5 +113,14 @@ public:
     extractMin();
   }
 
+  // O(n * log n)
+  static void heapSort(std::vector<int>& array) {
+    int size = static_cast<int>(array.size());
+    BinaryHeap heap(size, array);
+    for (int i = 0; i < size; ++i) { // O(n)
+      array[i] = heap.extractMin(); // O(1)
+      heap.siftDown(0); // O(log n)
+    }
+  }
 };
 

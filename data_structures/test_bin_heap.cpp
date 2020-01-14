@@ -16,4 +16,13 @@ void test_binary_heap() {
   std::cout << h.getMin() << " ";
   h.decreaseKey(2, 1);
   std::cout << h.getMin() << std::endl;
+
+  std::vector<int> arr = {12, 11, 13, 5, 6, 7};
+  BinaryHeap::heapSort(arr);
+  printArr(arr);
+
+  arr =  { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
+  BinaryHeap::heapSort(arr);
+  printArr(arr);
+
 }
