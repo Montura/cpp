@@ -17,7 +17,7 @@ typedef bool(* Comparator)(int, int);
 template <Comparator comp>
 class BinaryHeap {
   Comparator const comparator = comp;
-  int* data = nullptr;
+  std::vector<int> data;
   int heapSize = 0;
   int capacity = 0;
 
@@ -60,11 +60,10 @@ class BinaryHeap {
 
 public:
   template <class ArrType = std::array<int, 0>>
-  explicit BinaryHeap(int size, ArrType const& arr = {}) {
-    capacity = size;
-    data = new int[size];
-
+  explicit BinaryHeap(ArrType const& arr = {}) {
+    int size = static_cast<int>(arr.size());
     if (!arr.empty()) {
+      data.resize(size);
       for (int i = 0; i < size; ++i) {
         data[i] = arr[i];
         heapSize++;
@@ -77,14 +76,15 @@ public:
   }
 
   ~BinaryHeap() {
-    delete[] data;
+    capacity = heapSize = 0;
   }
 
   // O (log n)
   void insert(int key) {
     if (heapSize == capacity) {
-      std::cout << "can't insert key: heap capacity is not enough!" << std::endl;
-      return;
+      capacity = 2 * (heapSize + 1);
+      data.resize(capacity);
+      std::cout << "Heap capacity increased to " << capacity << std::endl;
     }
     heapSize += 1;
     data[heapSize - 1] = key;
@@ -113,22 +113,28 @@ public:
     if (i > capacity) {
       std::cout << "Can't decrease value at index: " << i << ". Index ouf of range. Heap size is: " << capacity <<std::endl;
     }
-    if (newValue < data[i]) {
-
-    }
     data[i] = newValue;
     siftUp(i);
   }
 
-  void deleteKey(int i) {
+  void deleteKeyByIdx(int i) {
     decreaseKey(i, INT_MIN);
     extractMin();
+  }
+
+  void deleteKeyByValue(int i) {
+    for (int j = 0; j < heapSize; ++j) {
+      if (data[j] == i) {
+        decreaseKey(j, INT_MIN);
+        extractMin();
+      }
+    }
   }
 
   // O(n * log n)
   static void heapSort(std::vector<int>& array) {
     int size = static_cast<int>(array.size());
-    BinaryHeap heap(size, array);
+    BinaryHeap heap(array);
     for (int i = 0; i < size; ++i) { // O(n)
       array[i] = heap.extractMin(); // O(log n)
     }
