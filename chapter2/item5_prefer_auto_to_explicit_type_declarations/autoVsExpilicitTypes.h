@@ -4,8 +4,13 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <bits/unique_ptr.h>
 #include <functional>
+
+#ifdef _WIN32
+  #include <memory>
+#else
+  #include <bits/unique_ptr.h>
+#endif
 
 template <typename It>
 void work(It begin, It end) {
