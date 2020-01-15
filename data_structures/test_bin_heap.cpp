@@ -1,3 +1,4 @@
+#include <climits>
 #include "binary_heap.h"
 
 using VecI = std::vector<int>;
