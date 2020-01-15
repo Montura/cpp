@@ -4,19 +4,29 @@
 #include <iostream>
 #include <array>
 
-inline bool min(int a, int b) {
-  return a < b;
-}
+struct Min {
+  static const int max = INT_MIN;
 
-inline bool max(int a, int b) {
-  return a > b;
-}
+  static bool compare(int a, int b) {
+    return a < b;
+  }
+};
+
+struct Max {
+  static const int max = INT_MAX;
+
+  static bool compare(int a, int b) {
+    return a > b;
+  }
+};
 
 typedef bool(* Comparator)(int, int);
 
-template <Comparator comp>
+template <class T>
 class BinaryHeap {
-  Comparator const comparator = comp;
+  Comparator const comparator = T::compare;
+  int const MAX = T::max;
+
   std::vector<int> data;
   int heapSize = 0;
   int capacity = 0;
@@ -99,7 +109,7 @@ public:
   int extractMin() {
     if (heapSize == 0) {
       std::cout << "Heap is emtpy!" << std::endl;
-      return INT32_MAX;
+      return MAX;
     }
     int min = data[0];
     data[0] = data[heapSize - 1];
@@ -125,14 +135,16 @@ public:
   }
 
   void deleteKeyByIdx(int i) {
-    decreaseKey(i, INT_MIN);
+    std::swap(data[i], data[heapSize -1]);
+    data[heapSize - 1] = MAX;
+    siftDown(0);
     extractMin();
   }
 
   void deleteKeyByValue(int i) {
     for (int j = 0; j < heapSize; ++j) {
       if (data[j] == i) {
-        decreaseKey(j, INT_MIN);
+        decreaseKey(j, MAX);
         extractMin();
       }
     }

@@ -5,7 +5,7 @@ using VecI = std::vector<int>;
 void printArr(const VecI& arr);
 
 void test_binary_heap() {
-  BinaryHeap<max> h;
+  BinaryHeap<Min> h;
   h.insert(3);
   h.insert(2);
   h.deleteKeyByIdx(1);
@@ -25,18 +25,21 @@ void test_binary_heap() {
   std::cout << h.getMin() << std::endl;
 
   std::vector<int> arr = {12, 11, 13, 5, 6, 7};
-  BinaryHeap<max>::heapSort(arr);
+  BinaryHeap<Max>::heapSort(arr);
   printArr(arr);
 
   arr =  { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
-  BinaryHeap<max>::heapSort(arr);
+  BinaryHeap<Min>::heapSort(arr);
   printArr(arr);
 
-  BinaryHeap<min> h3;
+  BinaryHeap<Min> h3;
   h3.insert(4);
   h3.insert(9);
-  h3.insert(1e9);
+  h3.insert(7);
   std::cout << h3.getMin() << std::endl;
   h3.deleteKeyByValue(4);
   std::cout << h3.getMin() << std::endl;
+
+  auto h2 = h.merge(h3);
+  std::cout << h2.getMin();
 }
