@@ -58,6 +58,10 @@ class BinaryHeap {
     }
   }
 
+  const std::vector<int>& getData() const {
+    return data;
+  }
+
 public:
   template <class ArrType = std::array<int, 0>>
   explicit BinaryHeap(ArrType const& arr = {}) {
@@ -104,10 +108,13 @@ public:
     return min;
   }
 
-  int getMin() {
+  int getMin() const {
     return data[0];
   }
 
+  int getSize() const {
+    return heapSize;
+  }
 
   void decreaseKey(int i, int newValue) {
     if (i > capacity) {
@@ -129,6 +136,19 @@ public:
         extractMin();
       }
     }
+  }
+
+  BinaryHeap<T> merge(const BinaryHeap<T>& h) {
+    int hSize = h.getSize();
+    int nCapacity = heapSize + hSize;
+    std::vector<int> v(nCapacity);
+
+    std::copy(data.cbegin(), data.cbegin() + heapSize, v.begin());
+    std::vector<int> const& hData = h.getData();
+    std::copy(hData.cbegin(), hData.cbegin() + hSize, v.begin() + heapSize);
+
+    return BinaryHeap(v);
+
   }
 
   // O(n * log n)
