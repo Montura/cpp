@@ -3,31 +3,17 @@
 #include <vector>
 #include <iostream>
 #include <array>
-
-struct Min {
-  static const int max = INT_MIN;
-
-  static bool compare(int a, int b) {
-    return a < b;
-  }
-};
-
-struct Max {
-  static const int max = INT_MAX;
-
-  static bool compare(int a, int b) {
-    return a > b;
-  }
-};
-
-typedef bool(* Comparator)(int, int);
+#include <limits>
 
 template <class T>
-class BinaryHeap {
-  Comparator const comparator = T::compare;
-  int const MAX = T::max;
+using Comparator = bool(*)(T&, T&);
 
-  std::vector<int> data;
+template <class Key, template <class> class Type>
+class BinaryHeap {
+  Comparator<Key> const comparator = Type<Key>::compare;
+  int const MAX = std::numeric_limits<Type<Key>>::max();
+
+  std::vector<Key> data;
   int heapSize = 0;
   int capacity = 0;
 
@@ -73,8 +59,8 @@ class BinaryHeap {
   }
 
 public:
-  template <class ArrType = std::array<int, 0>>
-  explicit BinaryHeap(ArrType const& arr = {}) {
+  explicit BinaryHeap(std::vector<Key> const& arr = {}) {
+    std::cout << __PRETTY_FUNCTION__ <<  MAX << std::endl;
     int size = static_cast<int>(arr.size());
     if (!arr.empty()) {
       data.resize(size);
@@ -106,19 +92,19 @@ public:
   }
 
   // O (log n)
-  int extractMin() {
+  Key extractMin() {
     if (heapSize == 0) {
       std::cout << "Heap is emtpy!" << std::endl;
-      return MAX;
+      return data[heapSize - 1];
     }
-    int min = data[0];
+    Key min = data[0];
     data[0] = data[heapSize - 1];
     heapSize -= 1;
     siftDown(0);
     return min;
   }
 
-  int getMin() const {
+  Key getMin() const {
     return data[0];
   }
 
@@ -135,22 +121,20 @@ public:
   }
 
   void deleteKeyByIdx(int i) {
-    std::swap(data[i], data[heapSize -1]);
-    data[heapSize - 1] = MAX;
+    data[i] = MAX;
     siftDown(0);
     extractMin();
   }
 
-  void deleteKeyByValue(int i) {
+  void deleteKeyByValue(Key const & i) {
     for (int j = 0; j < heapSize; ++j) {
       if (data[j] == i) {
-        decreaseKey(j, MAX);
-        extractMin();
+        deleteKeyByIdx(j);
       }
     }
   }
 
-  BinaryHeap<T> merge(const BinaryHeap<T>& h) {
+  BinaryHeap<Key, Type> merge(const BinaryHeap<Key, Type>& h) {
     int hSize = h.getSize();
     int nCapacity = heapSize + hSize;
     std::vector<int> v(nCapacity);
@@ -164,7 +148,7 @@ public:
   }
 
   // O(n * log n)
-  static void heapSort(std::vector<int>& array) {
+  static void heapSort(std::vector<Key>& array) {
     int size = static_cast<int>(array.size());
     BinaryHeap heap(array);
     for (int i = 0; i < size; ++i) { // O(n)

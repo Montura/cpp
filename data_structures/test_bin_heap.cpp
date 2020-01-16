@@ -1,38 +1,47 @@
 #include <climits>
 #include "binary_heap.h"
+#include "heap_node.h"
+#include "heap_comparators.h"
 
-using VecI = std::vector<int>;
-void printArr(const VecI& arr);
+template <class T>
+void printArr(const std::vector<T>& arr) {
+  for (T const& elem : arr) {
+    std::cout << elem << std::endl;
+  }
+  std::cout << std::endl;
+}
 
 void test_binary_heap() {
-  BinaryHeap<Min> h;
+  BinaryHeap<int, Min> h;
   h.insert(3);
   h.insert(2);
-  h.deleteKeyByIdx(1);
+  std::cout << h.getMin() << std::endl;
+  h.deleteKeyByIdx(0);
+  std::cout << h.getMin() << std::endl;
   h.insert(15);
   h.insert(16);
   h.insert(20);
   h.insert(17);
   h.insert(88);
-  std::cout << h.extractMin() << " ";
-//  h.insert(5);
-  std::cout << h.extractMin() << " ";
-//  h.insert(4);
-  std::cout << h.extractMin() << " ";
-//  h.insert(45);
+  std::cout << h.getMin() << " ";
+  h.insert(5);
+  std::cout << h.getMin() << " ";
+  h.insert(4);
+  std::cout << h.getMin() << " ";
+  h.insert(45);
   std::cout << h.getMin() << " ";
   h.decreaseKey(2, 1);
   std::cout << h.getMin() << std::endl;
 
   std::vector<int> arr = {12, 11, 13, 5, 6, 7};
-  BinaryHeap<Max>::heapSort(arr);
+  BinaryHeap<int, Max>::heapSort(arr);
   printArr(arr);
 
   arr =  { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
-  BinaryHeap<Min>::heapSort(arr);
+  BinaryHeap<int, Min>::heapSort(arr);
   printArr(arr);
 
-  BinaryHeap<Min> h3;
+  BinaryHeap<int, Min> h3;
   h3.insert(4);
   h3.insert(9);
   h3.insert(7);
@@ -41,5 +50,21 @@ void test_binary_heap() {
   std::cout << h3.getMin() << std::endl;
 
   auto h2 = h.merge(h3);
-  std::cout << h2.getMin();
+  std::cout << h2.getMin() << std::endl;
+
+  std::vector<HeapNode> strArr =
+    { HeapNode {12, "12"}, HeapNode {11, "11"}, HeapNode {13, "13"}, HeapNode {7, "7"}, HeapNode {5, "5"}, HeapNode {6, "6"}};
+  BinaryHeap<HeapNode, Min>::heapSort(strArr);
+  printArr(strArr);
+
+  BinaryHeap<HeapNode, Max>::heapSort(strArr);
+  printArr(strArr);
+
+  BinaryHeap<HeapNode, Min> h4(strArr);
+  std::cout << h4.getMin() << std::endl;
+  h4.deleteKeyByIdx(1);
+  std::cout << h4.getMin() << std::endl;
+  h4.deleteKeyByValue(HeapNode(11, "11"));
+  std::cout << h4.getMin() << std::endl;
+
 }
