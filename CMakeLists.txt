@@ -27,10 +27,11 @@ add_executable(cpp main.cpp array_decay.cpp
         data_structures/list_test.cpp
         data_structures/node_test.cpp
         data_structures/test_graph.cpp
+        data_structures/test_stack.cpp
         sorting/tools.cpp
         sorting/merge_sort.cpp
         sorting/quick_sort.cpp
         sorting/sorting.cpp
         templates/tag_dispatching.cpp
-        data_structures/heap_node.h data_structures/heap_comparators.h)
+        )
 #add_executable(cpp interview/taskD.cpp)
