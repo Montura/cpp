@@ -15,25 +15,21 @@ struct Stat {
 template<class KeyT>
 class Stack {
 protected:
-  KeyT* data;
+  std::vector<KeyT> data;
   int size;
   int top = -1;
 
 public:
-  explicit Stack(int size) : size(size) {
-    data = new KeyT [size];
+  explicit Stack(int size = 0) : size(size) {
+    data.resize(size);
   };
-
-  ~Stack() {
-    delete[] data;
-  }
 
   bool isEmpty() {
     return top == -1;
   }
 
   bool isFull() {
-    return top == size - 1;
+    return !data.empty() && top == size - 1;
   }
 
   KeyT getTop() {
@@ -49,11 +45,12 @@ public:
   }
 
   virtual void push(const KeyT& x) {
-    if (isFull()) {
-      std::cout << "Stack is full!" << std::endl;
-    } else {
-      data[++top] = x;
+    int nTop = ++top;
+    if (nTop > size - 1) {
+      ++size;
+      data.resize(size);
     }
+    data[nTop] = x;
   }
 };
 
@@ -65,7 +62,7 @@ class StackM : public Stack<KeyT> {
   BaseStack stat;
 
 public:
-  explicit StackM(int size) : BaseStack(size), stat(size) {}
+  explicit StackM(int size = 0) : BaseStack(size), stat(size) {}
 
 
   KeyT pop() override {

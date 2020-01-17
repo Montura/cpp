@@ -30,5 +30,10 @@ void test_stack() {
   cout << "s.isFull(): " << s.isFull() << endl;
   cout << "s.isEmpty(): " << s.isEmpty() << endl;
   cout << "Pop : " << s.pop() << std::endl;
+  s.push(11);
+  cout << "Pop : " << s.pop() << std::endl;
+  s.push(12);
+  s.push(13);
+  cout << "Pop : " << s.pop() << std::endl;
 
 }
