@@ -26,11 +26,11 @@ void test_binary_heap() {
 
   std::vector<int> arr = {12, 11, 13, 5, 6, 7};
   BinaryHeap<int, Max>::heapSort(arr);
-  printArr(arr);
+  printArray(arr);
 
   arr =  { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
   BinaryHeap<int, Min>::heapSort(arr);
-  printArr(arr);
+  printArray(arr);
 
   BinaryHeap<int, Min> h3;
   h3.insert(4);
@@ -46,10 +46,10 @@ void test_binary_heap() {
   std::vector<HeapNode> strArr =
     { HeapNode {12, "12"}, HeapNode {11, "11"}, HeapNode {13, "13"}, HeapNode {7, "7"}, HeapNode {5, "5"}, HeapNode {6, "6"}};
   BinaryHeap<HeapNode, Min>::heapSort(strArr);
-  printArr(strArr);
+  printArray(strArr);
 
   BinaryHeap<HeapNode, Max>::heapSort(strArr);
-  printArr(strArr);
+  printArray(strArr);
 
   BinaryHeap<HeapNode, Min> h4(strArr);
   std::cout << h4.getMin() << std::endl;

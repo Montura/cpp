@@ -1,4 +1,10 @@
 #include <iostream>
+#include <array>
+#include <vector>
+#include "tools.h"
+
+template <size_t Size>
+using IntArray = std::array<int, Size>;
 
 int gcd(int dividend, int divisor) {
   if (divisor == 0) {
@@ -7,19 +13,13 @@ int gcd(int dividend, int divisor) {
   return gcd(divisor, dividend % divisor);
 }
 
-void printArray(int* array, int size) {
-  for (int i = 0; i < size; ++i) {
-    std::cout << array[i] << " ";
-  }
-  std::cout << "\n";
-}
-
 /*Function to left Rotate arr[] of size n by 1*/
-void leftRotateByOne(int *array, int size) {
+template <size_t size>
+void leftRotateByOne(IntArray<size>& array) {
   if (size < 1) return;
 
   int tmp = array[0];
-  for (int i = 0; i < size - 1; ++i) {
+  for (size_t i = 0; i < size - 1; ++i) {
     array[i] = array[i + 1];
   }
   array[size - 1] = tmp;
@@ -27,14 +27,16 @@ void leftRotateByOne(int *array, int size) {
 
 /*Function to left Rotate arr[] of size n by step*/
 // O(n * d)
-void leftRotate(int *array, int size, int count) {
+template <size_t size>
+void leftRotate(IntArray<size>& array, int count) {
   for (int i = 0; i < count; ++i) {
-    leftRotateByOne(array, size);
+    leftRotateByOne(array);
   }
 }
 
 // O(n)
-void leftRotateFast(int *array, int size, int dist) {
+template <size_t size>
+void leftRotateFast(IntArray<size>& array, int dist) {
   int count = gcd(size, dist);
   for (int i = 0; i < count; ++i) {
     int tmpValue = array[i];
@@ -51,34 +53,40 @@ void leftRotateFast(int *array, int size, int dist) {
   }
 }
 
-void rotateByOneAndPrint(int* array, int size) {
-  leftRotateByOne(array, size);
-  printArray(array, size);
+template <size_t size>
+void rotateByOneAndPrint(IntArray<size>& array) {
+  leftRotateByOne(array);
+  printArray(array, "Left rotate by 1");
 }
 
-void rotateAndPrint(int* array, int size, int count) {
-  leftRotate(array, size, count);
-  printArray(array, size);
+template <size_t size>
+void rotateAndPrint(IntArray<size>& array, int count) {
+  leftRotate(array, count);
+  printArray(array, "Left rotate by " + std::to_string(count));
 }
 
-void rotateFastAndPrint(int* array, int size, int count) {
-  leftRotateFast(array, size, count);
-  printArray(array, size);
+template <size_t size>
+void rotateFastAndPrint(IntArray<size>& array, int count) {
+  leftRotateFast(array, count);
+  printArray(array, "Left fast (gcd) rotate by " + std::to_string(count));
 }
 
 void array_rotation() {
-  int a[] = {1, 2, 3, 4, 5, 6};
-  int b[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  IntArray<6> a = {1, 2, 3, 4, 5, 6};
+  IntArray<9> b = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-//  rotateByOneAndPrint(a, 6);
-//  rotateByOneAndPrint(b, 9);
-//
-//  rotateAndPrint(a, 6, 3);
-//  rotateAndPrint(b, 9, 4);
+  printArray(a, "Original array:");
+  printArray(b, "Original array:");
 
-  rotateFastAndPrint(a, 6, 2);
-  rotateFastAndPrint(b, 9, 4);
+  rotateByOneAndPrint(a);
+  rotateByOneAndPrint(b);
 
-//  std::cout << gcd(6, 12);
-//  std::cout << gcd(12, 6);
+  rotateAndPrint(a, 3);
+  rotateAndPrint(b, 4);
+
+  rotateFastAndPrint(a, 2);
+  rotateFastAndPrint(b, 4);
+
+  std::cout << gcd(6, 12);
+  std::cout << gcd(12, 6);
 }

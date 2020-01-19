@@ -1,9 +1,9 @@
 #include <vector>
 #include <iostream>
+#include "tools.h"
 
 using VecI = std::vector<int>;
 int medianOf3(VecI& arr, int left, int right);
-void printArr(const std::vector<int>& arr);
 
 struct Pivot {
   int left;
@@ -80,8 +80,8 @@ void test_quick_sort() {
   std::vector<int> arr { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
   int right = static_cast<int>(arr.size()) - 1;
   std::cout << "Before: ";
-  printArr(arr);
+  printArray(arr);
   quickSort(arr, 0, right);
   std::cout << "After: ";
-  printArr(arr);
+  printArray(arr);
 }

@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
+#include "tools.h"
 
 using vecI = std::vector<int>;
-void printArr(const vecI&);
+
 
 void merge(vecI& data, int left, int mid, int right) {
   int sizeL = mid - left + 1;
@@ -67,8 +68,8 @@ void test_merge_sort() {
   std::vector<int> arr { 9, -3, 5, 2, 6, 8, -6, 1, 3 };
   int right = static_cast<int>(arr.size()) - 1;
   std::cout << "Before: ";
-  printArr(arr);
+  printArray(arr);
   merge_sort(arr, 0, right);
   std::cout << "After: ";
-  printArr(arr);
+  printArray(arr);
 }

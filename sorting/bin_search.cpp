@@ -22,10 +22,3 @@ int binarySearch(const VecI& arr, int key, int left, int right) {
   }
   return (key > arr[left]) ? (left + 1) : left;
 }
-
-void printArr(const VecI& arr) {
-  for (int elem : arr) {
-    std::cout << elem << " ";
-  }
-  std::cout << std::endl;
-}

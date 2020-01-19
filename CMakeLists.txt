@@ -33,5 +33,5 @@ add_executable(cpp main.cpp array_decay.cpp
         sorting/quick_sort.cpp
         sorting/sorting.cpp
         templates/tag_dispatching.cpp
-        data_structures/test_array.cpp data_structures/tools.h)
+        data_structures/test_array.cpp tools.h)
 #add_executable(cpp interview/taskD.cpp)
