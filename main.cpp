@@ -17,6 +17,7 @@ void test_dsu_size_stat();
 void test_binary_heap();
 void test_stack();
 void test_queue();
+void test_deque();
 
 int main() {
   array_decay_example();
@@ -39,6 +40,7 @@ int main() {
   test_binary_heap();
   test_stack();
   test_queue();
+  test_deque();
 
   return 0;
 }

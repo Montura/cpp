@@ -22,16 +22,17 @@ add_executable(cpp main.cpp array_decay.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/nullptr.cpp
                chapter3/item8_prefer_nullptr_to_zero_and_NULL/item8.cpp
         data_structures/test_array.cpp
-        data_structures/test_dsu_size_stat.cpp
         data_structures/test_bin_heap.cpp
-        data_structures/list_test.cpp
+        data_structures/test_deque.cpp
+        data_structures/test_dsu_size_stat.cpp
         data_structures/test_graph.cpp
-        data_structures/test_stack.cpp
         data_structures/test_queue.cpp
+        data_structures/test_stack.cpp
+        data_structures/list_test.cpp
         sorting/bin_search.cpp
         sorting/merge_sort.cpp
         sorting/quick_sort.cpp
         sorting/sorting.cpp
         templates/tag_dispatching.cpp
-        data_structures/test_array.cpp tools.h)
+        )
 #add_executable(cpp interview/taskD.cpp)

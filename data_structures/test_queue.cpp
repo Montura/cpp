@@ -25,5 +25,5 @@ void test_queue() {
 
   int k = 5;
   q2.reverseQueueFirstKElements(k);
-  std ::cout << q2;
+  std ::cout << q2 << std::endl;
 }
