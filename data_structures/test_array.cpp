@@ -53,24 +53,6 @@ void leftRotateFast(IntArray<size>& array, int dist) {
   }
 }
 
-template <size_t size>
-void rotateByOneAndPrint(IntArray<size>& array) {
-  leftRotateByOne(array);
-  printArray(array, "Left rotate by 1");
-}
-
-template <size_t size>
-void rotateAndPrint(IntArray<size>& array, int count) {
-  leftRotate(array, count);
-  printArray(array, "Left rotate by " + std::to_string(count));
-}
-
-template <size_t size>
-void rotateFastAndPrint(IntArray<size>& array, int count) {
-  leftRotateFast(array, count);
-  printArray(array, "Left fast (gcd) rotate by " + std::to_string(count));
-}
-
 void array_rotation() {
   IntArray<6> a = {1, 2, 3, 4, 5, 6};
   IntArray<9> b = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -78,15 +60,21 @@ void array_rotation() {
   printArray(a, "Original array:");
   printArray(b, "Original array:");
 
-  rotateByOneAndPrint(a);
-  rotateByOneAndPrint(b);
+  leftRotateByOne(a);
+  printArray(a, "Left rotate by 1");
 
-  rotateAndPrint(a, 3);
-  rotateAndPrint(b, 4);
+  leftRotateByOne(b);
+  printArray(b, "Left rotate by 1");
 
-  rotateFastAndPrint(a, 2);
-  rotateFastAndPrint(b, 4);
+  leftRotate(a, 3);
+  printArray(a, "Left rotate by " + std::to_string(3));
 
-  std::cout << gcd(6, 12);
-  std::cout << gcd(12, 6);
+  leftRotate(b, 4);
+  printArray(b, "Left rotate by " + std::to_string(4));
+
+  leftRotateFast(a, 2);
+  printArray(a, "Left fast (gcd) rotate by " + std::to_string(2));
+
+  leftRotateFast(b, 4);
+  printArray(b, "Left fast (gcd) rotate by " + std::to_string(4));
 }
