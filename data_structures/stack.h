@@ -24,16 +24,24 @@ public:
     data.resize(size);
   };
 
-  bool isEmpty() {
+  bool isEmpty() const {
     return top == -1;
   }
 
-  bool isFull() {
+  bool isFull() const {
     return !data.empty() && top == size - 1;
   }
 
   KeyT getTop() {
     return data[top];
+  }
+
+  const KeyT& getTop() const {
+    return data[top];
+  }
+
+  int getSize() const {
+    return data.size();
   }
 
   virtual KeyT pop() {
@@ -87,6 +95,10 @@ public:
   }
 
   KeyT getStat() {
+    return stat.getTop();
+  }
+
+  const KeyT& getStat() const {
     return stat.getTop();
   }
 };
