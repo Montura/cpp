@@ -10,7 +10,11 @@ class List {
 public:
   explicit List() = default;
 
-  void pushFront(T newData) {
+  bool isEmpty() const {
+    return size == 0;
+  }
+
+  void push_front(T newData) {
     auto* newNode = new Node<T>(newData);
     newNode->next = head;
     head = newNode;
@@ -20,36 +24,22 @@ public:
     ++size;
   }
 
-  bool insertAfter(Node<T>* node, T newData) {
-    auto* current = head;
-    while (current != node) {
-      current = current->next;
-    }
-    if (current != nullptr) {
-      auto* newNode = new Node<T>(newData);
-      if (current == tail) {
-        tail = newNode;
-      }
-      newNode->next = current->next;
-      current->next = newNode;
-      ++size;
-    }
-
-    return false;
-  }
-
-  void pushBack(T newData) {
+  void push_back(T newData) {
     auto* newNode = new Node<T>(newData);
-    auto* current = head;
-    while (current->next != nullptr) {
-      current = current->next;
+    if (head == nullptr) {
+      head = newNode;
+    } else {
+      auto* current = head;
+      while (current->next != nullptr) {
+        current = current->next;
+      }
+      current->next = newNode;
     }
-    current->next = newNode;
     tail = newNode;
     ++size;
   }
 
-  void popFront() {
+  void pop_front() {
     if (head != nullptr) {
       auto* newHead = head->next;
       delete head;
@@ -61,7 +51,7 @@ public:
     }
   }
 
-  void popBack() {
+  void pop_back() {
     if (head != nullptr) {
       auto* curr = head;
       auto* next = curr->next;
@@ -94,11 +84,23 @@ public:
     std::cout << std::endl;
   }
 
-  Node<T>* begin() {
-    return head;
+  T front() {
+    if (size == 0) {
+      std::cout << "List is empty!" << std::endl;
+      return INT_MAX;
+    }
+    return head->data;
   }
 
-  void reverseList() {
+  const T& front() const {
+    if (size == 0) {
+      std::cout << "List is empty!" << std::endl;
+      return INT_MAX;
+    }
+    return head->data;
+  }
+
+  void reverse_list() {
     if (head != nullptr) {
       auto* curr = head;
       Node<T>* prev = nullptr;

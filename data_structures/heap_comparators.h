@@ -22,7 +22,7 @@ template <class Key>
 struct std::numeric_limits<Min<Key>> {
   static int max() {
     std::cout << __PRETTY_FUNCTION__  << std::endl;
-    std::numeric_limits<Key>::min();
+    return std::numeric_limits<Key>::min();
   }
 };
 
@@ -30,6 +30,6 @@ template <class Key>
 struct std::numeric_limits<Max<Key>> {
   static int max() {
     std::cout << __PRETTY_FUNCTION__  << std::endl;
-    std::numeric_limits<Key>::max();
+    return std::numeric_limits<Key>::max();
   }
 };

@@ -1,21 +1,16 @@
 #pragma once
 #include <vector>
 #include <iostream>
-#include <list>
 #include <algorithm>
-
-struct Vertex {
-  int v = 0, w = 1;
-  
-  explicit Vertex(int v, int weight = 1) : v(v), w(weight) {}
-};
+#include "list.h"
+#include "vertex.h"
 
 // Adjacency List, if |E| << |V|^2, space O(|V|+|E|)
 class GraphL {
   int const vertexCount;
   std::vector<Vertex>* adj  = nullptr;
   std::vector<bool> used; // for DFS
-  std::list<int> queue; // for BFS
+  List<int> list; // for BFS
 
   void dfsFromVertex(int v) {
     used[v] = true;
@@ -57,18 +52,18 @@ public:
     std::fill(used.begin(), used.end(), false);
 
     used[start] = true;
-    queue.push_back(start);
+    list.push_back(start);
 
-    while (!queue.empty()) {
-      int v = queue.front();
+    while (!list.isEmpty()) {
+      int v = list.front();
       std::cout << v << " ";
-      queue.pop_front();
+      list.pop_front();
 
       for (auto& vertex : adj[v]) {
         int i = vertex.v;
         if (!used[i]) {
           used[i] = true;
-          queue.push_back(i);
+          list.push_back(i);
         }
       }
     }

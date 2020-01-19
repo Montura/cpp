@@ -1,64 +1,52 @@
 #include <iostream>
 #include "list.h"
-#include "node.h"
-
-template <class T>
-void printList(Node<T>* node) {
-  while(node != nullptr) {
-    std::cout << "Node: " << node << ", data = " << node->data << std::endl;
-    node = node->next;
-  }
-}
 
 void testList() {
   List<int> list;
 
-  list.pushFront(7);
-  list.pushFront(8);
-  list.pushFront(11);
-  list.pushFront(13);
+  list.push_front(7);
+  list.push_front(8);
+  list.push_front(11);
+  list.push_front(13);
 
-  list.pushBack(13);
-  list.pushBack(11);
-  list.pushBack(8);
-  list.pushBack(7);
+  list.push_back(13);
+  list.push_back(11);
+  list.push_back(8);
+  list.push_back(7);
 
-  auto* head = list.begin();
-  list.insertAfter(head, 102);
-  list.insertAfter(head, 106);
-  list.insertAfter(head, 100);
-  list.insertAfter(head, 101);
-  list.insertAfter(head, 103);
-  list.insertAfter(head, 104);
+  list.push_front(102);
+  list.push_front(106);
+  list.push_front(100);
+  list.push_front(101);
+  list.push_front(103);
+  list.push_front(104);
 
   std::cout << "Original list: ";
   list.print();
-  list.reverseList();
+  list.reverse_list();
   std::cout << "Reversed list: ";
   list.print();
-  list.reverseList();
+  list.reverse_list();
   std::cout << "Original list: ";
   list.print();
 
   list.print();
-  list.popFront();
+  list.pop_front();
   list.print();
-  list.popFront();
-  list.print();
-
-  list.popBack();
-  list.print();
-  list.popBack();
-  list.print();
-  list.popBack();
-  list.print();
-  list.popBack();
-  list.print();
-  list.popBack();
-  list.print();
-  list.popBack();
+  list.pop_front();
   list.print();
 
-  head = list.begin();
-  printList(head);
+  list.pop_back();
+  list.print();
+  list.pop_back();
+  list.print();
+  list.pop_back();
+  list.print();
+  list.pop_back();
+  list.print();
+  list.pop_back();
+  list.print();
+  list.pop_back();
+  list.print();
+
 }

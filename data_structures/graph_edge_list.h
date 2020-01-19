@@ -11,7 +11,7 @@ class GraphE {
   std::vector<Edge> edges {};
 
 public:
-  explicit GraphE() {}
+  explicit GraphE() = default;
 
   void addEdge(int from, int to, int w = 1) {
     vertexCount = std::max(vertexCount, std::max(from, to)) + 1; // v index start from 0

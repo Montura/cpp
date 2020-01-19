@@ -1,15 +1,7 @@
-#include <climits>
 #include "binary_heap.h"
 #include "heap_node.h"
 #include "heap_comparators.h"
-
-template <class T>
-void printArr(const std::vector<T>& arr) {
-  for (T const& elem : arr) {
-    std::cout << elem << std::endl;
-  }
-  std::cout << std::endl;
-}
+#include "tools.h"
 
 void test_binary_heap() {
   BinaryHeap<int, Min> h;

@@ -1,12 +1,7 @@
 #pragma once
 
-#include <vector>
-#include <iostream>
+#include "tools.h"
 #include <array>
-#include <limits>
-
-template <class T>
-using Comparator = bool(*)(T&, T&);
 
 template <class Key, template <class> class Type>
 class BinaryHeap {
