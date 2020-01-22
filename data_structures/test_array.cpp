@@ -78,3 +78,23 @@ void array_rotation() {
   leftRotateFast(b, 4);
   printArray(b, "Left fast (gcd) rotate by " + std::to_string(4));
 }
+
+// Remove all zeros from array for O (n)
+// 1 0 2 0 0 3 0 -> 1 2 3
+void removeZeros(std::vector<int> data) {
+  int size = data.size();
+  int zeroCount = 0;
+  for (int i = 0; i < size; ++i) {
+    if (data[i] == 0) {
+      ++zeroCount;
+    } else {
+      if (zeroCount > 0) {
+        int nonZeroElem = i - zeroCount;
+        data[nonZeroElem] = data[i];
+      }
+    }
+  }
+  for (auto it = data.cend(); *it >= size - zeroCount; --it) {
+    data.erase(it);
+  }
+}
