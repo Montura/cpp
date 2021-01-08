@@ -50,6 +50,33 @@ void impl2(const int size) {
   genSequence(answerSize, answer);
 }
 
+bool isValid(std::string const& s) {
+  stack<char> st;
+  char curr = 0;
+  for (auto& ch : s) {
+    if (ch == '(' || ch == '[' || ch == '{') {
+      st.push(ch);
+    } else {
+      if (st.empty()) {
+        return false;
+      } else {
+        curr = st.top();
+        st.pop();
+        if (curr == '(' && ch == ')') {
+          continue;
+        } else if (curr == '[' && ch == ']') {
+          continue;
+        } else if (curr == '{' && ch == '}') {
+          continue;
+        } else {
+          return false;
+        }
+      }
+    }
+  }
+  return st.empty();
+}
+
 int main() {
   int n = 0;
   std::cin >> n;
