@@ -34,5 +34,5 @@ add_executable(cpp main.cpp array_decay.cpp
         sorting/quick_sort.cpp
         sorting/sorting.cpp
         templates/tag_dispatching.cpp
-        )
+        miniprofiler/profiler.cpp)
 #add_executable(cpp interview/taskD.cpp)
