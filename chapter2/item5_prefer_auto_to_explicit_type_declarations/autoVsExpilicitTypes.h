@@ -5,12 +5,7 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
-
-#ifdef _WIN32
-  #include <memory>
-#else
-  #include <bits/unique_ptr.h>
-#endif
+#include <memory>
 
 template <typename It>
 void work(It begin, It end) {
