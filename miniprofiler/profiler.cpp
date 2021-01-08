@@ -1,4 +1,5 @@
 #include "profiler.h"
+#include <memory>
 #include <thread>
 #include <atomic>
 #include <vector>
@@ -78,15 +79,17 @@ struct MiniProfiler::Impl {
 
       traces.push_back(trace);
     }
+
+    CloseHandle(mainThread);
   }
 
   Impl() {
     SymInitialize(GetCurrentProcess(), NULL, TRUE);
 
     DWORD threadId = GetCurrentThreadId();
-    profThread.reset(new std::thread([this,threadId]() {
+    profThread = std::make_unique<std::thread>([this,threadId]() {
       ProfileFunc(threadId);
-    }));
+    });
     shouldExit = false;
     //*profThread = std::thread(...);
   }
