@@ -10,6 +10,9 @@
 
 #include <windows.h>
 #include <dbghelp.h>
+#include <string>
+#include <functional>
+
 #pragma comment(lib, "dbgHelp.lib")
 
 //.h --- for compiler
@@ -25,7 +28,7 @@ struct MiniProfiler::Impl {
   //main thread
   std::unique_ptr<std::thread> profThread;
   //shared
-  std::atomic_bool shouldExit = false;
+  std::atomic_bool shouldExit;
   //profiling thread
   std::vector<StkTrace> traces;
 
@@ -84,6 +87,7 @@ struct MiniProfiler::Impl {
     profThread.reset(new std::thread([this,threadId]() {
       ProfileFunc(threadId);
     }));
+    shouldExit = false;
     //*profThread = std::thread(...);
   }
 
@@ -97,9 +101,9 @@ struct MiniProfiler::Impl {
     vector<map<string, int>> trie(1);
     vector<int> samples(1);
 
-    for (auto trace : traces) {
+    for (const auto& trace : traces) {
       vector<string> path;
-      for (int i = trace.cnt - 1; i >= 0; i--) {
+      for (size_t i = trace.cnt - 1; i >= 0; i--) {
         union {
           SYMBOL_INFO symbol;
           char trash[sizeof(SYMBOL_INFO) + 1024];
@@ -112,7 +116,7 @@ struct MiniProfiler::Impl {
       }
       int v = 0;
       samples[v]++;
-      for (string s : path) {
+      for (const string& s : path) {
         if (trie[v].count(s) == 0) {
           trie[v][s] = trie.size();
           trie.push_back({});
@@ -123,7 +127,7 @@ struct MiniProfiler::Impl {
       }
     }
 
-    function<void(int, int)> Traverse = [&](int u, int indent) {
+    std::function<void(int, int)> Traverse = [&](int u, int indent) {
       vector<pair<string, int>> sons(trie[u].begin(), trie[u].end());
       sort(sons.begin(), sons.end(), [&](auto a, auto b) {
         return samples[a.second] > samples[b.second];
