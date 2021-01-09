@@ -11,6 +11,8 @@ endif(MSVC)
 
 include_directories(.)
 
+add_subdirectory(miniprofiler)
+
 add_executable(cpp main.cpp array_decay.cpp
                chapter1/item1_understand_template_type_deduction/item1.cpp
                chapter1/item2_undrestand_auto_type_deducing/item2.cpp
@@ -34,5 +36,7 @@ add_executable(cpp main.cpp array_decay.cpp
         sorting/quick_sort.cpp
         sorting/sorting.cpp
         templates/tag_dispatching.cpp
-        miniprofiler/profiler.cpp)
+)
+
+target_link_libraries(cpp profiler)
 #add_executable(cpp interview/taskD.cpp)

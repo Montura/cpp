@@ -6,13 +6,13 @@
 #include <map>
 #include <set>
 #include <algorithm>
-
-#ifdef _WINDOWS
-
-#include <windows.h>
-#include <dbghelp.h>
 #include <string>
 #include <functional>
+
+#ifdef _WINDOWS
+#include <windows.h>
+#include <dbghelp.h>
+
 
 #pragma comment(lib, "dbgHelp.lib")
 
@@ -158,5 +158,14 @@ MiniProfiler::MiniProfiler() {
 MiniProfiler::~MiniProfiler() {
   impl.reset();
 }
+
+__declspec( dllexport ) MiniProfiler* CreateMiniProfiler() {
+  return new MiniProfiler();
+}
+
+__declspec( dllexport ) void DestroyMiniProfiler( MiniProfiler* pC ) {
+  delete pC;
+  pC = nullptr;
+};
 
 #endif
