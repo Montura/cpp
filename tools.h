@@ -6,7 +6,7 @@ template <class T>
 using Comparator = bool(*)(T&, T&);
 
 template <class Container>
-void printArray(const Container& arr, std::string msg = "") {
+void printArray(const Container& arr, std::string const& msg = "") {
   if (!msg.empty()) {
     std::cout << msg << std::endl;
   }

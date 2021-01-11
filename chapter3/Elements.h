@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace std;
-
 struct ElementA {
   ElementA(int i, bool b) {}; // ctors not declaring
   ElementA(int i, double d) {}; // std::initializer_list params
@@ -9,19 +7,19 @@ struct ElementA {
 };
 
 struct ElementB {
-  ElementB(int i, bool b) { cout << __PRETTY_FUNCTION__ << endl; };   // ctors not declaring
-  ElementB(int i, double d) { cout << __PRETTY_FUNCTION__ << endl; }; // std::initializer_list params
-  ElementB(initializer_list<long double> il) { cout << __PRETTY_FUNCTION__ << endl; }; // added
+  ElementB(int i, bool b) { std::cout << __PRETTY_FUNCTION__ << std::endl; };   // ctors not declaring
+  ElementB(int i, double d) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // std::initializer_list params
+  ElementB(std::initializer_list<long double> il) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // added
 
-  operator float() const {
+  explicit operator float() const {
     return 1.0;
   } ;
 };
 
 struct ElementC {
-  ElementC(int i, bool b) { cout << __PRETTY_FUNCTION__ << endl; };   // ctors not declaring
-  ElementC(int i, double d) { cout << __PRETTY_FUNCTION__ << endl; }; // std::initializer_list params
-  ElementC(initializer_list<bool> il) { cout << __PRETTY_FUNCTION__ << endl; }; // added
+  ElementC(int i, bool b) { std::cout << __PRETTY_FUNCTION__ << std::endl; };   // ctors not declaring
+  ElementC(int i, double d) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // std::initializer_list params
+  ElementC(std::initializer_list<bool> il) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // added
 
 //  Here, compilers will ignore the first two constructors (the second of which offers an exact match on both argument types)
 //  and try to call the constructor taking a std::initializer_list<bool>.
@@ -32,9 +30,9 @@ struct ElementC {
 };
 
 struct ElementD {
-  ElementD(int i, bool b) { cout << __PRETTY_FUNCTION__ << endl; };   // ctors not declaring
-  ElementD(int i, double d) { cout << __PRETTY_FUNCTION__ << endl; }; // std::initializer_list params
-  ElementD(initializer_list<string> il) { cout << __PRETTY_FUNCTION__ << endl; }; // no implicit conversion
+  ElementD(int i, bool b) { std::cout << __PRETTY_FUNCTION__ << std::endl; };   // ctors not declaring
+  ElementD(int i, double d) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // std::initializer_list params
+  ElementD(std::initializer_list<std::string> il) { std::cout << __PRETTY_FUNCTION__ << std::endl; }; // no implicit conversion
 
   // Only if there’s no way to convert the types of the arguments in a braced initializer to the type in a
   // std::initializer_list do compilers fall back on normal overload resolution.
@@ -46,5 +44,5 @@ struct ElementD {
 
 struct ElementE {
   ElementE() {};
-  ElementE(initializer_list<int> il) {};
+  ElementE(std::initializer_list<int> il) {};
 };

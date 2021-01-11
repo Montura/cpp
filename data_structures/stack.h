@@ -40,7 +40,7 @@ public:
     return data[top];
   }
 
-  int getSize() const {
+  size_t getSize() const {
     return data.size();
   }
 

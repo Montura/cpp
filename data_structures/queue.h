@@ -10,7 +10,7 @@ public:
     return left.isEmpty() && right.isEmpty();
   }
 
-  int size() {
+  size_t size() {
     return left.getSize() + right.getSize();
   }
 

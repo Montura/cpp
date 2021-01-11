@@ -1,12 +1,6 @@
-void item1();
-void item2();
-void item3();
-void item5();
-void item6();
-void item7();
-void item8();
+#include "c/libc.h"
+#include "items_common.h"
 
-void array_decay_example();
 void testList();
 void array_rotation();
 void test_tag_dispatching();
@@ -20,14 +14,16 @@ void test_queue();
 void test_deque();
 
 int main() {
-  array_decay_example();
-  item1();
-  item2();
-  item3();
-  item5();
-  item6();
-  item7();
-  item8();
+  // tests
+  Item1_TemplateDeduction::test();
+  Item1_ArrayArguments::test();
+  Item2_AutoTypeDeducing::test();
+  Item3_Decltype::test();
+  Item5_AutoVsExplicitTypes::test();
+
+  Item6_ExplicitlyTypedIdiom::test();
+  Item7_InitializerList::test();
+  Item8_NullptrVsZeroOrNULL::test();
 
   testList();
 
