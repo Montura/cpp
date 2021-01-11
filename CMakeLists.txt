@@ -34,7 +34,7 @@ add_executable(cpp main.cpp
     sorting/quick_sort.cpp
     sorting/sorting.cpp
     templates/tag_dispatching.cpp
-    c/libc.cpp
+    c/libc.c
 )
 
 target_link_libraries(cpp profiler)

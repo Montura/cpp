@@ -1,5 +1,6 @@
-#include "c/libc.h"
 #include "items_common.h"
+
+extern "C" void test_libc();
 
 void testList();
 void array_rotation();
@@ -25,18 +26,21 @@ int main() {
   Item7_InitializerList::test();
   Item8_NullptrVsZeroOrNULL::test();
 
-  testList();
+//  testList();
+//
+//  array_rotation();
+//  test_tag_dispatching();
+//  test_quick_sort();
+//  test_merge_sort();
+//
+//  test_graph_impl();
+//  test_binary_heap();
+//  test_stack();
+//  test_queue();
+//  test_deque();
 
-  array_rotation();
-  test_tag_dispatching();
-  test_quick_sort();
-  test_merge_sort();
-
-  test_graph_impl();
-  test_binary_heap();
-  test_stack();
-  test_queue();
-  test_deque();
+  // test_libc
+  test_libc();
 
   return 0;
 }
