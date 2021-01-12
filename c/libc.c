@@ -19,17 +19,53 @@ void fahrenheit_celsius_table () {
     int celsius = 5 * (fahr - 32) / 9;
     printf("%d\t%d\n", fahr, celsius);
   }
+  fflush(stdout);
 }
 
 // 1.5 Character Input and Output
-void foo() {
+void input_output() {
   int c = getchar();
-  putchar(c);
+  printf("EOF = %d", EOF);
+  while (c != EOF) {
+//    printf("c = %d\n", c);
+    putchar(c);
+    c = getchar();
+    fflush(stdout);
+  }
+}
+
+void count_stdin_lines() {
+  int c;
+  long lines_count = 0;
+  while ((c = getchar()) != EOF) {
+    if (c == '\n') {
+      ++lines_count;
+    }
+  }
+  printf("Total lines in stdin: %ld\n", lines_count);
+  fflush(stdout);
+}
+
+void replace_multiple_spaces() {
+  int c;
+  int prev_symbol = 0;
+  while ((c = getchar()) != EOF) {
+    if ((prev_symbol == c) && (c == ' ')) {
+      continue;
+    } else {
+      putchar(c);
+      fflush(stdout);
+    }
+    prev_symbol = c;
+  }
 }
 
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
   fahrenheit_celsius_table();
+//  input_output();
+//  count_stdin_lines();
+  replace_multiple_spaces();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
