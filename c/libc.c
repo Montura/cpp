@@ -60,12 +60,35 @@ void replace_multiple_spaces() {
   }
 }
 
+// UNIX wc
+#define OUT 0
+#define IN 1
+void word_count() {
+  int lines_count = 0, words_count = 0, symbols_count = 0;
+  int state = OUT;
+  int c;
+  while ((c = getchar()) != EOF) {
+    if (c == '\n') {
+      ++lines_count;
+    }
+    if (c == '\n' || c == ' ' || c == '\t') {
+      state = OUT;
+    } else if (state == OUT) {
+      state = IN;
+      ++words_count;
+    }
+    ++symbols_count; // including \n, \t
+  }
+  printf("Lines: %d, words: %d, symbols: %d\n", lines_count, words_count, symbols_count);
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
   fahrenheit_celsius_table();
 //  input_output();
 //  count_stdin_lines();
-  replace_multiple_spaces();
+//  replace_multiple_spaces();
+  word_count();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
