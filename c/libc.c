@@ -82,7 +82,7 @@ void word_count() {
   printf("Lines: %d, words: %d, symbols: %d\n", lines_count, words_count, symbols_count);
 }
 
-long long pow(int base, int n) {
+long long pow_1(int base, int n) {
   long long res = 1;
   for (int i = 1; i <= n; ++i) {
     res *= base;
@@ -101,10 +101,10 @@ long long pow_2(int base, int n) {
 
 void test_pow() {
   for (int i = 0; i < 10; ++i) {
-    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", 2, i, pow(2, i), pow_2(2, i));
+    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", 2, i, pow_1(2, i), pow_2(2, i));
   }
   for (int i = 0; i < 10; ++i) {
-    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", -3, i, pow(-3, i), pow_2(-3, i));
+    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", -3, i, pow_1(-3, i), pow_2(-3, i));
   }
 }
 
