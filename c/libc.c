@@ -82,6 +82,32 @@ void word_count() {
   printf("Lines: %d, words: %d, symbols: %d\n", lines_count, words_count, symbols_count);
 }
 
+long long pow(int base, int n) {
+  long long res = 1;
+  for (int i = 1; i <= n; ++i) {
+    res *= base;
+  }
+  return res;
+}
+
+// passing args by value, so we can rewrite pow and modify N
+long long pow_2(int base, int n) {
+  long long res = 1;
+  while (n--) {
+    res *= base;
+  }
+  return res;
+}
+
+void test_pow() {
+  for (int i = 0; i < 10; ++i) {
+    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", 2, i, pow(2, i), pow_2(2, i));
+  }
+  for (int i = 0; i < 10; ++i) {
+    printf("base = %d, n = %d, pow = %lld, pow_2 = %lld\n", -3, i, pow(-3, i), pow_2(-3, i));
+  }
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -89,6 +115,7 @@ void test_libc() {
 //  input_output();
 //  count_stdin_lines();
 //  replace_multiple_spaces();
-  word_count();
+//  word_count();
+  test_pow();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
