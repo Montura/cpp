@@ -108,6 +108,50 @@ void test_pow() {
   }
 }
 
+// 1.9 Characters array
+#define MAXLENGTH 256
+
+// todo: compare with memcpy
+void copy(char src[MAXLENGTH], char dst[MAXLENGTH]) {
+  int i = 0;
+  while ((dst[i] = src[i]) != 0) {
+    ++i;
+  }
+}
+
+// returns len
+int getline_1(char line[], int max_length) {
+  int i = 0, c = 0;
+
+  while (i < max_length && ((c = getchar()) != EOF && c != '\n')) {
+    line[i++] = (char) c;
+  }
+
+  if (c == '\n') {
+    line[i++] = (char) c;
+  }
+  line[i] = '\0';
+  return i;
+}
+
+void print_longest_line() {
+  char line[MAXLENGTH];
+  char longest_line[MAXLENGTH];
+
+  int curr_len = 0, max_len = 0;
+  while ((curr_len = getline_1(line, MAXLENGTH) > 0)) {
+    if (curr_len > max_len) {
+      max_len = curr_len;
+      copy(line, longest_line);
+      // memcpy(longest_line, line, curr_len);
+    }
+  }
+
+  if (max_len > 0) {
+    printf("%s", longest_line);
+  }
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
