@@ -109,9 +109,8 @@ void test_pow() {
 }
 
 // 1.9 Characters array
-#define MAXLENGTH 256
+#define MAXLENGTH 5
 
-// todo: compare with memcpy
 void copy(char src[MAXLENGTH], char dst[MAXLENGTH]) {
   int i = 0;
   while ((dst[i] = src[i]) != 0) {
@@ -137,13 +136,24 @@ int getline_1(char line[], int max_length) {
 void print_longest_line() {
   char line[MAXLENGTH];
   char longest_line[MAXLENGTH];
+  char chunk[MAXLENGTH];
 
-  int curr_len = 0, max_len = 0;
-  while ((curr_len = getline_1(line, MAXLENGTH) > 0)) {
+  int curr_len = 0, max_len = 0, tmp_len = 0;
+  int chunk_len = MAXLENGTH - 1;
+
+  while ((curr_len = getline_1(line, MAXLENGTH)) > 0) {
+    // input line is longer than buffer
+    if (curr_len == chunk_len) {
+      line[chunk_len] = '\n';
+      tmp_len = curr_len;
+      while (tmp_len == chunk_len) {
+        tmp_len = getline_1(chunk, MAXLENGTH);
+        curr_len += tmp_len;
+      }
+    }
     if (curr_len > max_len) {
       max_len = curr_len;
       copy(line, longest_line);
-      // memcpy(longest_line, line, curr_len);
     }
   }
 
@@ -161,5 +171,6 @@ void test_libc() {
 //  replace_multiple_spaces();
 //  word_count();
   test_pow();
+  print_longest_line();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
