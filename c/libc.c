@@ -123,7 +123,7 @@ void copy(char src[MAXLENGTH], char dst[MAXLENGTH]) {
 int getline_1(char line[], int max_length) {
   int i = 0, c = 0;
 
-  while (i < max_length && ((c = getchar()) != EOF && c != '\n')) {
+  while (i < max_length - 1 && ((c = getchar()) != EOF && c != '\n')) {
     line[i++] = (char) c;
   }
 
