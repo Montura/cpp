@@ -158,7 +158,7 @@ void print_longest_line() {
   }
 
   if (max_len > 0) {
-    printf("%s", longest_line);
+    printf("%s, len = %d", longest_line, max_len);
   }
 }
 
