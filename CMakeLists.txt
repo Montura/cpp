@@ -35,7 +35,7 @@ add_executable(cpp main.cpp
     sorting/sorting.cpp
     templates/tag_dispatching.cpp
     c/libc.c
-)
+    c/extern_keyword.c)
 
 target_link_libraries(cpp profiler)
 #add_executable(cpp interview/taskD.cpp)

@@ -161,6 +161,11 @@ void print_longest_line() {
     printf("%s, len = %d", longest_line, max_len);
   }
 }
+// 1.10 External Variables and Scope
+// Declare extern variables for extern_keyword.c
+char extern_longest_line[MAXLENGTH];
+char extern_line[MAXLENGTH];
+int extern_max_len = 0;
 
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
@@ -170,7 +175,7 @@ void test_libc() {
 //  count_stdin_lines();
 //  replace_multiple_spaces();
 //  word_count();
-  test_pow();
+//  test_pow();
   print_longest_line();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
