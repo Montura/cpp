@@ -2,6 +2,7 @@
 // The C Programming Language. Brian W. Kernighan Dennis M. Ritchie
 
 #include <stdio.h>
+void print_sizeof_s();
 
 // %d print as decimal integer
 // %6d print as decimal integer, at least 6 characters wide
@@ -176,6 +177,7 @@ void test_libc() {
 //  replace_multiple_spaces();
 //  word_count();
 //  test_pow();
-  print_longest_line();
+//  print_longest_line();
+  print_sizeof_s();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
