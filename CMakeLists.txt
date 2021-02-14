@@ -34,6 +34,7 @@ add_executable(cpp src/main.cpp
     src/templates/tag_dispatching.cpp
     src/c/libc.c
     src/c/extern_keyword.c
-    src/c/data_types.c)
+    src/c/data_types.c
+    src/c/enums.c)
 
 #add_executable(cpp interview/taskD.cpp)

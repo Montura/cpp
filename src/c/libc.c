@@ -4,6 +4,7 @@
 #include <stdio.h>
 void print_sizeof_s();
 void print_limits();
+void test_enums();
 
 // %d print as decimal integer
 // %6d print as decimal integer, at least 6 characters wide
@@ -169,6 +170,39 @@ char extern_longest_line[MAXLENGTH];
 char extern_line[MAXLENGTH];
 int extern_max_len = 0;
 
+// 2.3 Constants
+int m_strlen(const char* str) {
+  int i = 0;
+
+  while (str[i++] != 0);
+
+  return i > 0 ? i - 1 : 0;
+}
+
+void test_m_strlen() {
+  const char *s = "";
+  printf("Len of \"%s\" is %d\n", s, m_strlen(s));
+
+  const char *s1 = "a";
+  printf("Len of \"%s\" is %d\n", s1, m_strlen(s1));
+
+  const char *s2 = "Hello";
+  printf("Len of \"%s\" is %d\n", s2, m_strlen(s2));
+
+  const char *s3 = "Hello ";
+  printf("Len of \"%s\" is %d\n", s3, m_strlen(s3));
+
+  const char *s4 = "Hello world";
+  printf("Len of \"%s\" is %d\n", s4, m_strlen(s4));
+}
+
+// 2.4 Declarations
+
+//  1. If the variable in question is not automatic, the initialization is done once only;
+//  2. An explicitly initialized automatic variable is initialized each time the function or block it is in is entered;
+//  3. External and static variables are initialized to zero by default.
+//  4. Automatic variables for which is no explicit initializer have undefined (i.e., garbage) values.
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -181,5 +215,7 @@ void test_libc() {
 //  print_longest_line();
   print_sizeof_s();
   print_limits();
+  test_m_strlen();
+  test_enums();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
