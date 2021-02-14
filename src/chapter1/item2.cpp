@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "TypeChecker.h"
+#include "type_checker.h"
 
 namespace Item2_AutoTypeDeducing {
 

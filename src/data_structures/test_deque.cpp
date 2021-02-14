@@ -1,5 +1,5 @@
-#include "deque.h"
 #include <iostream>
+#include "data_structures/deque.h"
 using namespace std;
 
 void test_deque() {

@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "Widget.h"
+#include "widget.h"
 
 namespace Item5_AutoVsExplicitTypes {
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include "Widget.h"
+#include "widget.h"
 
 namespace Item3_Decltype {
 // Primary use for decltype is declaring function templates where the function’s return type depends on its parameter types.

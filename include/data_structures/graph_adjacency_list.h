@@ -3,7 +3,12 @@
 #include <iostream>
 #include <algorithm>
 #include "list.h"
-#include "vertex.h"
+
+struct Vertex {
+  int v = 0, w = 1;
+
+  explicit Vertex(int v, int weight = 1) : v(v), w(weight) {}
+};
 
 // Adjacency List, if |E| << |V|^2, space O(|V|+|E|)
 class GraphL {

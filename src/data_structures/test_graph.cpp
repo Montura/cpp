@@ -1,6 +1,6 @@
-#include "graph_matrix.h"
-#include "graph_adjacency_list.h"
-#include "graph_edge_list.h"
+#include "data_structures/graph_matrix.h"
+#include "data_structures/graph_adjacency_list.h"
+#include "data_structures/graph_edge_list.h"
 
 void test_graph_impl() {
   int size = 5;

@@ -2,7 +2,7 @@
 #include <vector>
 #include <functional>
 
-#include "Widget.h"
+#include "widget.h"
 
 namespace Item6_ExplicitlyTypedIdiom {
 

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "queue.h"
+#include "data_structures/queue.h"
 
 void test_queue() {
   Queue<int> q;

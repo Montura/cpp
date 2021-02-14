@@ -1,4 +1,4 @@
-#include "stack.h"
+#include "data_structures/stack.h"
 
 using namespace std;
 

@@ -1,6 +1,6 @@
 #include <vector>
 #include <iostream>
-#include "dsu.h"
+#include "data_structures/dsu.h"
 
 // Sample Input
 // 3 6

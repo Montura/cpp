@@ -1,6 +1,6 @@
-#include "binary_heap.h"
-#include "heap_node.h"
-#include "heap_comparators.h"
+#include "data_structures/binary_heap.h"
+#include "data_structures/heap_node.h"
+#include "data_structures/heap_comparators.h"
 
 void test_binary_heap() {
   BinaryHeap<int, Min> h;

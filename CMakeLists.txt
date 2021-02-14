@@ -9,34 +9,31 @@ if (MSVC)
   message(Compiler MSVC: ${MSVC_VERSION})
 endif(MSVC)
 
-include_directories(.)
+include_directories(cpp include)
 
-add_subdirectory(miniprofiler)
+add_executable(cpp src/main.cpp
+    src/chapter1/item1.cpp
+    src/chapter1/item2.cpp
+    src/chapter1/item3.cpp
+    src/chapter2/item5.cpp
+    src/chapter2/item6.cpp
+    src/chapter3/item7.cpp
+    src/chapter3/item8.cpp
+    src/data_structures/test_array.cpp
+    src/data_structures/test_bin_heap.cpp
+    src/data_structures/test_deque.cpp
+    src/data_structures/test_dsu_size_stat.cpp
+    src/data_structures/test_graph.cpp
+    src/data_structures/test_queue.cpp
+    src/data_structures/test_stack.cpp
+    src/data_structures/list_test.cpp
+    src/sorting/bin_search.cpp
+    src/sorting/merge_sort.cpp
+    src/sorting/quick_sort.cpp
+    src/sorting/sorting.cpp
+    src/templates/tag_dispatching.cpp
+    src/c/libc.c
+    src/c/extern_keyword.c
+    src/c/data_types.c)
 
-add_executable(cpp main.cpp
-    chapter1/item1.cpp
-    chapter1/item2.cpp
-    chapter1/item3.cpp
-    chapter2/item5.cpp
-    chapter2/item6.cpp
-    chapter3/item7.cpp
-    chapter3/item8.cpp
-    data_structures/test_array.cpp
-    data_structures/test_bin_heap.cpp
-    data_structures/test_deque.cpp
-    data_structures/test_dsu_size_stat.cpp
-    data_structures/test_graph.cpp
-    data_structures/test_queue.cpp
-    data_structures/test_stack.cpp
-    data_structures/list_test.cpp
-    sorting/bin_search.cpp
-    sorting/merge_sort.cpp
-    sorting/quick_sort.cpp
-    sorting/sorting.cpp
-    templates/tag_dispatching.cpp
-    c/libc.c
-    c/extern_keyword.c
-    c/data_types.c)
-
-target_link_libraries(cpp profiler)
 #add_executable(cpp interview/taskD.cpp)

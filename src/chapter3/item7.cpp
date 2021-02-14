@@ -2,8 +2,8 @@
 #include <vector>
 #include <atomic>
 
-#include "Widget.h"
-#include "Elements.h"
+#include "widget.h"
+#include "elements.h"
 
 namespace Item7_InitializerList {
 
