@@ -78,7 +78,7 @@ void print_sizeof_s() {
   test_bitfield();
   printf("The number of bits in a byte is accessible as %d\n", CHAR_BIT);
   printf("sizeof(char) =  %lld\n", sizeof(char));
-  printf("sizeof(char) = %lld\n", sizeof(short));
+  printf("sizeof(short) = %lld\n", sizeof(short));
   printf("sizeof(int) = %lld\n", sizeof(int));
   printf("sizeof(long) = %lld\n", sizeof(long));
   printf("sizeof(long long) = %lld\n", sizeof(long long));
