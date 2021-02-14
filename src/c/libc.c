@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 void print_sizeof_s();
+void print_limits();
 
 // %d print as decimal integer
 // %6d print as decimal integer, at least 6 characters wide
@@ -179,5 +180,6 @@ void test_libc() {
 //  test_pow();
 //  print_longest_line();
   print_sizeof_s();
+  print_limits();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }

@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 #include <limits.h>
-
+#include <float.h>
 // Memory location
 //  A memory location is an object of scalar type (arithmetic type, pointer type, enumeration type) or the largest
 //  contiguous sequence of bit fields of non-zero length
@@ -72,19 +72,41 @@ void test_bitfield(void) {
   printf("Value of B::b = %d\n", d.b); // output: 0
   printf("Size of struct C = %zu\n",sizeof(struct C)); // usually prints 4
   printf("Size of struct D = %zu\n",sizeof(struct D)); // usually prints 8
+  printf("Size of struct A = %lld\n", sizeof(obj)); // 16
+  printf("Size of struct A::e = %lld\n", sizeof(obj.e)); // 4
 }
 
 void print_sizeof_s() {
   test_bitfield();
+  printf("sizeof(char)                = %lld\n", sizeof(char));
+  printf("sizeof(signed char)         = %lld\n", sizeof(signed char));
+  printf("sizeof(unsigned char)       = %lld\n", sizeof(unsigned char));
+  printf("sizeof(short)               = %lld\n", sizeof(short));
+  printf("sizeof(unsigned short)      = %lld\n", sizeof(unsigned short));
+  printf("sizeof(int)                 = %lld\n", sizeof(int));
+  printf("sizeof(unsigned int)        = %lld\n", sizeof(unsigned int));
+  printf("sizeof(long)                = %lld\n", sizeof(long));
+  printf("sizeof(unsigned long)       = %lld\n", sizeof(unsigned long));
+  printf("sizeof(long long)           = %lld\n", sizeof(long long));
+  printf("sizeof(unsigned long long)  = %lld\n", sizeof(unsigned long long));
+  printf("sizeof(float)               = %lld\n", sizeof(float));
+  printf("sizeof(double)              = %lld\n", sizeof(double));
+  printf("sizeof(long double)         = %lld\n", sizeof(long double));
+}
+
+void print_limits() {
   printf("The number of bits in a byte is accessible as %d\n", CHAR_BIT);
-  printf("sizeof(char) =  %lld\n", sizeof(char));
-  printf("sizeof(short) = %lld\n", sizeof(short));
-  printf("sizeof(int) = %lld\n", sizeof(int));
-  printf("sizeof(long) = %lld\n", sizeof(long));
-  printf("sizeof(long long) = %lld\n", sizeof(long long));
-  printf("sizeof(float) = %lld\n", sizeof(float));
-  printf("sizeof(double) = %lld\n", sizeof(double));
-  printf("sizeof(long double) = %lld\n", sizeof(long double));
-  printf("Size of struct A::e in data_types.c = %lld\n", sizeof(obj.e));
-  printf("Size of struct A in data_types.c = %lld\n", sizeof(obj));
+  printf("char                 limits: [%d, %d]\n", CHAR_MIN, CHAR_MAX);
+  printf("unsigned char        limits: [%d, %d]\n", 0, UCHAR_MAX);
+  printf("short                limits: [%d, %d]\n", SHRT_MIN, SCHAR_MAX);
+  printf("unsigned short       limits: [%d, %d]\n", 0, USHRT_MAX);
+  printf("int                  limits: [%d, %d]\n", INT_MIN, INT_MAX);
+  printf("unsigned int         limits: [%d, %u]\n", 0, UINT_MAX);
+  printf("long                 limits: [%ld, %ld]\n", LONG_MIN, LONG_MAX);
+  printf("unsigned long        limits: [%d, %lu]\n", 0, ULONG_MAX);
+  printf("long long            limits: [%lld, %lld]\n", LLONG_MIN, LLONG_MAX);
+  printf("unsigned long long   limits: [%d, %llu]\n", 0, ULLONG_MAX);
+  printf("float                limits: [%E, %E]\n", -FLT_MIN, FLT_MAX);
+  printf("double               limits: [%E, %E]\n", -DBL_MIN, DBL_MAX);
+  printf("long double          limits: [%E, %E]\n", -DBL_MIN, DBL_MAX);
 }
