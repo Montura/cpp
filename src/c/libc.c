@@ -112,7 +112,7 @@ void test_pow() {
 }
 
 // 1.9 Characters array
-#define MAXLENGTH 5
+#define MAXLENGTH 100
 
 void copy(char src[MAXLENGTH], char dst[MAXLENGTH]) {
   int i = 0;
@@ -336,6 +336,80 @@ void srand(unsigned int seed) {
   next = seed;
 }
 
+// 2.8 Increment and Decrement Operators
+
+/* squeeze: delete all c from s */
+void squeeze(char s[], int c) {
+  int j = 0;
+  for (int i = 0; s[i] != 0; ++i) {
+    if (s[i] != c) {
+      s[j++] = s[i];
+    }
+  }
+  s[j] = '\0';
+}
+
+void squeeze_2(char s[], char to_delete[]) {
+  int j = 0, k = 0;
+  for (int i = 0; s[i] != 0; ++i) {
+    k = 0;
+    while ((to_delete[k] != 0) && (s[i] != to_delete[k])) {
+      ++k;
+    }
+
+    if (to_delete[k] == '\0') {
+      s[j++] = s[i];
+    }
+  }
+
+  s[j] = '\0';
+}
+
+void m_strcat(char s[], char t[]) {
+  int len = m_strlen(s);
+
+  for (int i = len, j = 0; t[j] != '\0';  ++i, ++j) {
+    s[i] = t[j];
+  }
+
+  {
+    // Ex. with increment and decrement
+//    int i = 0, j = 0;
+//    while (s[i++] != '0');
+//    while ((s[i++] = t[j++]) != '0');
+  }
+}
+
+
+void test_squeeze() {
+  char string1[MAXLENGTH] = { "clean*--up-* *this- *str*-ing *f*r* -o-m- s*-imbols" };
+  char copy_string1[MAXLENGTH];
+  copy(string1, copy_string1);
+  char string2[MAXLENGTH] = { "*-" };
+  char c = '-';
+  char x = '*';
+
+  printf("%s before removing %c\n", string1, c);
+  squeeze(string1, c);
+  printf("%s after removing %c\n", string1, c);
+
+  printf("%s before removing %c\n", string1, x);
+  squeeze(string1, x);
+  printf("%s after removing %c\n", string1, x);
+
+  printf("%s before removing \'%s\'\n", copy_string1, string2);
+  squeeze_2(copy_string1, string2);
+  printf("%s after removing \'%s\'\n", copy_string1, string2);
+}
+
+void test_strcat() {
+  char hello[MAXLENGTH] = "Hello";
+  char world[MAXLENGTH] = "world!";
+
+  m_strcat(hello, world);
+  printf("\'%s\' after strcat \'hello\' and \'world\'\n", hello);
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -351,5 +425,7 @@ void test_libc() {
   test_m_strlen();
   test_enums();
   type_conversions();
+  test_squeeze();
+  test_strcat();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
