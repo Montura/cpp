@@ -412,6 +412,21 @@ void test_strcat() {
   printf("\'%s\' after strcat \'hello\' and \'world\'\n", hello);
 }
 
+//    Returns the first location in a string s1 where any character from the string s2 occurs, or -1 if s1 contains no
+// characters from s2.
+//    (The standard library function strpbrk does the same job but returns a pointer to the location).
+int any(char s1[], char s2[]) {
+  for (int i = 0; s1[i] != '\0'; ++i) {
+    for (int j = 0; s2[j] != '\0'; ++j) {
+      if (s1[i] == s2[j]) {
+        return i;
+      }
+    }
+  }
+
+  return -1;
+}
+
 void print_binary(unsigned int n) {
   int bits_count = sizeof(n) * 8;
   printf("Total %d bits count for %u:\n\t ", bits_count, n);
@@ -456,6 +471,17 @@ void test_setbits(unsigned int x, int pos, int n, int y, unsigned int expected_v
 //  printf("Run setbits for x = %u, pos = %d, n = %d, y = %d. Expected = %d, actual = %d\n",
 //         x, pos, n, y, expected_value, bits);
   assert(bits == expected_value);
+}
+
+// returns x with the n bits that begin at position p inverted, leaving the others unchanged.
+unsigned int invert(unsigned int x, int p, int n) {
+  unsigned int mask = x & (~0 << (p - n + 1));
+  return x ^ mask;
+}
+
+// returns the value of the integer x rotated to the right by n positions.
+unsigned int rightrot(unsigned int x, int n) {
+
 }
 
 void test_getbits_1() {
