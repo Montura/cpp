@@ -15,14 +15,14 @@ extern int extern_max_len;
 
 // function declarations are extern by default (static -> for using only in this translation unit)
 // use static to avoid conflicts with copy and getline from libc.c
-static int getline(void);
+static int m_getline(void);
 static void copy(void);
 
 /* print extern_longest_line input line; specialized version */
 static int print_extern_longest_line() {
   int len;
   extern_max_len = 0;
-  while ((len = getline()) > 0)
+  while ((len = m_getline()) > 0)
     if (len > extern_max_len) {
       extern_max_len = len;
       copy();
@@ -33,7 +33,7 @@ static int print_extern_longest_line() {
 }
 
 /* getline: specialized version */
-int getline(void) {
+static int m_getline(void) {
   int c, i = 0;
   while (i < MAXLENGTH - 1 && ((c = getchar()) != EOF) && c != '\n') {
     extern_line[i++] = (char) c;
