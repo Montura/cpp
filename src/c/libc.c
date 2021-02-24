@@ -2,6 +2,8 @@
 // The C Programming Language. Brian W. Kernighan Dennis M. Ritchie
 
 #include <stdio.h>
+#include <assert.h>
+
 void print_sizeof_s();
 void print_limits();
 void test_enums();
@@ -410,6 +412,106 @@ void test_strcat() {
   printf("\'%s\' after strcat \'hello\' and \'world\'\n", hello);
 }
 
+void print_binary(unsigned int n) {
+  int bits_count = sizeof(n) * 8;
+  printf("Total %d bits count for %u:\n\t ", bits_count, n);
+  for (int i = bits_count - 1 ; i >= 0; i--) {
+    printf("%x", (n & (1 << i)) >> i);
+    if (i % 8 == 0) {
+      printf(" ");
+    }
+  }
+  printf("\n");
+}
+
+int n_bits(int n) {
+  return ~(~0 << n);
+}
+
+// 2.9 Bitwise Operators
+// get n bits from position p
+// getbits(x, 4, 3) returns 3 bits in positions 4, 3, 2 right adjusted;
+unsigned int getbits(unsigned int x, int p, int n) {
+  unsigned int right_adjusted = x >> (p + 1 - n);
+  return right_adjusted & n_bits(n);
+}
+
+void test_getbits(unsigned int x, int pos, int n, unsigned int expected_value) {
+  unsigned int bits = getbits(x, pos, n);
+//  printf("Run getbits for %u, %d, %d. Expected = %d, actual = %d\n", x, pos, n, expected_value, bits);
+  assert(bits == expected_value);
+}
+
+// Exercise 2-6.
+// returns x with the n bits that begin at position p set to the rightmost n bits of y, leaving the other bits unchanged.
+unsigned int setbits(unsigned int x, int p, int n, unsigned int y) {
+  int bits = n_bits(n);
+  unsigned int new_bits = (y & bits);
+  // x &= ~(1 << n); // clearing n-th bit
+  return (x & ~(bits << p)) | (new_bits << p);
+}
+
+void test_setbits(unsigned int x, int pos, int n, int y, unsigned int expected_value) {
+  unsigned int bits = setbits(x, pos, n, y);
+//  printf("Run setbits for x = %u, pos = %d, n = %d, y = %d. Expected = %d, actual = %d\n",
+//         x, pos, n, y, expected_value, bits);
+  assert(bits == expected_value);
+}
+
+void test_getbits_1() {
+  test_getbits(0, 0, 0, 0);
+  test_getbits(1, 0, 0, 0);
+  test_getbits(2, 0, 0, 0);
+
+  test_getbits(1, 1, 0, 0);
+  test_getbits(1, 2, 0, 0);
+  test_getbits(1, 3, 0, 0);
+
+  test_getbits(2, 1, 0, 0);
+  test_getbits(2, 2, 0, 0);
+  test_getbits(2, 3, 0, 0);
+
+  test_getbits(7, 0, 1, 1);
+  test_getbits(7, 1, 1, 1);
+  test_getbits(7, 1, 2, 3);
+  test_getbits(7, 2, 1, 1);
+  test_getbits(7, 2, 2, 3);
+  test_getbits(7, 2, 3, 7);
+  test_getbits(7, 3, 1, 0);
+  test_getbits(7, 3, 2, 1);
+  test_getbits(7, 3, 3, 3);
+  test_getbits(7, 3, 4, 7);
+}
+
+void test_setbits_1() {
+  test_setbits(0, 0, 0, 0, 0);
+
+  test_setbits(1, 0, 0, 0, 1);
+  test_setbits(1, 0, 0, 1, 1);
+  test_setbits(1, 0, 1, 0, 0);
+  test_setbits(1, 0, 1, 1, 1);
+  test_setbits(1, 1, 0, 0, 1);
+  test_setbits(1, 1, 0, 1, 1);
+  test_setbits(1, 1, 1, 0, 1);
+  test_setbits(1, 1, 1, 1, 3);
+
+  test_setbits(2, 0, 0, 0, 2);
+  test_setbits(2, 0, 0, 1, 2);
+  test_setbits(2, 0, 1, 0, 2);
+  test_setbits(2, 0, 1, 1, 3);
+  test_setbits(2, 1, 0, 0, 2);
+  test_setbits(2, 1, 0, 1, 2);
+  test_setbits(2, 1, 1, 0, 0);
+  test_setbits(2, 1, 1, 1, 2);
+
+  test_setbits(15, 0, 1, 2, 14);
+  test_setbits(15, 0, 1, 2, 14);
+  test_setbits(14, 0, 1, 3, 15);
+  test_setbits(13, 0, 2, 3, 15);
+  test_setbits(9, 1, 2, 3, 15);
+  test_setbits(1, 1, 3, 7, 15);
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -427,5 +529,7 @@ void test_libc() {
   type_conversions();
   test_squeeze();
   test_strcat();
+  test_getbits_1();
+  test_setbits_1();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
