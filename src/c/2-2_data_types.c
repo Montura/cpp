@@ -85,7 +85,7 @@ void test_bitfield(void) {
   assert(sizeof(struct D) == 8);
 
 #ifdef _MSC_VER
-  printf("Size of struct A = %lld\n", sizeof(obj)); // usually prints 16
+//  printf("Size of struct A = %lld\n", sizeof(obj)); // usually prints 16
   assert(sizeof(obj) == 16);
 #else
   printf("Size of struct A = %lu\n", sizeof(obj)); // usually prints 12

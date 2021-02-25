@@ -39,6 +39,9 @@ add_executable(cpp src/main.cpp
     src/c/2-7_type_conversions.c
     src/c/2-8_incement_decrement.c
     src/c/2-9_bitwise_operations.c
-    )
+    src/c/1-2_variables_and_arithmetic_expressions.c
+    src/c/1-5_characters_input_output.c
+    src/c/1-7-8-9_characters_array.c
+)
 
 #add_executable(cpp interview/taskD.cpp)
