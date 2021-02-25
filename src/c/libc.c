@@ -475,8 +475,15 @@ void test_setbits(unsigned int x, int pos, int n, int y, unsigned int expected_v
 
 // returns x with the n bits that begin at position p inverted, leaving the others unchanged.
 unsigned int invert(unsigned int x, int p, int n) {
-  unsigned int mask = x & (~0 << (p - n + 1));
-  return x ^ mask;
+  int bits = n_bits(n);
+  return x ^ (bits << p);
+}
+
+void test_invert(unsigned int x, int pos, int n, unsigned int expected_value) {
+  unsigned int bits = invert(x, pos, n);
+//  print_binary(x);
+//  print_binary(bits);
+  assert(bits == expected_value);
 }
 
 // returns the value of the integer x rotated to the right by n positions.
@@ -538,6 +545,34 @@ void test_setbits_1() {
   test_setbits(1, 1, 3, 7, 15);
 }
 
+void test_invert_1() {
+  test_invert(0, 0, 1, 1);
+  test_invert(1, 0, 1, 0);
+
+
+  test_invert(2, 0, 1, 3);
+  test_invert(2, 0, 2, 1);
+  test_invert(2, 1, 1, 0);
+
+  test_invert(7, 0, 1, 6);
+  test_invert(7, 0, 2, 4);
+  test_invert(7, 0, 3, 0);
+  test_invert(7, 1, 1, 5);
+  test_invert(7, 1, 2, 1);
+  test_invert(7, 2, 1, 3);
+
+  test_invert(15, 0, 1, 14);
+  test_invert(15, 0, 2, 12);
+  test_invert(15, 0, 3, 8);
+  test_invert(15, 0, 4, 0);
+  test_invert(15, 1, 1, 13);
+  test_invert(15, 1, 2, 9);
+  test_invert(15, 1, 3, 1);
+  test_invert(15, 2, 1, 11);
+  test_invert(15, 2, 2, 3);
+  test_invert(15, 3, 1, 7);
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -557,5 +592,6 @@ void test_libc() {
   test_strcat();
   test_getbits_1();
   test_setbits_1();
+  test_invert_1();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
