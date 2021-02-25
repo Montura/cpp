@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <limits.h>
 #include <float.h>
+#include <assert.h>
 // Memory location
 //  A memory location is an object of scalar type (arithmetic type, pointer type, enumeration type) or the largest
 //  contiguous sequence of bit fields of non-zero length
@@ -66,17 +67,37 @@ struct D {
   unsigned b3 : 15;
 };
 
+// %d print as decimal integer
+// %6d print as decimal integer, at least 6 characters wide
+// %f print as floating point
+// %6f print as floating point, at least 6 characters wide
+// %.2f print as floating point, 2 characters after decimal point
+// %6.2f print as floating point, at least 6 wide and 2 after decimal point
+
 void test_bitfield(void) {
   struct B d = {7};
   ++d.b; // unsigned overflow
-  printf("Value of B::b = %d\n", d.b); // output: 0
-  printf("Size of struct C = %zu\n",sizeof(struct C)); // usually prints 4
-  printf("Size of struct D = %zu\n",sizeof(struct D)); // usually prints 8
-  printf("Size of struct A = %lld\n", sizeof(obj)); // 16
-  printf("Size of struct A::e = %lld\n", sizeof(obj.e)); // 4
+//  printf("Value of B::b = %d\n", d.b); // output: 0
+  assert(d.b == 0);
+//  printf("Size of struct C = %zu\n",sizeof(struct C)); // usually prints 4
+  assert(sizeof(struct C) == 4);
+//  printf("Size of struct D = %zu\n",sizeof(struct D)); // usually prints 8
+  assert(sizeof(struct D) == 8);
+
+#ifdef _MSC_VER
+  printf("Size of struct A = %lld\n", sizeof(obj)); // usually prints 16
+  assert(sizeof(obj) == 16);
+#else
+  printf("Size of struct A = %lu\n", sizeof(obj)); // usually prints 12
+  assert(sizeof(obj) == 12);
+#endif
+
+//  printf("Size of struct A::e = %lld\n", sizeof(obj.e)); // 4
+  assert(sizeof(obj.e) == 4);
 }
 
 void print_sizeof_s() {
+  // todo: add asserts for platforms __WIN32__, __APPLE__, __LINUX__
   test_bitfield();
   printf("sizeof(char)                = %lld\n", sizeof(char));
   printf("sizeof(signed char)         = %lld\n", sizeof(signed char));
@@ -109,4 +130,12 @@ void print_limits() {
   printf("float                limits: [%E, %E]\n", -FLT_MAX, FLT_MAX);
   printf("double               limits: [%E, %E]\n", -DBL_MAX, DBL_MAX);
   printf("long double          limits: [%E, %E]\n", -DBL_MAX, DBL_MAX);
+}
+
+
+void test_data_types() {
+  test_bitfield();
+  print_sizeof_s();
+  print_limits();
+  printf("Test for '2.2 Data types' is passed!\n");
 }
