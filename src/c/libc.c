@@ -488,7 +488,17 @@ void test_invert(unsigned int x, int pos, int n, unsigned int expected_value) {
 
 // returns the value of the integer x rotated to the right by n positions.
 unsigned int rightrot(unsigned int x, int n) {
+  int nbits = sizeof(int) * 8 - 1;
+  int left_shift = nbits & -n; // number of bits to rotate in left direction
+  return (x << left_shift) | (x >> n);
+  // Rotate to the left by n positions (x << n) | (x >> (-n & 31))
+}
 
+void test_right_rot(unsigned int x, int n, unsigned int expected_value) {
+  unsigned int bits = rightrot(x, n);
+  print_binary(x);
+  print_binary(bits);
+  assert(bits == expected_value);
 }
 
 void test_getbits_1() {
@@ -573,6 +583,38 @@ void test_invert_1() {
   test_invert(15, 3, 1, 7);
 }
 
+void test_right_rot_1() {
+  test_right_rot(0, 0, 0);
+  test_right_rot(0, 1, 0);
+  test_right_rot(0, 2, 0);
+  test_right_rot(0, 32, 0);
+  test_right_rot(0, 31, 0);
+  test_right_rot(0, 30, 0);
+
+  test_right_rot(1, 0, 1);
+  test_right_rot(1, 1, 1 << 31);
+  test_right_rot(1, 2, 1 << 30);
+  test_right_rot(1, 3, 1 << 29);
+
+  test_right_rot(2, 0, 2);
+  test_right_rot(2, 1, 1);
+  test_right_rot(2, 2, 1 << 31);
+  test_right_rot(2, 3, 1 << 30);
+  test_right_rot(2, 4, 1 << 29);
+
+  test_right_rot(3, 0, 3);
+  test_right_rot(3, 1, 1 << 31 | 1);
+  test_right_rot(3, 2, 1 << 31 | 1 << 30);
+  test_right_rot(3, 3, 1 << 30 | 1 << 29);
+  test_right_rot(3, 4, 1 << 29 | 1 << 28);
+
+  test_right_rot(5, 0, 5);
+  test_right_rot(5, 1, 1 << 31 | 2);
+  test_right_rot(5, 2, 1 << 30 | 1);
+  test_right_rot(5, 3, 1 << 31 | 1 << 29);
+  test_right_rot(5, 4, 1 << 30 | 1 << 28);
+}
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -593,5 +635,6 @@ void test_libc() {
   test_getbits_1();
   test_setbits_1();
   test_invert_1();
+  test_right_rot_1();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
