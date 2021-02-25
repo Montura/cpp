@@ -106,7 +106,7 @@ void print_limits() {
   printf("unsigned long        limits: [%d, %lu]\n", 0, ULONG_MAX);
   printf("long long            limits: [%lld, %lld]\n", LLONG_MIN, LLONG_MAX);
   printf("unsigned long long   limits: [%d, %llu]\n", 0, ULLONG_MAX);
-  printf("float                limits: [%E, %E]\n", -FLT_MIN, FLT_MAX);
-  printf("double               limits: [%E, %E]\n", -DBL_MIN, DBL_MAX);
-  printf("long double          limits: [%E, %E]\n", -DBL_MIN, DBL_MAX);
+  printf("float                limits: [%E, %E]\n", -FLT_MAX, FLT_MAX);
+  printf("double               limits: [%E, %E]\n", -DBL_MAX, DBL_MAX);
+  printf("long double          limits: [%E, %E]\n", -DBL_MAX, DBL_MAX);
 }
