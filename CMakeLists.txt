@@ -42,6 +42,6 @@ add_executable(cpp src/main.cpp
     src/c/1-2_variables_and_arithmetic_expressions.c
     src/c/1-5_characters_input_output.c
     src/c/1-7-8-9_characters_array.c
-)
+    src/c/2-10_assignment_opertor.c)
 
 #add_executable(cpp interview/taskD.cpp)

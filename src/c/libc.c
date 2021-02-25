@@ -42,6 +42,9 @@ void test_increment_decrement();
 // 2.9 Bitwise Operators
 void test_bitwise_operations();
 
+// 2.10 Assignment operator
+void tests_for_bitcount();
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -53,5 +56,6 @@ void test_libc() {
   test_type_conversions();
   test_increment_decrement();
   test_bitwise_operations();
+  tests_for_bitcount();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
