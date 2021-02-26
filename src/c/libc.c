@@ -45,6 +45,9 @@ void test_bitwise_operations();
 // 2.10 Assignment operator
 void tests_for_bitcount();
 
+// 3.3 If-Else + bin_search
+void tests_for_bis_search();
+
 void test_libc() {
   printf("---------------------- Start testing libc functions ---------------------- \n");
   printf("hello, world\n");
@@ -57,5 +60,6 @@ void test_libc() {
   test_increment_decrement();
   test_bitwise_operations();
   tests_for_bitcount();
+  tests_for_bis_search();
   printf("---------------------- End testing libc functions ---------------------- \n");
 }
