@@ -1,6 +1,7 @@
 #include "items_common.h"
 
 extern "C" void test_libc();
+void cppref();
 
 void testList();
 void array_rotation();
@@ -40,7 +41,7 @@ int main() {
 //  test_deque();
 
   // test_libc
-  test_libc();
-
+//  test_libc();
+  cppref();
   return 0;
 }

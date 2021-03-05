@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(cpp)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 
 if (MSVC)
@@ -43,6 +43,7 @@ add_executable(cpp src/main.cpp
     src/c/1-5_characters_input_output.c
     src/c/1-7-8-9_characters_array.c
     src/c/2-10_assignment_opertor.c
-    src/c/3-3_if_else_bin_search.c)
+    src/c/3-3_if_else_bin_search.c
+    src/cpp/cppref.cpp src/cpp/reference_declaration.h src/cpp/type_name.h src/cpp/std_forward.h src/cpp/identifierts.h)
 
 #add_executable(cpp interview/taskD.cpp)
