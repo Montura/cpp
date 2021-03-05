@@ -40,13 +40,36 @@ int fast_bin_search(int key, const int* arr, int size) {
   int mid = 0;
 
   while (left != right) {
-    // mid >= (r + l) / 2. To avoid overflow use next statement
+    // To get the least integer greater than or equal to (l + r) / 2
     mid = left + ((right - left) + 1) / 2;
 
     if (arr[mid] > key) {
       right = mid - 1;
     } else {
       left = mid;
+    }
+  }
+
+  return (arr[left] == key) ? left : -1;
+}
+
+int fast_bin_search_with_duplicates(int key, const int* arr, int size) {
+  if (size == 0) {
+    return -1;
+  }
+
+  int left = 0;
+  int right = size - 1;
+  int mid = 0;
+
+  while (left != right) {
+    // To get the least integer less than or equal to (l + r) / 2
+    mid = left + (right - left) / 2;
+
+    if (arr[mid] < key) {
+      left = mid;
+    } else {
+      right = mid;
     }
   }
 
@@ -62,7 +85,7 @@ void tests_for_bis_search_a(BinSearch bin_search) {
   int d[] = { 0, 1, 2 };
   int e[] = { 0, 1, 2, 3 };
   int f[] = { 0, 1, 3, 4 };
-  int g[] = { -1, 1, 3, 5, 6 };
+  int g[] = { -1, 1, 3, 3, 3, 5, 6 };
 
   assert(bin_search(0, a, 0) == -1);
 
