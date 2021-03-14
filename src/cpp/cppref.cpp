@@ -12,7 +12,8 @@ void printable_ASCII() {
 
 #include "identifierts.h"
 #include "decltype.h"
-#include "types.h"
+#include "type_classification.h"
+#include "type_naming.h"
 #include "reference_declaration.h"
 
 void cppref() {
@@ -20,6 +21,7 @@ void cppref() {
 
   Identifiers::test_identifiers();
   Decltype::decltype_test();
-  Types::test();
+  TypeClassification::test();
+  TypeNaming::test();
   ReferenceDeclaration::test();
 }

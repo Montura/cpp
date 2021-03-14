@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Types {
+namespace TypeClassification {
   #include <type_traits>
   #include <iostream>
 
@@ -28,7 +28,6 @@ namespace Types {
   struct F {
     virtual void foo();
   };
-
 
   typedef int(A::*MethodPtr)();
 

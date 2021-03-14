@@ -44,6 +44,6 @@ add_executable(cpp src/main.cpp
     src/c/1-7-8-9_characters_array.c
     src/c/2-10_assignment_opertor.c
     src/c/3-3_if_else_bin_search.c
-    src/cpp/cppref.cpp src/cpp/reference_declaration.h src/cpp/type_name.h src/cpp/std_forward.h src/cpp/identifierts.h)
+    src/cpp/cppref.cpp)
 
 #add_executable(cpp interview/taskD.cpp)
