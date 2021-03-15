@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+#include <cassert>
 
 // Identifiers
 namespace Identifiers {
@@ -8,6 +10,7 @@ namespace Identifiers {
     //    (e.g. [[private]] is a valid attribute) (since C++11)
     // 3. Alternative representations for certain operators cannot be used for other purposes;
     void alternative_operator_representation() {
+#if defined(__APPLE__) || defined(__linux__)
       int x = 3, y = 2, z = 0;
 
       z = x and y;      // x && y
@@ -24,11 +27,13 @@ namespace Identifiers {
       z = not y;        // z = !y;
 
       z = (x not_eq y); // z = (x != y)
+#endif
     }
     // 4. The identifiers with special meaning (final, import and override)
     // 5. The identifiers with a double underscore anywhere are reserved
     // 6, The identifiers that begin with an underscore followed by an uppercase letter are reserved;
     // 7. The identifiers that begin with an underscore are reserved in the global namespace.
+
   }
 
   namespace Zombie {
@@ -62,7 +67,7 @@ namespace Identifiers {
         decltype(x) y1;             // y1 has type float
         decltype((x)) y2 = y1;      // y2 has type float const& because this lambda is not mutable and x is an lvalue
         decltype(r) r1 = y1;        // r1 has type float&
-        decltype((r)) r2 = y2;      // r2 has type float const&
+//        decltype((r)) r2 = y2;      // r2 has type float const&
       };
       f();
     }
@@ -129,7 +134,6 @@ namespace Identifiers {
   }
 
   namespace Qualified {
-#include <string>
     //  A qualified id-expression is an unqualified id-expression prepended by:
     //  - A scope resolution operator ::
     void f() {

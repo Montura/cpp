@@ -1,8 +1,10 @@
 #pragma once
 
+#include <type_traits>
+#include <iostream>
+#include <functional>
+
 namespace TypeClassification {
-  #include <type_traits>
-  #include <iostream>
 
   typedef void(*FuncPtr)(int*);
 
