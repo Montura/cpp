@@ -8,9 +8,6 @@ namespace Typedef {
   // Since C++17
   typedef struct X {}; // ill-formed
 
-  namespace Linkage {
-
-  }
   // simple typedef
   typedef unsigned long ulong;
 
@@ -20,13 +17,18 @@ namespace Typedef {
 
 // more complicated typedef
   typedef int int_t, *intp_t, (&fp)(int, ulong), arr_t[10];
+// Split the previous typedef into 4 lines
+  typedef int int_t;
+  typedef int* intp_t;
+  typedef int (&fp)(int, ulong);
+  typedef int arr_t[10];
 
-// the following two objects have the same type
+  // the following two objects have the same type
   int a1[10];
   arr_t a2;
 
 // common C idiom to avoid having to write "struct S"
-  typedef struct {int a; int b;} S, *pS;
+  typedef struct { int a; int b; } S, *pS;
 
 // the following two objects have the same type
   pS ps1;
@@ -48,8 +50,4 @@ namespace Typedef {
 //  typedef struct Node {
 //    struct listNode* next; // declares a new (incomplete) struct type named listNode
 //  } listNode; // error: conflicts with the previously declared struct name
-
-  void test() {
-    X x;
-  }
 }

@@ -89,5 +89,6 @@ namespace TypeNaming {
     test_typeids();
     Clazz::test();
     ElaboratedTypeSpecifier::test();
+    Union::test();
   }
 }
