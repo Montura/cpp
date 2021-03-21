@@ -91,5 +91,6 @@ namespace TypeNaming {
     ElaboratedTypeSpecifier::test();
     Union::test();
     Alias::test();
+    Enumeration::test();
   }
 }
