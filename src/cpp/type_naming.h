@@ -90,5 +90,6 @@ namespace TypeNaming {
     Clazz::test();
     ElaboratedTypeSpecifier::test();
     Union::test();
+    Alias::test();
   }
 }
