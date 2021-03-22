@@ -47,7 +47,7 @@ namespace TypeNaming {
   }
 
   void test_typeids() {
-    int* p;               // declaration of a pointer to int
+    int* p = 0;               // declaration of a pointer to int
     int* pInt = static_cast<int*>(p); // type-id is "int*"
 
 //    check_typeid(p, "Pi");
@@ -92,5 +92,73 @@ namespace TypeNaming {
     Union::test();
     Alias::test();
     Enumeration::test();
+  }
+}
+
+namespace DynamicType {
+// 1. If some glvalue expression refers to a polymorphic object, the type of its most derived object is known as the dynamic type.
+// 2. For prvalue expressions, the dynamic type is always the same as the static type.
+  struct B { virtual ~B() {} }; // polymorphic type
+  struct D: B {}; // polymorphic type
+
+  void test() {
+    D d; // most-derived object
+    B* ptr = &d; // the static type of (*ptr) is B, the dynamic type of (*ptr) is D
+  }
+}
+
+//namespace IncompleteType {
+//  The following types are incomplete types:
+
+//  1. The type void (possibly cv-qualified);
+//  2. Incompletely-defined object types:
+//    - Class type that has been declared (e.g. by forward declaration) but not defined;
+//    - Array of unknown bound;
+//    - Array of elements of incomplete type;
+//    - Enumeration type from the point of declaration until its underlying type is determined.
+//  All other types are complete.
+
+// An incompletely-defined object type can be completed:
+//  A class type might be incomplete at one point in a translation unit and complete later on;
+
+namespace IncompleteType {
+  namespace Case_1 {
+    struct X;             // X is an incomplete type
+    extern X* xp;         // xp is a pointer to an incomplete type
+
+    struct X {
+      int i;
+    };  // now X is a complete type
+
+    void foo() {
+//    xp++;               // ill-formed: X is incomplete
+    }
+
+    X x;
+
+    void test() {
+//      xp = &x;            // OK: type is “pointer to X”
+//      xp++;               // OK: X is complete
+    }
+  }
+
+  namespace Case_2 {
+    extern int arr[];   // the type of arr is incomplete
+    typedef int UNKA[]; // UNKA is an incomplete type
+
+    UNKA* arrp;         // arrp is a pointer to an incomplete type
+    UNKA** arrpp;
+
+    void foo() {
+//      arrp++;           // error: incomplete type
+      arrpp++;          // OK: sizeof UNKA* is known
+    }
+
+    int arr[10];        // now the type of arr is complete
+
+    void test() {
+//      arrp = &arr;      // error: different types
+//      arrp++;           // error: UNKA can’t be completed
+    }
   }
 }
