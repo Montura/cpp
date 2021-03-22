@@ -15,6 +15,7 @@ void printable_ASCII() {
 #include "type_classification.h"
 #include "type_naming.h"
 #include "reference_declaration.h"
+#include "fundamental_types.h"
 
 void cppref() {
   printable_ASCII();
@@ -24,4 +25,5 @@ void cppref() {
   TypeClassification::test();
   TypeNaming::test();
   ReferenceDeclaration::test();
+  FundamentalTypes::test();
 }
