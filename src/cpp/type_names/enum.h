@@ -125,6 +125,81 @@ namespace Scoped {
   enum class ScopedClassInt : int {
     a, b, c, d
   };
+
+//  1. Each enumerator becomes a named constant of the enumeration's type, which is contained within the scope of the enumeration,
+// and can be accessed using scope resolution operator.
+//  2. There are no implicit conversions from the values of a scoped enumerator to integral types,
+//  3. Although static_cast may be used to obtain the numeric value of the enumerator
+
+  void test_1() {
+    enum class Color {
+      red, green = 20, blue
+    };
+    Color r = Color::blue;
+    switch (r) {
+      case Color::red  :
+        std::cout << "red\n";
+        break;
+      case Color::green:
+        std::cout << "green\n";
+        break;
+      case Color::blue :
+        std::cout << "blue\n";
+        break;
+    }
+//    int n = r; // error: no scoped enum to int conversion
+    int n = static_cast<int>(r); // OK, n = 21
+  }
+
+//  SCOPED and UNSCOPED enumeration types whose underlying type is fixed can be initialized from an integer without a cast,
+// using list initialization, if all of the following is true:
+//  1. the initialization is direct-list-initialization
+//  2. the initializer list has only a single element
+//  3. the enumeration is either scoped or unscoped with underlying type fixed
+//  4. the conversion is non-narrowing
+
+  void test_2() {
+    enum byte : unsigned char {}; // byte is a new integer type\
+
+    byte b { 42 }; // OK as of C++17 (direct-list-initialization)
+    byte d = byte { 42 }; // OK as of C++17; same value as b
+
+//    byte b { 1000 }; // error: is narrowing conversion
+//    byte e { -1 }; // error
+//    byte c = { 42 }; // error: copy-list-initialization
+
+    struct A {
+      byte b;
+    };
+//    A a1 = { { 42 } }; // error (copy-list-initialization of a constructor parameter)
+    A a2 = {byte{42}}; // OK as of C++17
+
+    void f(byte);
+//    f({42}); // error (copy-list-initialization of a function parameter)
+
+    enum class Handle : std::uint32_t {
+      Invalid = 0
+    };
+    Handle h { 42 }; // OK as of C++17
+  }
+}
+
+namespace UsingEnumDeclarationCxx20 {
+  // using enum nested-name-specifier(optional) name ;		(since C++20)
+
+  enum class fruit { orange, apple };
+
+#if defined(__cpp_using_enum)
+  struct S {
+    using enum fruit; // OK: introduces orange and apple into S
+  };
+
+    void test() {
+    S s;
+    s.orange;  // OK: names fruit::orange
+    S::orange; // OK: names fruit::orange
+  }
+#endif
 }
 
   void test() {
@@ -133,5 +208,7 @@ namespace Scoped {
     Unscoped::test_3();
     Unscoped::test_4();
     Unscoped::test_5();
+    Scoped::test_1();
+    Scoped::test_2();
   }
 }
