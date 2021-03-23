@@ -16,6 +16,7 @@ void printable_ASCII() {
 #include "basic_concepts/type_naming.h"
 #include "basic_concepts/reference_declaration.h"
 #include "basic_concepts/fundamental_types.h"
+#include "basic_concepts/object.h"
 
 void cppref() {
   printable_ASCII();
@@ -26,4 +27,5 @@ void cppref() {
   TypeNaming::test();
   ReferenceDeclaration::test();
   FundamentalTypes::test();
+  Object::test();
 }

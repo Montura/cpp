@@ -250,7 +250,7 @@ namespace FundamentalTypes {
 
       void test() {
 // A notable EXCEPTION is Windows, where wchar_t is 16 bits and holds UTF-16 code units)
-#if _WIN32 || _WIN64
+#if defined(_MSC_BUILD)
         assert(sizeof(wchar_t) == 2);
 #else
         assert(sizeof(wchar_t) == 4);
@@ -393,7 +393,11 @@ namespace FundamentalTypes {
     void test() {
       assert(sizeof(f) == 4);
       assert(sizeof(d) == 8);
+#if defined(_MSC_BUILD)
+      assert(sizeof(ld) == 8);
+#else
       assert(sizeof(ld) == 16);
+#endif
       test_infinity();
       test_negative_zero();
       test_NAN();
