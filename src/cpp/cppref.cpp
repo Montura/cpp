@@ -10,12 +10,12 @@ void printable_ASCII() {
   std::cout << '\n';
 }
 
-#include "identifierts.h"
-#include "decltype.h"
-#include "type_classification.h"
-#include "type_naming.h"
-#include "reference_declaration.h"
-#include "fundamental_types.h"
+#include "basic_concepts/identifierts.h"
+#include "basic_concepts/decltype.h"
+#include "basic_concepts/type_classification.h"
+#include "basic_concepts/type_naming.h"
+#include "basic_concepts/reference_declaration.h"
+#include "basic_concepts/fundamental_types.h"
 
 void cppref() {
   printable_ASCII();
