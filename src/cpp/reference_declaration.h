@@ -208,6 +208,7 @@ namespace ReferenceDeclaration {
       std::cout << s;
       assert(s != "Example");
       assert(s.empty());
+      std::cout << '\n';
     }
   }
 
