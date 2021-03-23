@@ -250,7 +250,7 @@ namespace FundamentalTypes {
 
       void test() {
 // A notable EXCEPTION is Windows, where wchar_t is 16 bits and holds UTF-16 code units)
-#if _WIN32_
+#if _WIN32 || _WIN64
         assert(sizeof(wchar_t) == 2);
 #else
         assert(sizeof(wchar_t) == 4);
