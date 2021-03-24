@@ -17,6 +17,7 @@ void printable_ASCII() {
 #include "basic_concepts/reference_declaration.h"
 #include "basic_concepts/fundamental_types.h"
 #include "basic_concepts/object.h"
+#include "basic_concepts/sizeof.h"
 
 void cppref() {
   printable_ASCII();
@@ -28,4 +29,5 @@ void cppref() {
   ReferenceDeclaration::test();
   FundamentalTypes::test();
   Object::test();
+  Sizeof::test();
 }
