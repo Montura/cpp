@@ -86,8 +86,12 @@ namespace FundamentalTypes {
 
     void print_range_of_values() {
       // The C++ Standard allowed:
-      // -  Any signed integer representation for N-bit signed integers: [ -(2^(N-1) - 1 ; 2^(N-1) - 1]
+      // -  Any signed integer representation for N-bit signed integers: [ -2^(N-1)-1; 2^(N-1)-1]
+      // which corresponds to the limits of one's complement or sign-and-magnitude
       //
+      //  C++ compilers use two's complement representation, and as of C++20, it is the only representation allowed by the standard,
+      // with the guaranteed range:  [-2^(N-1) ; 2^(N-1) - 1]; (e.g. -128 to 127 for a signed 8-bit type).
+
       printf("The number of bits in a byte is accessible as %d\n", CHAR_BIT);
       printf("char                 limits: [%d, %d]\n",     limits<char>::min(), limits<char>::max());
       printf("unsigned char        limits: [%d, %d]\n",     limits<unsigned char>::min(), limits<unsigned char>::max());
