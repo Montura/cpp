@@ -18,6 +18,7 @@ void printable_ASCII() {
 #include "basic_concepts/fundamental_types.h"
 #include "basic_concepts/object.h"
 #include "basic_concepts/sizeof.h"
+#include "basic_concepts/scope.h"
 
 void cppref() {
   printable_ASCII();
@@ -30,4 +31,5 @@ void cppref() {
   FundamentalTypes::test();
   Object::test();
   Sizeof::test();
+  Scope::test();
 }
