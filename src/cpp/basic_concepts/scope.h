@@ -1,6 +1,86 @@
 #pragma once
 
 namespace Scope {
+  // 1. Each name that appears in a C++ program is only valid in some possibly discontiguous portion of the source code
+  // called its scope.
+  // 2. Within a scope, unqualified name lookup can be used to associate the name with its declaration.
+  // todo: unqualified name lookup (https://en.cppreference.com/w/cpp/language/unqualified_lookup)
+
+  namespace BlockScope {
+    namespace nested_scope {
+      // The potential scope of a variable introduced by a declaration in a block:
+      // - begins at the point of declaration
+      // - ends at the end of the block.
+      void test() {
+        int a = 0; // scope of the first 'a' begins
+        assert(a == 0);
+        ++a; // the name 'a' is in scope and refers to the first 'a'
+        assert(a == 1);
+        {
+          int a = 1; // scope of the second 'a' begins
+          assert(a == 1);
+          // scope of the first 'a' is interrupted
+          a = 42;    // 'a' is in scope and refers to the second 'a'
+          assert(a == 42);
+        } // block ends, scope of the second 'a' ends
+        assert(a == 1);
+        //             scope of the first 'a' resumes
+      } // block ends, scope of the first 'a' ends
+//    int b = a; // Error: name 'a' is not in scope
+    }
+
+    namespace exception_handler {
+      // The potential scope of a name declared in an exception handler:
+      // - begins at the point of declaration
+      // - ends when the exception handler ends
+      // - is not in scope in another exception handler or in the enclosing block
+      void f() {}
+
+      void test() {
+        try {
+          f();
+        } catch (const std::runtime_error& re) { // scope of re begins
+          int n = 1; // scope of n begins
+          std::cout << re.what(); // re is in scope
+        } // scope of re ends, scope of n ends
+        catch (std::exception& e) {
+//        std::cout << re.what(); // error: re is not in scope
+//        ++n; // error: n is not in scope
+        }
+      }
+    }
+
+    namespace init_statement_scope {
+      struct Base {
+        virtual ~Base() = default;
+      };
+
+      struct Derived : Base {
+        void f() {};
+      };
+
+      void test() {
+        Base* bp = new Derived;
+        if (Derived* dp = dynamic_cast<Derived*>(bp)) {
+          dp->f(); // dp is in scope
+        } // scope of dp ends
+
+        for(int n = 0; // scope of n begins
+            n < 10;    // n is in scope
+            ++n)       // n is in scope
+        {
+          std::cout << n << ' '; // n is in scope
+        } // scope of n ends
+      }
+    }
+
+
+    void test() {
+      nested_scope::test();
+      exception_handler::test();
+    }
+  }
+
   namespace FunctionParameterScope {
   // The potential scope:
   // - Of a function parameter (including parameters of a lambda expression)
@@ -205,6 +285,7 @@ namespace Scope {
 
 
   void test() {
+    BlockScope::test();
     FunctionParameterScope::test();
     ClassScope::test();
     NamespaceScope::test();
