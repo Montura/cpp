@@ -283,6 +283,221 @@ namespace Scope {
     }
   }
 
+  namespace TemplateScope {
+    template <class T, class U = T>
+    struct Array {};
+
+    // The potential scope of a template parameter name:
+    // - Begins immediately at the point of declaration
+    // - Continues to the end of the smallest template declaration in which it was introduced.
+    //
+    // Template parameter can be used:
+    // - In the declarations of subsequent template parameters
+    // - In the specifications of base classes
+
+    // !!! Can't be used in the declarations of the preceding template parameters.
+
+    namespace  TemplateParameter {
+      template<typename T, // scope of T begins
+        const T* p,       // T can be used for a non-type parameter
+        class U = T // T can be used for a default type
+      >
+      class X : public Array<T> // T can be used in base class name
+      {
+        // T can be used inside the body as well
+      }; // scopes of T and U end, scope of X continues
+
+      int arr[1];
+      X<int, arr> x;
+    }
+
+    namespace TemplateTemplateParameter {
+      // Template template parameter:
+      // - Is the smallest template parameter list in which that name appears
+      template<
+          // template template parameter
+          template<
+          typename Y,     // scope of Y begins
+          typename G = Y // Y is in scope
+      > // scopes of Y and G end
+          class T,
+//    typename U = Y // Error: Y is not in scope
+          typename U
+      >
+      class Z {
+      }; // scopes of T and U end
+
+      Z<Array, int> z;
+
+    // Similar to other nested scopes,
+    // the name of a template parameter hides the same name from the outer scope for the duration of its own:
+      typedef int N;
+
+      template <N X,  // non-type parameter of type int
+          typename N, // scope of this N begins, scope of ::N interrupted
+          template<N Y> class T // N here is the template parameter, not int
+      >
+      struct A { };
+
+      struct B {};
+
+      template <N T>
+      struct C {};
+
+      int p[10];
+
+      A<0, B, C> a;
+    }
+
+
+    void test() {
+      auto x = TemplateParameter::x;
+//      int arr2[0];
+//      TemplateParameter::X<int, arr2> a; // error: a variable with non-static storage duration cannot be used as a non-type argument
+
+      auto a = TemplateTemplateParameter::a;
+      auto z = TemplateTemplateParameter::z;
+    }
+  }
+
+  namespace PointOfDeclaration {
+
+    namespace Variables {
+      //  The locus for variables and other names introduced by simple declarations is immediately after that
+      //  name's declarator and before its initializer
+
+      void test() {
+        {
+          unsigned char x = 32; // the first 'x' becomes visible
+          {
+            unsigned char x = x; // the second 'x' becomes visible before the initializer (= x)
+            // - This does not initialize the second 'x' with the value 32,
+            // - This initializes the second 'x' with its own, indeterminate, value
+            assert(x != 32);
+          }
+          assert(x == 32);
+        }
+
+        std::function<int(int)> f = [&](int n) {
+          return (n > 1) ? n * f(n - 1) : n;
+        };
+        // the name of the function 'f' is in scope within the lambda, and can
+        // be correctly captured by reference, giving a recursive function
+
+        assert(f(5) == 120);
+
+        {
+          const int x = 2; // the first 'x' becomes visible
+          {
+            int x[x] = {}; // the second 'x' becomes visible before the initializer (= {})
+            assert(std::size(x) == 2);
+            assert(x[0] == 0);
+            assert(x[1] == 0);
+            // but after the declarator (x[x]).
+            // Within the declarator, the outer 'x' is still in scope. This declares an array of 2 int.
+          }
+          assert(x == 2);
+        }
+      }
+    }
+
+    namespace ClassAndEnum {
+      // The locus of a:
+      //  - class
+      //  - class template declaration
+      //  - enum specifier
+      //  - opaque enum declaration
+      // is immediately after the identifier that names the class|enum
+
+      // (Or the template-id that names the template specialization) appears in its class-head.
+
+      // The class or class template name is already in scope in the list of the base classes:
+      struct S: std::enable_shared_from_this<S> { };
+
+      // The locus for an injected-class-name is immediately following the opening brace of its class (or class template) definition:
+      template <class T>
+      struct Array
+      // : std::enable_shared_from_this<Array> // Error: the injected class name is not in scope
+          : std::enable_shared_from_this< Array<T> > //OK: the template-name Array is in scope
+      { // the injected class name Array is now in scope as if a public member name
+        Array* p; // pointer to Array<T>
+      };
+
+      enum E : int { // E is already in scope
+        A = sizeof(E)
+      };
+
+      // The locus of an enumerator is immediately after its definition (not before the initializer as it is for variables):
+      void test() {
+        const int x = 12;
+        {
+          enum {
+            x = x + 1, // point of declaration is at the comma, x is initialized to 13
+            y = x + 1  // the enumerator x is now in scope, y is initialized to 14
+          };
+          assert(x == 13);
+          assert(y == 14);
+        }
+      }
+    }
+
+    namespace UsingDeclaration {
+      // The locus for a declarator in a using declaration that does not name a constructor is immediately after the declarator:
+      template<int N>
+      class base {
+      protected:
+        static const int next = N + 1;
+        static const int value = N;
+      };
+
+      struct derived : base<0>, base<1>, base<2> {
+        using base<0>::next;      // next is now in scope
+        using base<next>::value; // derived::value is 1
+      };
+
+      // The locus of a type alias or alias template declaration is immediately after the type-id to which the alias refers:
+      void test() {
+        using T = int; // point of declaration of T is at the semicolon
+        {
+          int x;
+          using T = T*;   // same as T = int*
+        }
+
+        assert(derived::value == 1);
+        assert(derived::next == 1);
+      }
+    }
+
+    namespace cxx17 {
+      // The locus for a template parameter is immediately after its complete template parameter (including the optional default argument):
+      typedef unsigned char T;
+      template<class T =
+      T  // lookup finds the typedef name of unsigned char
+          , T               // lookup finds the template parameter
+          N = 0> struct A { };
+
+      // The locus for:
+      // todo: see the structured bindings (since C++17) https://en.cppreference.com/w/cpp/language/structured_binding
+      // - the variable or structured bindings declared in the range_declaration of a range-based for statement
+      // is immediately after the range_expression
+      void test() {
+        std::vector<int> x;
+        for (auto x : x) { // OK: the second x refers the std::vector<int>
+          // x refers the loop variable in the body of the loop
+        }
+
+        A a;
+      }
+    }
+
+    void test() {
+      Variables::test();
+      ClassAndEnum::test();
+      UsingDeclaration::test();
+      cxx17::test();
+    }
+  }
+
 
   void test() {
     BlockScope::test();
@@ -290,5 +505,7 @@ namespace Scope {
     ClassScope::test();
     NamespaceScope::test();
     EnumerationScope::test();
+    TemplateScope::test();
+    PointOfDeclaration::test();
   }
 }
