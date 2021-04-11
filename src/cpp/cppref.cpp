@@ -19,6 +19,7 @@ void printable_ASCII() {
 #include "basic_concepts/object.h"
 #include "basic_concepts/sizeof.h"
 #include "basic_concepts/scope.h"
+#include "basic_concepts/lifetime.h"
 
 void cppref() {
   printable_ASCII();
@@ -32,4 +33,5 @@ void cppref() {
   Object::test();
   Sizeof::test();
   Scope::test();
+  Lifetime::test();
 }
