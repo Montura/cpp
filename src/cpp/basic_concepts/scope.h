@@ -71,6 +71,7 @@ namespace Scope {
         {
           std::cout << n << ' '; // n is in scope
         } // scope of n ends
+        std::cout << '\n';
       }
     }
 
@@ -346,7 +347,7 @@ namespace Scope {
 
       int p[10];
 
-      A<0, B, C> a;
+//      A<0, B, C> a;
     }
 
 
@@ -355,7 +356,7 @@ namespace Scope {
 //      int arr2[0];
 //      TemplateParameter::X<int, arr2> a; // error: a variable with non-static storage duration cannot be used as a non-type argument
 
-      auto a = TemplateTemplateParameter::a;
+//      auto a = TemplateTemplateParameter::a;
       auto z = TemplateTemplateParameter::z;
     }
   }

@@ -20,6 +20,7 @@ void printable_ASCII() {
 #include "basic_concepts/sizeof.h"
 #include "basic_concepts/scope.h"
 #include "basic_concepts/lifetime.h"
+#include "basic_concepts/definitions_and_odr.h"
 
 void cppref() {
   printable_ASCII();
@@ -33,5 +34,6 @@ void cppref() {
   Object::test();
   Sizeof::test();
   Scope::test();
-  Lifetime::test();
+//  Lifetime::test();
+  DefinitionsAdnODR::test();
 }
