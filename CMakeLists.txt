@@ -11,6 +11,8 @@ endif(MSVC)
 
 include_directories(cpp include)
 
+add_subdirectory(src/cpp_abi)
+
 add_executable(cpp src/main.cpp
     src/chapter1/item1.cpp
     src/chapter1/item2.cpp
