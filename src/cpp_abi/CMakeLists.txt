@@ -3,7 +3,7 @@ project(cpp_abi)
 
 set(CMAKE_C_STANDARD 11)
 
-SET(CMAKE_CXX_COMPILER "/usr/bin/gcc")
+set(CMAKE_CXX_COMPILER "/usr/bin/gcc")
 
 add_executable(cpp_abi throw.cpp cpp_abi.cpp exception.c)
 
