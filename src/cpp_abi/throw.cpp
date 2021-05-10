@@ -1,8 +1,40 @@
 #include "throw.h"
+#include <cstdio>
+
+// Добавляем второй тип исключений
+struct Fake_Exception {};
+
+void raise() {
+  throw Exception();
+}
+
+// Анализируем, что произойдет, если исключение не отлавливается в catch-блоке
+void try_but_dont_catch() {
+  try {
+    raise();
+  } catch (Fake_Exception&) {
+    printf("Running try_but_dont_catch::catch(Fake_Exception)\n");
+  }
+
+  printf("try_but_dont_catch handled an exception and resumed execution\n");
+}
+
+// И что произойдет, если отлавилвается
+void catchit() {
+  try {
+    try_but_dont_catch();
+  } catch (Exception&) {
+    printf("Running try_but_dont_catch::catch(Exception)\n");
+  } catch (Fake_Exception&) {
+    printf("Running try_but_dont_catch::catch(Fake_Exception)\n");
+  }
+
+  printf("catchit handled an exception and resumed execution\n");
+}
 
 extern "C" {
   void seppuku() {
-    throw Exception();
+    catchit();
   }
 
   // C++ exceptions под капотом:
