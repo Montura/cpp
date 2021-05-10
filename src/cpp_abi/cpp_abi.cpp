@@ -78,7 +78,19 @@ extern "C" {
     printf("\texceptionClass = %p\n", (void *) exceptionClass);
     printf("\tunwind_exception = %p\n", unwind_exception);
     printf("\tcontext = %p\n", context);
+    _Unwind_Reason_Code res;
+    if (actions &_UA_SEARCH_PHASE) {
+      printf("\tphase: _UA_SEARCH_PHASE\n");
+      res = _URC_HANDLER_FOUND;
+    } else if (actions & _UA_CLEANUP_PHASE) {
+      printf("\tphase: _UA_CLEANUP_PHASE\n");
+      res = _URC_INSTALL_CONTEXT;
+    } else {
+      printf("\tPersonality function, error\n");
+      res = _URC_FATAL_PHASE1_ERROR;
+    }
     printf("Personality function end!\n");
+    return res;
   }
 
   void __cxa_begin_catch() {
