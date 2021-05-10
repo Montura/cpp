@@ -89,6 +89,17 @@ extern "C" {
       printf("\tPersonality function, error\n");
       res = _URC_FATAL_PHASE1_ERROR;
     }
+
+    auto* lsda = (const uint8_t*)_Unwind_GetLanguageSpecificData(context);
+    uintptr_t ip = _Unwind_GetIP(context) - 1;
+    uintptr_t funcStart = _Unwind_GetRegionStart(context);
+    uintptr_t ipOffset = ip - funcStart;
+
+    printf("\tlsda = %p\n", lsda);
+    printf("\tip = %p\n", (void*) ip);
+    printf("\tfuncStart = %p\n", (void*) funcStart);
+    printf("\tipOffset = %p\n", (void*) ipOffset);
+
     printf("Personality function end!\n");
     return res;
   }
@@ -100,5 +111,7 @@ extern "C" {
   void __cxa_end_catch() {
     printf("__cxa_end_catch\n");
   }
+
+
 
 } // extern "C"
