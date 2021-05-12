@@ -95,14 +95,14 @@ Lfunc_end0:
 	.section	__TEXT,__gcc_except_tab
 	.p2align	2
 GCC_except_table1:
-Lexception0:
+Lexception0:                        ## ---- LSDA header section -----
 	.byte	255                     ## @LPStart Encoding = omit
 	.byte	155                     ## @TType Encoding = indirect pcrel sdata4
 	.uleb128 Lttbase0-Lttbaseref0
-Lttbaseref0:
+Lttbaseref0:                        ## ---- LSDA Call Site header section -----
 	.byte	1                       ## Call site Encoding = uleb128
 	.uleb128 Lcst_end0-Lcst_begin0
-Lcst_begin0:
+Lcst_begin0:                        ## ---- LSDA Call Site section -----
 	.uleb128 Ltmp0-Lfunc_begin0     ## >> Call Site 1 <<
 	.uleb128 Ltmp1-Ltmp0            ##   Call between Ltmp0 and Ltmp1
 	.uleb128 Ltmp2-Lfunc_begin0     ##     jumps to Ltmp2
@@ -215,7 +215,7 @@ LBB3_7:
 	callq	___cxa_begin_catch
 	movq	%rax, -24(%rbp)
 Ltmp12:
-	leaq	L_.str(%rip), %rdi
+	leaq	L_.str.2(%rip), %rdi
 	xorl	%ecx, %ecx
                                         ## kill: def $cl killed $cl killed $ecx
 	movb	%cl, %al
@@ -365,15 +365,15 @@ __ZTI14Fake_Exception:
 
 	.section	__TEXT,__cstring,cstring_literals
 L_.str:                                 ## @.str
-	.asciz	"Running try_but_dont_catch::catch(Fake_Exception)\n"
+	.asciz	"Caught a Fake_Exception in try_but_dont_catch!\n"
 
 L_.str.1:                               ## @.str.1
-	.asciz	"try_but_dont_catch handled an exception and resumed execution\n"
+	.asciz	"try_but_dont_catch handled the exception\n"
 
 L_.str.2:                               ## @.str.2
-	.asciz	"Running try_but_dont_catch::catch(Exception)\n"
+	.asciz	"Caught an Exception in catchit!\n"
 
 L_.str.3:                               ## @.str.3
-	.asciz	"catchit handled an exception and resumed execution\n"
+	.asciz	"catchit handled the exception\n"
 
 .subsections_via_symbols
