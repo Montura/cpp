@@ -13,10 +13,10 @@ void try_but_dont_catch() {
   try {
     raise();
   } catch (Fake_Exception&) {
-    printf("Running try_but_dont_catch::catch(Fake_Exception)\n");
+    printf("Caught a Fake_Exception in try_but_dont_catch!\n");
   }
 
-  printf("try_but_dont_catch handled an exception and resumed execution\n");
+  printf("try_but_dont_catch handled the exception\n");
 }
 
 // И что произойдет, если отлавилвается
@@ -24,12 +24,12 @@ void catchit() {
   try {
     try_but_dont_catch();
   } catch (Exception&) {
-    printf("Running try_but_dont_catch::catch(Exception)\n");
+    printf("Caught an Exception in catchit!\n");
   } catch (Fake_Exception&) {
-    printf("Running try_but_dont_catch::catch(Fake_Exception)\n");
+    printf("Caught an Exception in catchit!\n");
   }
 
-  printf("catchit handled an exception and resumed execution\n");
+  printf("catchit handled the exception\n");
 }
 
 extern "C" {

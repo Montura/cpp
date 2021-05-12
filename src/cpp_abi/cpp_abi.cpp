@@ -4,6 +4,8 @@
 #include <typeinfo>
 #include <unwind.h>
 
+#include "cxa_exception.h"
+
 namespace __cxxabiv1 {
   struct __class_type_info {
     virtual void foo() {}
@@ -17,31 +19,8 @@ namespace std {
   }
 }
 
-#define EXCEPTION_BUFF_SIZE 255
-char exception_buff[EXCEPTION_BUFF_SIZE];
-
 extern "C" {
-  typedef void (*unexpected_handler)(void);
-  typedef void (*terminate_handler)(void);
-
-  struct __cxa_exception {
-    std::type_info* exceptionType;
-
-    void (* exceptionDestructor)(void*);
-
-    unexpected_handler unexpectedHandler;
-    terminate_handler terminateHandler;
-    __cxa_exception* nextException;
-
-    int handlerCount;
-    int handlerSwitchValue;
-    const char* actionRecord;
-    const char* languageSpecificData;
-    void* catchTemp;
-    void* adjustedPtr;
-
-    _Unwind_Exception unwindHeader;
-  };
+  using namespace cxa_exception;
 
   void* __cxa_allocate_exception(size_t thrown_size) {
     printf("alloc ex %lu\n", thrown_size);
@@ -78,6 +57,15 @@ extern "C" {
     printf("\texceptionClass = %p\n", (void *) exceptionClass);
     printf("\tunwind_exception = %p\n", unwind_exception);
     printf("\tcontext = %p\n", context);
+
+    uintptr_t ip = _Unwind_GetIP(context) - 1;
+    uintptr_t funcStart = _Unwind_GetRegionStart(context);
+    uintptr_t ipOffset = ip - funcStart;
+
+    printf("\t\tip = %p\n", (void*) ip);
+    printf("\t\tfuncStart = %p\n", (void*) funcStart);
+    printf("\t\tipOffset = %p\n", (void*) ipOffset);
+
     _Unwind_Reason_Code res;
     if (actions &_UA_SEARCH_PHASE) {
       printf("\tphase: _UA_SEARCH_PHASE\n");
@@ -90,16 +78,6 @@ extern "C" {
       res = _URC_FATAL_PHASE1_ERROR;
     }
 
-    auto* lsda = (const uint8_t*)_Unwind_GetLanguageSpecificData(context);
-    uintptr_t ip = _Unwind_GetIP(context) - 1;
-    uintptr_t funcStart = _Unwind_GetRegionStart(context);
-    uintptr_t ipOffset = ip - funcStart;
-
-    printf("\tlsda = %p\n", lsda);
-    printf("\tip = %p\n", (void*) ip);
-    printf("\tfuncStart = %p\n", (void*) funcStart);
-    printf("\tipOffset = %p\n", (void*) ipOffset);
-
     printf("Personality function end!\n");
     return res;
   }
@@ -111,7 +89,4 @@ extern "C" {
   void __cxa_end_catch() {
     printf("__cxa_end_catch\n");
   }
-
-
-
 } // extern "C"
