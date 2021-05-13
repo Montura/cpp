@@ -1,7 +1,7 @@
 #include "throw.h"
 #include <cstdio>
 
-// Добавляем второй тип исключений
+// Another exception type
 struct Fake_Exception {};
 
 void raise() {
@@ -11,9 +11,15 @@ void raise() {
 // Анализируем, что произойдет, если исключение не отлавливается в catch-блоке
 void try_but_dont_catch() {
   try {
+    printf("Running a try which will never throw.\n");
+  } catch (Fake_Exception&) {
+    printf("Exception caught... with the wrong catch!\n");
+  }
+
+  try {
     raise();
   } catch (Fake_Exception&) {
-    printf("Caught a Fake_Exception in try_but_dont_catch!\n");
+    printf("Caught a Fake_Exception... with the wrong catch!\n");
   }
 
   printf("try_but_dont_catch handled the exception\n");
@@ -24,9 +30,9 @@ void catchit() {
   try {
     try_but_dont_catch();
   } catch (Exception&) {
-    printf("Caught an Exception in catchit!\n");
+    printf("Caught an Exception with the right catch!\n");
   } catch (Fake_Exception&) {
-    printf("Caught an Exception in catchit!\n");
+    printf("Caught an Fake_Exception with the right catch!\n");
   }
 
   printf("catchit handled the exception\n");

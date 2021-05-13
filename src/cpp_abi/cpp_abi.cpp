@@ -51,6 +51,31 @@ extern "C" {
     printf("\t\tLSDA header->lsda_call_site_table_length = %u\n", header.call_site_table_length);
     return lsda;
   }
+
+  uintptr_t getIP(_Unwind_Context* const context) {
+    // Calculate what IP was just before the exception was thrown for this stack frame
+    //  1. The processor always increments the IP when it executes an instruction. Throwing exception is not an exception.
+    //  Thus when the processor executes it, it increments IP by one and starts executing personal routine (__gxx_personality_v0).
+    //  2. Therefore when the personal routine is executing, the caller's IP is already one byte after
+    //  the "throw" statement and you have to move IP one byte back.
+    uintptr_t ip = _Unwind_GetIP(context) - 1;
+    printf("\tthrow ip = %p\n", reinterpret_cast<void*>(ip));
+    return ip;
+  }
+
+  bool IP_is_valid(uintptr_t throw_ip, uintptr_t curr_stack_frame, LSDA_Call_Site const& cs) {
+    // Calculate the range of the IP range valid for this landing pad;
+    // - If this LP can handle the current exception then the IP for this stack frame must be in this range
+
+    uintptr_t try_start = curr_stack_frame + cs.start;
+    uintptr_t try_end = curr_stack_frame + cs.start + cs.len;
+
+    bool is_valid = (throw_ip >= try_start) && (throw_ip <= try_end);
+
+    printf("\tIP is %s try:\n", (is_valid ? "inside" : "outside"));
+    printf("\t\tip = %p;\n\t\ttry_start = %p;\n\t\ttry_end = %p\n", (void*) throw_ip, (void*) try_start, (void*) try_end);
+    return is_valid;
+  }
   
   void process_lsda_cs_table(LSDA_ptr lsda, _Unwind_Context* const context, _Unwind_Exception* unwind_exception) {
     // Read the LSDA CS header
@@ -71,6 +96,13 @@ extern "C" {
 
       // Landing pad offset is valid
       if (cs.lp) {
+        uintptr_t throw_ip = getIP(context);
+        uintptr_t func_start = _Unwind_GetRegionStart(context); // points to the current stack frame (function)
+
+        if (!IP_is_valid(throw_ip, func_start, cs)) {
+          continue;
+        }
+
         int r0 = __builtin_eh_return_data_regno(0);
         int r1 = __builtin_eh_return_data_regno(1);
 
@@ -91,7 +123,6 @@ extern "C" {
         _Unwind_SetGR(context, r1, (uintptr_t)(1));
 
         /* Setup the address we should jump at to reach the code where there is the "something" we found.  */
-        uintptr_t func_start = _Unwind_GetRegionStart(context);
         _Unwind_SetIP(context, func_start + cs.lp);
         break;
       }
@@ -123,14 +154,6 @@ extern "C" {
     printf("\texceptionClass = %p\n", reinterpret_cast<void*>(exceptionClass));
     printf("\tunwind_exception = %p\n", unwind_exception);
     printf("\tcontext = %p\n", context);
-
-    uintptr_t ip = _Unwind_GetIP(context) - 1; // points to the IP pos where the next stack frame will be called
-    uintptr_t funcStart = _Unwind_GetRegionStart(context); // points to the current stack frame (function)
-    uintptr_t ipOffset = ip - funcStart;
-
-    printf("\t\tip = %p\n", reinterpret_cast<void*>(ip));
-    printf("\t\tfuncStart = %p\n", reinterpret_cast<void*>(funcStart));
-    printf("\t\tipOffset = %p\n", reinterpret_cast<void*>(ipOffset));
 
     _Unwind_Reason_Code res;
     if (actions &_UA_SEARCH_PHASE) {

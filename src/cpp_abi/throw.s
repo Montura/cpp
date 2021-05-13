@@ -32,9 +32,12 @@ Lfunc_begin0:
 	.cfi_offset %rbp, -16
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
-	subq	$32, %rsp
+	subq	$48, %rsp
 Ltmp0:
-	callq	__Z5raisev
+	leaq	L_.str(%rip), %rdi
+	xorl	%eax, %eax
+                                        ## kill: def $al killed $al killed $eax
+	callq	_printf
 Ltmp1:
 	jmp	LBB1_1
 LBB1_1:
@@ -48,13 +51,13 @@ Ltmp2:
 	movl	-12(%rbp), %eax
 	movl	$1, %ecx
 	cmpl	%ecx, %eax
-	jne	LBB1_9
+	jne	LBB1_17
 ## %bb.4:
 	movq	-8(%rbp), %rdi
 	callq	___cxa_begin_catch
 	movq	%rax, -24(%rbp)
 Ltmp3:
-	leaq	L_.str(%rip), %rdi
+	leaq	L_.str.1(%rip), %rdi
 	xorl	%ecx, %ecx
                                         ## kill: def $cl killed $cl killed $ecx
 	movb	%cl, %al
@@ -64,13 +67,13 @@ Ltmp4:
 LBB1_5:
 	callq	___cxa_end_catch
 LBB1_6:
-	leaq	L_.str.1(%rip), %rdi
-	movb	$0, %al
-	callq	_printf
-	addq	$32, %rsp
-	popq	%rbp
-	retq
+Ltmp8:
+	callq	__Z5raisev
+Ltmp9:
+	jmp	LBB1_7
 LBB1_7:
+	jmp	LBB1_14
+LBB1_8:
 Ltmp5:
                                         ## kill: def $edx killed $edx killed $rdx
 	movq	%rax, -8(%rbp)
@@ -78,17 +81,59 @@ Ltmp5:
 Ltmp6:
 	callq	___cxa_end_catch
 Ltmp7:
-	jmp	LBB1_8
-LBB1_8:
 	jmp	LBB1_9
 LBB1_9:
+	jmp	LBB1_17
+LBB1_10:
+Ltmp10:
+                                        ## kill: def $edx killed $edx killed $rdx
+	movq	%rax, -8(%rbp)
+	movl	%edx, -12(%rbp)
+## %bb.11:
+	movl	-12(%rbp), %eax
+	movl	$1, %ecx
+	cmpl	%ecx, %eax
+	jne	LBB1_17
+## %bb.12:
+	movq	-8(%rbp), %rdi
+	callq	___cxa_begin_catch
+	movq	%rax, -32(%rbp)
+Ltmp11:
+	leaq	L_.str.2(%rip), %rdi
+	xorl	%ecx, %ecx
+                                        ## kill: def $cl killed $cl killed $ecx
+	movb	%cl, %al
+	callq	_printf
+Ltmp12:
+	jmp	LBB1_13
+LBB1_13:
+	callq	___cxa_end_catch
+LBB1_14:
+	leaq	L_.str.3(%rip), %rdi
+	movb	$0, %al
+	callq	_printf
+	addq	$48, %rsp
+	popq	%rbp
+	retq
+LBB1_15:
+Ltmp13:
+                                        ## kill: def $edx killed $edx killed $rdx
+	movq	%rax, -8(%rbp)
+	movl	%edx, -12(%rbp)
+Ltmp14:
+	callq	___cxa_end_catch
+Ltmp15:
+	jmp	LBB1_16
+LBB1_16:
+	jmp	LBB1_17
+LBB1_17:
 	movq	-8(%rbp), %rdi
 	callq	__Unwind_Resume
 	ud2
-LBB1_10:
-Ltmp8:
+LBB1_18:
+Ltmp16:
 	movq	%rax, %rdi
-	movq	%rdx, -32(%rbp)         ## 8-byte Spill
+	movq	%rdx, -40(%rbp)         ## 8-byte Spill
 	callq	___clang_call_terminate
 Lfunc_end0:
 	.cfi_endproc
@@ -116,15 +161,35 @@ Lcst_begin0:                        ## ---- LSDA Call Site section -----
 	.uleb128 Ltmp5-Lfunc_begin0     ##     jumps to Ltmp5
 	.byte	0                       ##   On action: cleanup
 	.uleb128 Ltmp4-Lfunc_begin0     ## >> Call Site 4 <<
-	.uleb128 Ltmp6-Ltmp4            ##   Call between Ltmp4 and Ltmp6
+	.uleb128 Ltmp8-Ltmp4            ##   Call between Ltmp4 and Ltmp8
 	.byte	0                       ##     has no landing pad
 	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp6-Lfunc_begin0     ## >> Call Site 5 <<
+	.uleb128 Ltmp8-Lfunc_begin0     ## >> Call Site 5 <<
+	.uleb128 Ltmp9-Ltmp8            ##   Call between Ltmp8 and Ltmp9
+	.uleb128 Ltmp10-Lfunc_begin0    ##     jumps to Ltmp10
+	.byte	1                       ##   On action: 1
+	.uleb128 Ltmp6-Lfunc_begin0     ## >> Call Site 6 <<
 	.uleb128 Ltmp7-Ltmp6            ##   Call between Ltmp6 and Ltmp7
-	.uleb128 Ltmp8-Lfunc_begin0     ##     jumps to Ltmp8
+	.uleb128 Ltmp16-Lfunc_begin0    ##     jumps to Ltmp16
 	.byte	3                       ##   On action: 2
-	.uleb128 Ltmp7-Lfunc_begin0     ## >> Call Site 6 <<
-	.uleb128 Lfunc_end0-Ltmp7       ##   Call between Ltmp7 and Lfunc_end0
+	.uleb128 Ltmp7-Lfunc_begin0     ## >> Call Site 7 <<
+	.uleb128 Ltmp11-Ltmp7           ##   Call between Ltmp7 and Ltmp11
+	.byte	0                       ##     has no landing pad
+	.byte	0                       ##   On action: cleanup
+	.uleb128 Ltmp11-Lfunc_begin0    ## >> Call Site 8 <<
+	.uleb128 Ltmp12-Ltmp11          ##   Call between Ltmp11 and Ltmp12
+	.uleb128 Ltmp13-Lfunc_begin0    ##     jumps to Ltmp13
+	.byte	0                       ##   On action: cleanup
+	.uleb128 Ltmp12-Lfunc_begin0    ## >> Call Site 9 <<
+	.uleb128 Ltmp14-Ltmp12          ##   Call between Ltmp12 and Ltmp14
+	.byte	0                       ##     has no landing pad
+	.byte	0                       ##   On action: cleanup
+	.uleb128 Ltmp14-Lfunc_begin0    ## >> Call Site 10 <<
+	.uleb128 Ltmp15-Ltmp14          ##   Call between Ltmp14 and Ltmp15
+	.uleb128 Ltmp16-Lfunc_begin0    ##     jumps to Ltmp16
+	.byte	3                       ##   On action: 2
+	.uleb128 Ltmp15-Lfunc_begin0    ## >> Call Site 11 <<
+	.uleb128 Lfunc_end0-Ltmp15      ##   Call between Ltmp15 and Lfunc_end0
 	.byte	0                       ##     has no landing pad
 	.byte	0                       ##   On action: cleanup
 Lcst_end0:
@@ -167,14 +232,14 @@ Lfunc_begin1:
 	movq	%rsp, %rbp
 	.cfi_def_cfa_register %rbp
 	subq	$48, %rsp
-Ltmp9:
+Ltmp17:
 	callq	__Z18try_but_dont_catchv
-Ltmp10:
+Ltmp18:
 	jmp	LBB3_1
 LBB3_1:
 	jmp	LBB3_6
 LBB3_2:
-Ltmp11:
+Ltmp19:
                                         ## kill: def $edx killed $edx killed $rdx
 	movq	%rax, -8(%rbp)
 	movl	%edx, -12(%rbp)
@@ -188,18 +253,18 @@ Ltmp11:
 	movq	-8(%rbp), %rdi
 	callq	___cxa_begin_catch
 	movq	%rax, -32(%rbp)
-Ltmp17:
-	leaq	L_.str.2(%rip), %rdi
+Ltmp25:
+	leaq	L_.str.5(%rip), %rdi
 	xorl	%ecx, %ecx
                                         ## kill: def $cl killed $cl killed $ecx
 	movb	%cl, %al
 	callq	_printf
-Ltmp18:
+Ltmp26:
 	jmp	LBB3_5
 LBB3_5:
 	callq	___cxa_end_catch
 LBB3_6:
-	leaq	L_.str.3(%rip), %rdi
+	leaq	L_.str.6(%rip), %rdi
 	movb	$0, %al
 	callq	_printf
 	addq	$48, %rsp
@@ -214,36 +279,36 @@ LBB3_7:
 	movq	-8(%rbp), %rdi
 	callq	___cxa_begin_catch
 	movq	%rax, -24(%rbp)
-Ltmp12:
-	leaq	L_.str.2(%rip), %rdi
+Ltmp20:
+	leaq	L_.str.4(%rip), %rdi
 	xorl	%ecx, %ecx
                                         ## kill: def $cl killed $cl killed $ecx
 	movb	%cl, %al
 	callq	_printf
-Ltmp13:
+Ltmp21:
 	jmp	LBB3_9
 LBB3_9:
 	callq	___cxa_end_catch
 	jmp	LBB3_6
 LBB3_10:
-Ltmp14:
+Ltmp22:
                                         ## kill: def $edx killed $edx killed $rdx
 	movq	%rax, -8(%rbp)
 	movl	%edx, -12(%rbp)
-Ltmp15:
+Ltmp23:
 	callq	___cxa_end_catch
-Ltmp16:
+Ltmp24:
 	jmp	LBB3_11
 LBB3_11:
 	jmp	LBB3_14
 LBB3_12:
-Ltmp19:
+Ltmp27:
                                         ## kill: def $edx killed $edx killed $rdx
 	movq	%rax, -8(%rbp)
 	movl	%edx, -12(%rbp)
-Ltmp20:
+Ltmp28:
 	callq	___cxa_end_catch
-Ltmp21:
+Ltmp29:
 	jmp	LBB3_13
 LBB3_13:
 	jmp	LBB3_14
@@ -252,7 +317,7 @@ LBB3_14:
 	callq	__Unwind_Resume
 	ud2
 LBB3_15:
-Ltmp22:
+Ltmp30:
 	movq	%rax, %rdi
 	movq	%rdx, -48(%rbp)         ## 8-byte Spill
 	callq	___clang_call_terminate
@@ -269,36 +334,36 @@ Lttbaseref1:
 	.byte	1                       ## Call site Encoding = uleb128
 	.uleb128 Lcst_end1-Lcst_begin1
 Lcst_begin1:
-	.uleb128 Ltmp9-Lfunc_begin1     ## >> Call Site 1 <<
-	.uleb128 Ltmp10-Ltmp9           ##   Call between Ltmp9 and Ltmp10
-	.uleb128 Ltmp11-Lfunc_begin1    ##     jumps to Ltmp11
-	.byte	3                       ##   On action: 2
-	.uleb128 Ltmp10-Lfunc_begin1    ## >> Call Site 2 <<
-	.uleb128 Ltmp17-Ltmp10          ##   Call between Ltmp10 and Ltmp17
-	.byte	0                       ##     has no landing pad
-	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp17-Lfunc_begin1    ## >> Call Site 3 <<
+	.uleb128 Ltmp17-Lfunc_begin1    ## >> Call Site 1 <<
 	.uleb128 Ltmp18-Ltmp17          ##   Call between Ltmp17 and Ltmp18
 	.uleb128 Ltmp19-Lfunc_begin1    ##     jumps to Ltmp19
-	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp18-Lfunc_begin1    ## >> Call Site 4 <<
-	.uleb128 Ltmp12-Ltmp18          ##   Call between Ltmp18 and Ltmp12
+	.byte	3                       ##   On action: 2
+	.uleb128 Ltmp18-Lfunc_begin1    ## >> Call Site 2 <<
+	.uleb128 Ltmp25-Ltmp18          ##   Call between Ltmp18 and Ltmp25
 	.byte	0                       ##     has no landing pad
 	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp12-Lfunc_begin1    ## >> Call Site 5 <<
-	.uleb128 Ltmp13-Ltmp12          ##   Call between Ltmp12 and Ltmp13
-	.uleb128 Ltmp14-Lfunc_begin1    ##     jumps to Ltmp14
+	.uleb128 Ltmp25-Lfunc_begin1    ## >> Call Site 3 <<
+	.uleb128 Ltmp26-Ltmp25          ##   Call between Ltmp25 and Ltmp26
+	.uleb128 Ltmp27-Lfunc_begin1    ##     jumps to Ltmp27
 	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp13-Lfunc_begin1    ## >> Call Site 6 <<
-	.uleb128 Ltmp15-Ltmp13          ##   Call between Ltmp13 and Ltmp15
+	.uleb128 Ltmp26-Lfunc_begin1    ## >> Call Site 4 <<
+	.uleb128 Ltmp20-Ltmp26          ##   Call between Ltmp26 and Ltmp20
 	.byte	0                       ##     has no landing pad
 	.byte	0                       ##   On action: cleanup
-	.uleb128 Ltmp15-Lfunc_begin1    ## >> Call Site 7 <<
-	.uleb128 Ltmp21-Ltmp15          ##   Call between Ltmp15 and Ltmp21
+	.uleb128 Ltmp20-Lfunc_begin1    ## >> Call Site 5 <<
+	.uleb128 Ltmp21-Ltmp20          ##   Call between Ltmp20 and Ltmp21
 	.uleb128 Ltmp22-Lfunc_begin1    ##     jumps to Ltmp22
+	.byte	0                       ##   On action: cleanup
+	.uleb128 Ltmp21-Lfunc_begin1    ## >> Call Site 6 <<
+	.uleb128 Ltmp23-Ltmp21          ##   Call between Ltmp21 and Ltmp23
+	.byte	0                       ##     has no landing pad
+	.byte	0                       ##   On action: cleanup
+	.uleb128 Ltmp23-Lfunc_begin1    ## >> Call Site 7 <<
+	.uleb128 Ltmp29-Ltmp23          ##   Call between Ltmp23 and Ltmp29
+	.uleb128 Ltmp30-Lfunc_begin1    ##     jumps to Ltmp30
 	.byte	5                       ##   On action: 3
-	.uleb128 Ltmp21-Lfunc_begin1    ## >> Call Site 8 <<
-	.uleb128 Lfunc_end1-Ltmp21      ##   Call between Ltmp21 and Lfunc_end1
+	.uleb128 Ltmp29-Lfunc_begin1    ## >> Call Site 8 <<
+	.uleb128 Lfunc_end1-Ltmp29      ##   Call between Ltmp29 and Lfunc_end1
 	.byte	0                       ##     has no landing pad
 	.byte	0                       ##   On action: cleanup
 Lcst_end1:
@@ -365,15 +430,24 @@ __ZTI14Fake_Exception:
 
 	.section	__TEXT,__cstring,cstring_literals
 L_.str:                                 ## @.str
-	.asciz	"Caught a Fake_Exception in try_but_dont_catch!\n"
+	.asciz	"Running a try which will never throw.\n"
 
 L_.str.1:                               ## @.str.1
-	.asciz	"try_but_dont_catch handled the exception\n"
+	.asciz	"Exception caught... with the wrong catch!\n"
 
 L_.str.2:                               ## @.str.2
-	.asciz	"Caught an Exception in catchit!\n"
+	.asciz	"Caught a Fake_Exception... with the wrong catch!\n"
 
 L_.str.3:                               ## @.str.3
+	.asciz	"try_but_dont_catch handled the exception\n"
+
+L_.str.4:                               ## @.str.4
+	.asciz	"Caught an Fake_Exception with the right catch!\n"
+
+L_.str.5:                               ## @.str.5
+	.asciz	"Caught an Exception with the right catch!\n"
+
+L_.str.6:                               ## @.str.6
 	.asciz	"catchit handled the exception\n"
 
 .subsections_via_symbols
