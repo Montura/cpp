@@ -2,9 +2,11 @@
 #include <cstdlib>
 #include <typeinfo>
 #include <unwind.h>
+#include <cstdint>
 
 #include "cxa_exception.h"
 #include "lsda.h"
+#include "lsda_llvm.h"
 
 namespace __cxxabiv1 {
   struct __class_type_info {
@@ -118,17 +120,16 @@ extern "C" {
         int type_index = action[0];
 
         // todo: fix Segmentation fault! Wrong address for type_ifo!!!!
-        // Get the type of the exception we can handle
         const void* catch_type_info = lsda.types_table_start[ -1 * type_index ];
         const std::type_info *catch_ti = (const std::type_info *) catch_type_info;
 
         // Get the type of the original exception being thrown
-//        __cxa_exception* exception_header = (__cxa_exception*)(unwind_exception+1) - 1;
-//        std::type_info *org_ex_type = exception_header->exceptionType;
-//
-//        printf("%s thrown, catch handles %s\n",
-//               org_ex_type->name(),
-//               catch_ti->name());
+        __cxa_exception* exception_header = (__cxa_exception*)(unwind_exception + 1) - 1;
+        std::type_info *org_ex_type = exception_header->exceptionType;
+
+        const char* const origin_name = org_ex_type->name();
+//        const char* const my_name = catch_ti->name();
+        printf("%s thrown, catch handles %s\n", origin_name, "");
 
         // Check if the exception being thrown is of the same type
         // than the exception we can handle
@@ -183,7 +184,8 @@ extern "C" {
       res = _URC_HANDLER_FOUND;
     } else if (actions & _UA_CLEANUP_PHASE) {
       printf("\tphase: _UA_CLEANUP_PHASE\n");
-      res = parse_LSDA(context, actions, unwind_exception);
+//      res = parse_LSDA(context, actions, unwind_exception);
+      res = LSDA_llvm::scan_eh_tab( actions, context);
     } else {
       printf("\tPersonality function, error\n");
       res = _URC_FATAL_PHASE1_ERROR;
