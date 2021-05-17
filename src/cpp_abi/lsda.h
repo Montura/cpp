@@ -1,5 +1,7 @@
 #pragma once
 
+#include "dwarf_util.h"
+
 namespace LSDA {
 //  https://itanium-cxx-abi.github.io/cxx-abi/exceptions.pdf
 
@@ -9,7 +11,7 @@ namespace LSDA {
  * &LSDA_ptr will be a non-const pointer to a const place in memory
  */
   typedef const uint8_t* LSDA_ptr;
-  typedef const void* LSDA_type_info;
+  typedef const uint8_t* LSDA_type_info;
 
   struct LSDA_Header {
     /**
@@ -22,22 +24,32 @@ namespace LSDA {
       // Copy the LSDA fields
       start_encoding = header[0];
       type_encoding = header[1];
-      type_table_offset = header[2];
+
+      if (type_encoding != DW_EH_PE_omit) {
+        // Calculate type info locations in emitted dwarf code which
+        // were flagged by type info arguments to llvm.eh.selector
+        // intrinsic
+        LSDA_ptr offset_pos = header + 2;
+        class_info_offset = readULEB128(&offset_pos);
+        class_info_table = offset_pos + class_info_offset;
+      }
 
       printf("\tLSDA header = %p\n", &header);
       printf("\t\theader->start_encoding = %u\n", start_encoding);
       printf("\t\theader->type_encoding = %u\n", type_encoding);
-      printf("\t\theader->call_site_table_length = %u\n", type_table_offset);
+      printf("\t\theader->class_info_offset = %u\n", class_info_offset);
+      printf("\t\theader->class_info_table = %p\n", class_info_table);
 
       // Advance the lsda pointer
-      *lsda = header + sizeof(LSDA_Header);
+      *lsda = header + 3; // start_encoding, type_encoding, class_info_offset
     }
 
     uint8_t start_encoding;
     uint8_t type_encoding;
 
     // This is the offset, from the end of the header, to the types table
-    uint8_t type_table_offset;
+    uint8_t class_info_offset;
+    const uint8_t* class_info_table;
   };
 
   struct LSDA_Call_Site_Header {
@@ -46,30 +58,31 @@ namespace LSDA {
 
       // Copy the LSDA call site header fields
       encoding = read_ptr[0];
-      length = read_ptr[1];
+      LSDA_ptr length_pos = read_ptr + 1;
+      length = static_cast<uint32_t>(readULEB128(&length_pos));
 
       printf("\tLSDA Call Site header = %p\n", read_ptr);
       printf("\t\theader->encoding = %u\n", encoding);
       printf("\t\theader->length = %u\n", length);
 
       // Advance the lsda pointer
-      *lsda = read_ptr + sizeof(LSDA_Call_Site_Header);
+      *lsda = read_ptr + 2;
     }
 
     uint8_t encoding;
-    uint8_t length;
+    uint32_t length;
   };
 
   struct LSDA_Call_Site {
-    explicit LSDA_Call_Site(LSDA_ptr * lsda) {
+    explicit LSDA_Call_Site(LSDA_ptr * lsda, uint8_t call_site_encoding) {
       if (lsda) {
         LSDA_ptr cs_entry = *lsda;
 
         // Copy the LSDA call site fields
-        start = cs_entry[0];
-        len = cs_entry[1];
-        lp = cs_entry[2];
-        action = cs_entry[3];
+        start = readEncodedPointer(lsda, call_site_encoding);
+        len = readEncodedPointer(lsda, call_site_encoding);
+        lp = readEncodedPointer(lsda, call_site_encoding);
+        action = readULEB128(lsda);
 
         printf("\tFound a CS:\n");
         printf("\t\tcs_start: %i\n", start);
@@ -78,7 +91,7 @@ namespace LSDA {
         printf("\t\tcs_action: %i\n", action);
 
         // Advance the lsda pointer
-        *lsda = cs_entry + sizeof(LSDA_Call_Site);
+        *lsda = cs_entry + 4;
       }
     }
     // Note start, len and lp would be void*'s, but they are actually relative addresses:
@@ -97,10 +110,12 @@ namespace LSDA {
 
     // A pointer to the end of the call site table
     LSDA_ptr const cs_table_end;
+    const uint8_t cs_table_encoding;
 
-    explicit LSDA_Call_Site_Table(LSDA_ptr raw_lsda, uintptr_t call_site_table_length) :
+    explicit LSDA_Call_Site_Table(LSDA_ptr raw_lsda, LSDA_Call_Site_Header header) :
       cs_table_start(raw_lsda),
-      cs_table_end(raw_lsda + call_site_table_length)
+      cs_table_end(raw_lsda + header.length),
+      cs_table_encoding(header.encoding)
     {
       cs_entry_ptr = cs_table_start;
     }
@@ -112,13 +127,13 @@ namespace LSDA {
 
       // Copy the call site table and advance the cursor by sizeof(LSDA_Call_Site).
       // We need to copy the struct here because there might be alignment issues otherwise
-      cs_entry = LSDA_Call_Site(&cs_entry_ptr);
+      cs_entry = LSDA_Call_Site(&cs_entry_ptr, cs_table_encoding);
 
       return &cs_entry;
     };
 
   private:
-    LSDA_Call_Site cs_entry {nullptr };
+    LSDA_Call_Site cs_entry {nullptr, 0 };
     LSDA_ptr cs_entry_ptr;
   };
 
@@ -127,7 +142,7 @@ namespace LSDA {
 
     // The types_table_start holds all the types this stack frame could handle
     // - This table will hold pointers to struct type_info so this is actually a pointer to a list of pointers
-    LSDA_type_info* const types_table_start;
+    LSDA_type_info types_table_start;
 
     // With the call site header we can calculate the length of the call site table
     LSDA_Call_Site_Header const cs_header;
@@ -136,7 +151,7 @@ namespace LSDA {
 
     // A pointer to the start of the action table, where an action is
     // defined for each call site
-    LSDA_ptr const action_table_start;
+    LSDA_ptr action_table_start;
 
     explicit LSDA(LSDA_ptr raw_lsda) :
       // Read LSDA header, advance the ptr
@@ -144,11 +159,11 @@ namespace LSDA {
       // Read Type Info Table
       //  !!! Actually this ptr points to the end of the table,
       //  but since the action index will hold a negative index for this table we assume it's the beginning
-      types_table_start((const void**)(raw_lsda + header.type_table_offset)),
+      types_table_start(header.class_info_table),
       // Read LSDA call site header, advance the ptr
       cs_header(&raw_lsda),
       // Read the call site table, it starts immediately after the Call Site header
-      cs_table(raw_lsda, cs_header.length),
+      cs_table(raw_lsda, cs_header),
       // Read the action table, it starts immediately after the Call Site Table
       action_table_start(cs_table.cs_table_end)
     {}
