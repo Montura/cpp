@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 set(CMAKE_CXX_COMPILER "/usr/bin/gcc")
 
-add_executable(cpp_abi throw.cpp cpp_abi.cpp tools.cpp exception.c)
+add_executable(cpp_abi throw.cpp cpp_abi.cpp dwarf_util.cpp exception.c)
 
 # Emulating
 #  > g++ -c -o throw.o -O0 -ggdb throw.cpp
