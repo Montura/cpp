@@ -22,10 +22,10 @@ public:
   }
 
   virtual int find_set(int x) {
-    if (parent[x] == x) {
-      return x;
+    while (parent[x] != x) {
+      x = parent[x];
     }
-    return find_set(parent[x]);
+    return x;
   }
 
   bool isConnected(int x, int y) {
@@ -34,12 +34,12 @@ public:
 };
 
 class DsuTreeSizeHeuristic : public DSU {
-  std::vector<int> size; // or rank, rank [i] = 0;
+  std::vector<int> rank; // or rank, rank [i] = 0;
 
 public:
-  explicit DsuTreeSizeHeuristic(int n) : DSU(n), size(n) {
+  explicit DsuTreeSizeHeuristic(int n) : DSU(n), rank(n) {
     for (int i = 0; i < n; ++i) {
-      size[i] = 1;
+      rank[i] = 1;
     }
   }
 
@@ -47,11 +47,11 @@ public:
     int rootX = find_set(x);
     int rootY = find_set(y);
     if (rootX != rootY) {
-      if (size[rootX] < size[rootY]) {
+      if (rank[rootX] < rank[rootY]) {
         std::swap(rootX, rootY);
       }
       parent[rootY] = rootX;
-      size[rootX] += size[rootY];
+      rank[rootX] += rank[rootY];
       // for rank heuristic
       // if (rank[x] == rank[y]) {
       //   rank[x] ++;
@@ -60,7 +60,7 @@ public:
   }
 
   int getSize(int x) {
-    return size[find_set(x)];
+    return rank[find_set(x)];
   }
 };
 
@@ -71,12 +71,11 @@ class DsuPathCompression : DSU {
   explicit DsuPathCompression(int n) : DSU(n) {}
 
   int find_set(int x) override {
-    if (x == parent[x]) {
-      return x;
+    if (x != parent[x]) {
+      // update parent[v] for each v in path to root(x)
+      parent[x] = find_set(parent[x]);
     }
-
-    // update parent[v] for each v in path to root(x)
-    return parent[x] = find_set(parent[x]);
+    return x;
   }
 };
 
