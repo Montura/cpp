@@ -3,118 +3,143 @@
 
 template <typename T>
 class List {
-  Node<T>* head = nullptr;
-  Node<T>* tail = nullptr;
-  int size = 0;
+  Node<T>* head_ = nullptr;
+  Node<T>* tail_ = nullptr;
+  int size_ = 0;
 
 public:
   explicit List() = default;
 
-  bool isEmpty() const {
-    return size == 0;
-  }
+  bool isEmpty() const;
+  int size() const;
+  void push_front(T newData);
+  void push_back(T newData);
+  void pop_front();
+  void pop_back();
 
-  void push_front(T newData) {
-    auto* newNode = new Node<T>(newData);
-    newNode->next = head;
-    head = newNode;
-    if (tail == nullptr) {
-      tail = newNode;
-    }
-    ++size;
-  }
+  T front();
+  const T& front() const;
 
-  void push_back(T newData) {
-    auto* newNode = new Node<T>(newData);
-    if (head == nullptr) {
-      head = newNode;
-    } else {
-      auto* current = head;
-      while (current->next != nullptr) {
-        current = current->next;
-      }
-      current->next = newNode;
-    }
-    tail = newNode;
-    ++size;
-  }
+  void reverse_list();
 
-  void pop_front() {
-    if (head != nullptr) {
-      auto* newHead = head->next;
-      delete head;
-      head = newHead;
-      if (head == nullptr) {
-        tail = nullptr;
-      }
-      --size;
-    }
-  }
-
-  void pop_back() {
-    if (head != nullptr) {
-      auto* curr = head;
-      auto* next = curr->next;
-      while (next != nullptr && next->next != nullptr) {
-        curr = next;
-        next = curr->next;
-      }
-      if (next != nullptr) {
-        tail = curr;
-        tail->next = nullptr;
-        delete next;
-      } else {
-        delete curr;
-        head = tail = nullptr;
-      }
-
-      --size;
-    }
-  }
-
-  void print() {
-    auto* curr = head;
-    while(curr != nullptr) {
-      std::cout << curr->data << " ";
-      curr = curr->next;
-    }
-    std::cout << ", size is " << size;
-    std::cout << ", head is " << head << ": " << ((head != nullptr) ? head->data : -1);
-    std::cout << ", tail is " << tail << ": " << ((tail != nullptr) ? tail->data : -1) << std::endl;
-    std::cout << std::endl;
-  }
-
-  T front() {
-    if (size == 0) {
-      std::cout << "List is empty!" << std::endl;
-      return INT_MAX;
-    }
-    return head->data;
-  }
-
-  const T& front() const {
-    if (size == 0) {
-      std::cout << "List is empty!" << std::endl;
-      return INT_MAX;
-    }
-    return head->data;
-  }
-
-  void reverse_list() {
-    if (head != nullptr) {
-      auto* curr = head;
-      Node<T>* prev = nullptr;
-      Node<T>* next = nullptr;
-
-      while (curr != nullptr) {
-        next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
-      }
-
-      tail = head;
-      head =  prev;
-    }
-  }
+  template <typename U>
+  friend std::ostream& operator<<(std::ostream& out, const List<U>&);
 };
+
+template<typename T>
+bool List<T>::isEmpty() const {
+  return size_ == 0;
+}
+
+template<typename T>
+int List<T>::size() const {
+  return size_;
+}
+
+template<typename T>
+void List<T>::push_front(T newData) {
+  auto* newNode = new Node<T>(newData);
+  if (head_ == nullptr) {
+    head_ = newNode;
+    tail_ = head_;
+  } else {
+    newNode->next = head_;
+    head_ = newNode;
+  }
+  ++size_;
+}
+
+template<typename T>
+void List<T>::push_back(T newData) {
+  auto* newNode = new Node<T>(newData);
+  if (head_ == nullptr) {
+    head_ = newNode;
+    tail_ = head_;
+  } else {
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
+  ++size_;
+}
+
+template<typename T>
+void List<T>::pop_front() {
+  if (isEmpty()) return;
+
+  auto newHead = head_->next;
+  delete head_;
+  head_ = newHead;
+  if (head_ == nullptr) {
+    tail_ = nullptr;
+  }
+  --size_;
+}
+
+template<typename T>
+void List<T>::pop_back() {
+  if (isEmpty()) return;
+
+  if (head_ == tail_) {
+    delete head_;
+    head_ = tail_ = nullptr;
+  }
+  auto* curr = head_;
+  while (curr->next != tail_) {
+    curr = curr->next;
+  }
+  tail_ = curr;
+  delete tail_->next;
+  tail_->next = nullptr;
+  --size_;
+}
+
+template<typename T>
+T List<T>::front() {
+  if (size_ == 0) {
+    std::cout << "List is empty!" << std::endl;
+    return INT_MAX;
+  }
+  return head_->data;
+}
+
+template<typename T>
+const T& List<T>::front() const {
+  if (size_ == 0) {
+    std::cout << "List is empty!" << std::endl;
+    return INT_MAX;
+  }
+  return head_->data;
+}
+
+template<typename T>
+void List<T>::reverse_list() {
+  if (isEmpty()) return;
+
+  auto curr = head_;
+  Node<T>* prev = nullptr;
+  Node<T>* next = nullptr;
+
+  while (curr != nullptr) {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+  tail_ = head_;
+  head_ = prev;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const List<T>& l) {
+  auto* curr = l.head_;
+  while (curr != nullptr) {
+    out << curr->data << " ";
+    curr = curr->next;
+  }
+  out << ", size_ is " << l.size();
+  out << ", head_ is " << l.head_ << ": " << ((l.head_ != nullptr) ? l.head_->data : -1);
+  out << ", tail_ is " << l.tail_ << ": " << ((l.tail_ != nullptr) ? l.tail_->data : -1) << std::endl;
+  out << std::endl;
+
+  return out;
+}

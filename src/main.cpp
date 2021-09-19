@@ -34,7 +34,7 @@ int main() {
   Item7_InitializerList::test();
   Item8_NullptrVsZeroOrNULL::test();
 
-//  testList();
+  testList();
 //
 //  array_rotation();
 //  test_tag_dispatching();

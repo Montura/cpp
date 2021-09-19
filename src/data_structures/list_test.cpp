@@ -21,32 +21,29 @@ void testList() {
   list.push_front(103);
   list.push_front(104);
 
-  std::cout << "Original list: ";
-  list.print();
+  std::cout << "Original list: " << list;
   list.reverse_list();
-  std::cout << "Reversed list: ";
-  list.print();
+  std::cout << "Reversed list: " << list;
   list.reverse_list();
-  std::cout << "Original list: ";
-  list.print();
+  std::cout << "Original list: " << list;
 
-  list.print();
+  std::cout << list;
   list.pop_front();
-  list.print();
+  std::cout << list;
   list.pop_front();
-  list.print();
+  std::cout << list;
 
   list.pop_back();
-  list.print();
+  std::cout << list;
   list.pop_back();
-  list.print();
+  std::cout << list;
   list.pop_back();
-  list.print();
+  std::cout << list;
   list.pop_back();
-  list.print();
+  std::cout << list;
   list.pop_back();
-  list.print();
+  std::cout << list;
   list.pop_back();
-  list.print();
+  std::cout << list;
 
 }
