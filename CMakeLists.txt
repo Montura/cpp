@@ -48,6 +48,8 @@ add_executable(cpp src/main.cpp
     src/c/3-3_if_else_bin_search.c
     src/cpp/cppref.cpp
     src/cpp/basic_concepts/extern_template.cpp
-    )
+    src/templates/meta_functions.cpp
+  )
+
 
 #add_executable(cpp interview/taskD.cpp)
