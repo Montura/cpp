@@ -192,7 +192,7 @@ namespace Union {
     }
 
     void f() {
-      S s = {S::CHAR, 'a'};
+      S s = {S::CHAR, {'a'}};
       print_s(s);
       s.tag = S::INT;
       s.i = 123;

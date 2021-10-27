@@ -12,7 +12,7 @@ void print_binary(unsigned int n) {
       printf(" ");
     }
   }
-  printf('\n');
+  printf("\n");
 }
 
 int n_bits(int n) {

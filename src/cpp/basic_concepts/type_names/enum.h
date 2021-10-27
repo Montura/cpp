@@ -159,7 +159,7 @@ namespace Scoped {
 //  4. the conversion is non-narrowing
 
   void test_2() {
-    enum byte : unsigned char {}; // byte is a new integer type\
+    enum byte : unsigned char {}; // byte is a new integer type
 
     byte b { 42 }; // OK as of C++17 (direct-list-initialization)
     byte d = byte { 42 }; // OK as of C++17; same value as b

@@ -220,6 +220,8 @@ namespace ReferenceDeclaration {
     LValueReference::test();
     RValueReference::test();
     ForwardingReferences::test();
+#if defined(DANGLING_REFERENCE)
     DanglingReferences::test();
+#endif
   }
 }

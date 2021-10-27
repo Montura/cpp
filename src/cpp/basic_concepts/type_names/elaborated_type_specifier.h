@@ -86,7 +86,7 @@ namespace ElaboratedTypeSpecifier {
       enum E e = E::a; // OK
 //    enum class E d = E::b; // error: 'enum class' cannot introduce a elaborated type specifier
 
-      class A a; // OK
+      A a; // OK
 
       U u; // OK
       union U w = { 1 }; // OK

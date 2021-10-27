@@ -2,12 +2,17 @@ cmake_minimum_required(VERSION 3.12)
 project(cpp)
 
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+set(WARNINGS "-Wno-unused-variable -Wno-unused-local-typedef -Wno-unused-private-field -Wno-format \
+              -Wno-unused-function -Wno-unused-value -Wno-constant-conversion -Wno-constant-conversion \
+              -Wno-uninitialized -Wno-vexing-parse")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${WARNINGS}")
 
 if (MSVC)
   add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
   message(Compiler MSVC: ${MSVC_VERSION})
 endif(MSVC)
+
+#add_definitions(-DDANGLING_REFERENCE)
 
 include_directories(cpp include)
 
@@ -49,7 +54,7 @@ add_executable(cpp src/main.cpp
     src/cpp/cppref.cpp
     src/cpp/basic_concepts/extern_template.cpp
     src/templates/meta_functions.cpp
-  )
+    src/templates/rvalues.cpp)
 
 
 #add_executable(cpp interview/taskD.cpp)

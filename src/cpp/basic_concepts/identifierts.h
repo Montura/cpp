@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <cassert>
+#include <cmath>
 
 // Identifiers
 namespace Identifiers {
