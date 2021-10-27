@@ -104,7 +104,7 @@ void typeChecker() {
     std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
-int main() {
+void test_metaFunctions() {
     std::cout << Fib<10>::value << std::endl;
 
     using primes = IntList<2,3,5,7,11,13>;

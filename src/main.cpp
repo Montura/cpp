@@ -1,7 +1,9 @@
 #include "items_common.h"
+#include "templates/rvalues.h"
 
 extern "C" void test_libc();
 void cppref();
+void test_metaFunctions();
 
 void testList();
 void array_rotation();
@@ -16,6 +18,11 @@ void test_queue();
 void test_deque();
 
 int main() {
+  test_move::testAlmostMove();
+  test_declval::test_tricky();
+  test_forward::testAlmostForward();
+  test_metaFunctions();
+
   // tests
   Item1_TemplateDeduction::test();
   Item1_ArrayArguments::test();
