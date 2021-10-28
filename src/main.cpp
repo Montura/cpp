@@ -4,6 +4,7 @@
 extern "C" void test_libc();
 void cppref();
 void test_metaFunctions();
+void testVariadicTemplates();
 
 void testList();
 void array_rotation();

@@ -2,15 +2,20 @@ cmake_minimum_required(VERSION 3.12)
 project(cpp)
 
 set(CMAKE_CXX_STANDARD 17)
+
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 set(WARNINGS "-Wno-unused-variable -Wno-unused-local-typedef -Wno-unused-private-field -Wno-format \
               -Wno-unused-function -Wno-unused-value -Wno-constant-conversion -Wno-constant-conversion \
               -Wno-uninitialized -Wno-vexing-parse")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall ${WARNINGS}")
+endif()
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${WARNINGS}")
 
-if (MSVC)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
+#  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHa ")
   message(Compiler MSVC: ${MSVC_VERSION})
-endif(MSVC)
+endif()
 
 #add_definitions(-DDANGLING_REFERENCE)
 
@@ -54,7 +59,8 @@ add_executable(cpp src/main.cpp
     src/cpp/cppref.cpp
     src/cpp/basic_concepts/extern_template.cpp
     src/templates/meta_functions.cpp
-    src/templates/rvalues.cpp)
-
+    src/templates/rvalues.cpp
+    src/templates/variadic_templates.cpp
+    )
 
 #add_executable(cpp interview/taskD.cpp)

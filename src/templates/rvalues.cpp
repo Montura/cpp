@@ -1,4 +1,5 @@
 #include <utility>
+#include <cassert>
 #include "rvalues.h"
 
 template <typename T>

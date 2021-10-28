@@ -4,7 +4,7 @@
 // Fibonacci
 template <std::size_t N>
 struct Fib: std::integral_constant<std::size_t,
-        Fib<N - 2>{} + Fib<N - 1>{}> {};
+        Fib<N - 2>() + Fib<N - 1>()> {};
 
 template <>
 struct Fib<0> : std::integral_constant<std::size_t, 0> {};
