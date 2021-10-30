@@ -22,6 +22,7 @@ endif()
 include_directories(cpp include)
 
 add_subdirectory(src/cpp_abi)
+add_subdirectory(src/exception_handling)
 
 add_executable(cpp src/main.cpp
     src/chapter1/item1.cpp
@@ -60,7 +61,6 @@ add_executable(cpp src/main.cpp
     src/cpp/basic_concepts/extern_template.cpp
     src/templates/meta_functions.cpp
     src/templates/rvalues.cpp
-    src/templates/variadic_templates.cpp
-    )
+    src/templates/variadic_templates.cpp)
 
 #add_executable(cpp interview/taskD.cpp)
