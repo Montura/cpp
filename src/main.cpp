@@ -1,3 +1,4 @@
+#include <cstddef>
 #include "items_common.h"
 #include "templates/rvalues.h"
 
@@ -25,17 +26,17 @@ int main() {
   test_metaFunctions();
 
   // tests
-  Item1_TemplateDeduction::test();
-  Item1_ArrayArguments::test();
-  Item2_AutoTypeDeducing::test();
-  Item3_Decltype::test();
-  Item5_AutoVsExplicitTypes::test();
+//  Item1_TemplateDeduction::test();
+//  Item1_ArrayArguments::test();
+//  Item2_AutoTypeDeducing::test();
+//  Item3_Decltype::test();
+//  Item5_AutoVsExplicitTypes::test();
+//
+//  Item6_ExplicitlyTypedIdiom::test();
+//  Item7_InitializerList::test();
+//  Item8_NullptrVsZeroOrNULL::test();
 
-  Item6_ExplicitlyTypedIdiom::test();
-  Item7_InitializerList::test();
-  Item8_NullptrVsZeroOrNULL::test();
-
-  testList();
+//  testList();
 //
 //  array_rotation();
 //  test_tag_dispatching();
@@ -50,6 +51,6 @@ int main() {
 
   // test_libc
 //  test_libc();
-  cppref();
+//  cppref();
   return 0;
 }
