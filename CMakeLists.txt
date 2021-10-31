@@ -13,12 +13,11 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${WARNINGS}")
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   add_definitions(-D__PRETTY_FUNCTION__=__FUNCSIG__)
-#  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHa ")
   message(Compiler MSVC: ${MSVC_VERSION})
 else()
   add_subdirectory(src/cpp_abi)
-  add_subdirectory(src/exception_handling)
 endif()
+add_subdirectory(src/exception_handling)
 
 #add_definitions(-DDANGLING_REFERENCE)
 
