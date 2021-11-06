@@ -1,7 +1,8 @@
 # [Exception Handling LLVM overview](https://llvm.org/docs/ExceptionHandling.html#introduction)
-1. [Itanium ABI](https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html) `Zero-cost` Exception Handling
-2. [`Setjmp/Longjmp`](eh_sj_lj.md) Exception Handling
-3. [`Windows Runtime`](eh_msvc_cpp_eh.md) Exception Handling
+1. [`Setjmp/Longjmp`](eh_gcc_sj_lj.md)
+2. [`Zero-cost (LSDA)`](eh_gcc_zero_cost.md)
+3. [`Windows Runtime SEH x86`](eh_msvc_SEH_win32_x86.md)
+4. [`Windows Runtime C++ EH x64`](eh_msvc_cxx_EH_x64.md)
 
 ## Overview LLVM
 When an exception is thrown in LLVM code, the runtime:
@@ -93,53 +94,76 @@ In LLVM `eh_frame`:
     * leaf functions
     * functions that have calls only to non-throwing functions
 
-## `Itanium EH` - idea of **_“successive unwinding"_**
+[comment]: <> (## `Itanium EH` - idea of **_“successive unwinding"_**)
 
-Throwing an exception typically involves **_allocating thread local memory_** to hold the exception, and calling into the `EH runtime` that:
-1. Identifies frames with appropriate exception handling actions
-2. Successively resets the register context of the current thread to the most recently active frame with actions to run. 
-3. Execution resumes at a `landingpad` instruction, which produces register values provided by the runtime.
-4. If a function is only cleaning up allocated resources, the function is responsible for calling `_Unwind_Resume` to transition to the next most recently active frame after it is finished cleaning up.
-5. Eventually, the `frame` responsible for handling the exception calls `__cxa_end_catch` to:
-    1. Destroy the exception
-    2. Release its memory
-    3. Resume normal control flow
+[comment]: <> (Throwing an exception typically involves **_allocating thread local memory_** to hold the exception, and calling into the `EH runtime` that:)
 
-## `Windows Runtime`
+[comment]: <> (1. Identifies frames with appropriate exception handling actions)
 
-* The Windows EH model **_does not use these successive register context resets._** 
-* Instead, the **_active exception is typically described by a frame on the stack._**
+[comment]: <> (2. Successively resets the register context of the current thread to the most recently active frame with actions to run. )
+
+[comment]: <> (3. Execution resumes at a `landingpad` instruction, which produces register values provided by the runtime.)
+
+[comment]: <> (4. If a function is only cleaning up allocated resources, the function is responsible for calling `_Unwind_Resume` to transition to the next most recently active frame after it is finished cleaning up.)
+
+[comment]: <> (5. Eventually, the `frame` responsible for handling the exception calls `__cxa_end_catch` to:)
+
+[comment]: <> (    1. Destroy the exception)
+
+[comment]: <> (    2. Release its memory)
+
+[comment]: <> (    3. Resume normal control flow)
+
+[comment]: <> (## `Windows Runtime`)
+
+[comment]: <> (* The Windows EH model **_does not use these successive register context resets._** )
+
+[comment]: <> (* Instead, the **_active exception is typically described by a frame on the stack._**)
   
-1. The exception object is allocated in stack memory and its address is passed to `__CxxThrowException`
-2. General purpose `structured exceptions (SEH)` are:
-   * more analogous to Linux signals
-   * dispatched by userspace DLLs provided with Windows 
-3. Each frame **_on the stack_** has an `assigned EH personality routine`, which decides what actions to take to handle the exception:
-   * `EH personality routines`: 
-     * C++ personality: `__CxxFrameHandler3`
-     * SEH personalities: `_except_handler3`, `_except_handler4`, and `__C_specific_handler`
-   * All of them implement cleanups by calling back into a `funclet` contained in the parent function.
+[comment]: <> (1. The exception object is allocated in stack memory and its address is passed to `__CxxThrowException`)
 
-### `Funclets`:
-* Are regions of the parent function
-* Can be called as though they were a function pointer with a very special calling convention
+[comment]: <> (2. General purpose `structured exceptions &#40;SEH&#41;` are:)
+
+[comment]: <> (   * more analogous to Linux signals)
+
+[comment]: <> (   * dispatched by userspace DLLs provided with Windows )
+
+[comment]: <> (3. Each frame **_on the stack_** has an `assigned EH personality routine`, which decides what actions to take to handle the exception:)
+
+[comment]: <> (   * `EH personality routines`: )
+
+[comment]: <> (     * C++ personality: `__CxxFrameHandler3`)
+
+[comment]: <> (     * SEH personalities: `_except_handler3`, `_except_handler4`, and `__C_specific_handler`)
+
+[comment]: <> (   * All of them implement cleanups by calling back into a `funclet` contained in the parent function.)
+
+[comment]: <> (### `Funclets`:)
+
+[comment]: <> (* Are regions of the parent function)
+
+[comment]: <> (* Can be called as though they were a function pointer with a very special calling convention)
   
-* The frame pointer of the parent frame is passed into the `funclet` either using the standard `EBP` register or as the first parameter register, depending on the architecture.
+[comment]: <> (* The frame pointer of the parent frame is passed into the `funclet` either using the standard `EBP` register or as the first parameter register, depending on the architecture.)
 
-* The `funclet` implements the EH action by accessing local variables in memory through the frame pointer, and returning some appropriate value, continuing the EH process.
+[comment]: <> (* The `funclet` implements the EH action by accessing local variables in memory through the frame pointer, and returning some appropriate value, continuing the EH process.)
 
-* No variables live in to or out of the `funclet` can be allocated in registers.
+[comment]: <> (* No variables live in to or out of the `funclet` can be allocated in registers.)
 
-#### Using funclets
+[comment]: <> (#### Using funclets)
 
-* The C++ personality also uses `funclets` to contain the code for catch blocks.
+[comment]: <> (* The C++ personality also uses `funclets` to contain the code for catch blocks.)
 
-* The runtime must use `funclets` for catch bodies because the C++ exception object is allocated in a **_child stack frame_** of the function handling the exception. If the runtime rewound the stack back to frame of the catch, the memory holding the exception would be overwritten quickly by subsequent function calls.
+[comment]: <> (* The runtime must use `funclets` for catch bodies because the C++ exception object is allocated in a **_child stack frame_** of the function handling the exception. If the runtime rewound the stack back to frame of the catch, the memory holding the exception would be overwritten quickly by subsequent function calls.)
   
-* The use of `funclets` also allows `__CxxFrameHandler3` to implement rethrow without resorting to `TLS`. Instead, the runtime throws a special exception, and then uses `SEH (__try / __except)` to resume execution with new information in the child frame.
+[comment]: <> (* The use of `funclets` also allows `__CxxFrameHandler3` to implement rethrow without resorting to `TLS`. Instead, the runtime throws a special exception, and then uses `SEH &#40;__try / __except&#41;` to resume execution with new information in the child frame.)
 
-#### NOTE
-The successive unwinding approach is incompatible with Visual C++ exceptions and general purpose Windows exception handling because:
-1. The C++ exception object lives in stack memory
-2. LLVM cannot provide a custom personality function that uses landingpads
-3. Similarly, SEH does not provide any mechanism to rethrow an exception or continue unwinding. 
+[comment]: <> (#### NOTE)
+
+[comment]: <> (The successive unwinding approach is incompatible with Visual C++ exceptions and general purpose Windows exception handling because:)
+
+[comment]: <> (1. The C++ exception object lives in stack memory)
+
+[comment]: <> (2. LLVM cannot provide a custom personality function that uses landingpads)
+
+[comment]: <> (3. Similarly, SEH does not provide any mechanism to rethrow an exception or continue unwinding. )

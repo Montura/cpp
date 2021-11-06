@@ -33,10 +33,10 @@ typedef const struct _s_FuncInfo {
 ```
 ### Visual C++ EH: Unwind map
 
-* Similar to `SEH`'s scope table, but without exception filters
-* All necessary actions (`unwind funclet`s) are executed unconditionally
-* `Action` can be NULL to indicate no-action state transition
-* Typical `funclet` destroys a constructed object on the stack
+* Similar to `SEH`'s **_scope table_**, but **_without exception filters_**
+* All necessary actions (_**unwind funclet`s**_) are executed unconditionally
+* **_Action_** can be `NULL` to indicate no-action state transition
+* Typical **_funclet_** destroys a constructed object on the stack
 * Top-level state is -1
 
 ```c++
@@ -46,13 +46,12 @@ typedef const struct _s_UnwindMapEntry {
 } UnwindMapEntry;
 ```
 
-
 ### Visual C++: changes for x64
 
-* SEH changes completely
-* Instead of `stack-based` frame registration, **`pointers to handlers`** and **`unwind info`** are stored in `.pdata` section
-* Only limited set of instructions are supposed to be used in **`prolog`** and **`epilog`**, which makes stack walking and unwinding easier
-* `Language-specific handlers` are used to implement compiler-level SEH and C++ EH
+* `SEH` changes completely
+* Instead of **_stack-based frame registration_**, **`pointers to handlers`** and **`unwind info`** are stored in `.pdata` section
+* Only limited set of instructions are supposed to be used in **_prolog_** and **_epilog_**, which makes stack walking and unwinding easier
+* **_Language-specific handlers_** are used to implement compiler-level `SEH` and `C++ EH`
 * However, the supporting `SEH/EH` structures (`scope table`, `FuncInfo` etc) are very similar
 
 

@@ -82,28 +82,22 @@ __asm {
 
 P.S> Compiler's `__try/__except` syntax, the compiler also builds the `EXCEPTION_REGISTRATION` struct on the stack.
 
-### MSVC SEH (Structured Exception handling)
-* Is a Microsoft extension to C to handle certain exceptional code situations, such as hardware faults, gracefully.
-    * Although Windows and Microsoft C++ support SEH, we recommend that you use ISO-standard C++ exception handling.
-
-  There are two **SEH** mechanisms:
-1. Exception handlers `"__except" blocks` -> respond to or dismiss the exception.
-2. Termination handlers `"__finally" blocks` -> are always called, whether an exception causes termination or not.
+### There are two MSVC SEH (Structured Exception handling) mechanisms:
+1. **_Exception handlers_** `"__except" blocks` -> respond to or dismiss the exception.
+2. **_Termination handlers_** `"__finally" blocks` -> are always called, whether an exception causes termination or not.
 
 #### 1. Try-except statement (exception handlers)
-
 ```c++
 __try { /* guarded code */ }
 __except ( /* filter expression */ ) {  /* termination code */ }
 ```
 #### 2. Try-finally statement (termination handlers)
-
 ```c++
 __try { /* guarded code */ }
 __finally { /* termination code */ }
 ```
 
-### Visual C++ SEH
+### Visual C++ SEH x86
 
 * Keywords `__try`, `__except` and `__finally` can be used for compiler-level `SEH` support
 * The compiler uses:
