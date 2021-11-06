@@ -1,13 +1,13 @@
-# Exception Handling
+# [Exception Handling LLVM overview](https://llvm.org/docs/ExceptionHandling.html#introduction)
 1. [Itanium ABI](https://itanium-cxx-abi.github.io/cxx-abi/abi-eh.html) `Zero-cost` Exception Handling
 2. [`Setjmp/Longjmp`](eh_sj_lj.md) Exception Handling
-3. `Windows Runtime` Exception Handling
+3. [`Windows Runtime`](eh_msvc_cpp_eh.md) Exception Handling
 
-### [Overview LLVM](https://llvm.org/docs/ExceptionHandling.html#introduction)
+## Overview LLVM
 When an exception is thrown in LLVM code, the runtime:
 
-1. Has to find in the current compile unit an `Exception Frame` corresponding to the function where the exception was thrown.
-2. `Exception Frame` contains a reference to an `Exception Table`.
+1. Has to find in the current compile unit an **_Exception Frame_** corresponding to the function where the exception was thrown.
+2. **_Exception Frame_** contains a reference to an **_Exception Table_**.
    
   The exception handling ABI is defined by `Personality Function` (`__gxx_personality_v0`) 
 ```c++
@@ -18,9 +18,16 @@ _Unwind_Reason_Code __gxx_personality_v0 (int version,
     _Unwind_Context* context // the context of the exception + reference to the exception table for the current function
 )
 ```
-`Exception Table` - series of code ranges defining what to do if an exception occurs in that range:
-* C++ std::type_info defines which types of exception objects can be handled in current range, and an `associated action` that should take place. `Actions` typically pass control to a `landing pad`
-* `Landing pad` corresponds roughly to the code found in the `catch` portion of a `try/catch` block. It receives an `exception structure` and the `type of exception` thrown that used to determine which `catch` should actually process the exception.
+**_Exception Table_** - series of code ranges defining what to do if an exception occurs in that range:
+* C++ `std::type_info` defines:
+  1. Which types of exception objects can be handled in current range
+  2. An **_associated action_** that should take place.
+* **_Actions_** typically pass control to a **_landing pad_**
+* **_Landing pad_**:
+  1. Corresponds roughly to the code found in the `catch` portion of a `try`/`catch` block.
+  2. Receives:
+     1. An **_exception structure_**
+     2. The **_type of exception_** thrown (used to determine which `catch` should actually process the exception)
 
 ### LLVM Code generation
 #### `Throw` breaks down into two steps:
@@ -44,7 +51,7 @@ The LLVM C++ front-end replaces the `call` with an `invoke` instruction. Unlike 
 1. Where to continue when the call succeeds as per normal
 2. Where to continue if the call raises an exception, either by a throw or the unwinding of a throw
 
-`Landing pad` - the place where an `invoke` continues after an exception is thrown:
+**_Landing pad_** - the place where an **_invoke_** continues after an exception is thrown:
 * It's an alternative function entry point takes two args:
     * An exception structure reference
     * A type info index
