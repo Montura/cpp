@@ -1,3 +1,4 @@
+# [Compiler Internals: Exceptions and RTTI](https://www.hexblog.com/wp-content/uploads/2012/06/Recon-2012-Skochinsky-Compiler-Internals.pdf)
 ## Visual C++ SEH x86
 
 ### There are two MSVC SEH (Structured Exception handling) mechanisms:
