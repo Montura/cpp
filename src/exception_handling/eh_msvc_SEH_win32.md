@@ -11,7 +11,7 @@ __cdecl _except_handler(
    struct _EXCEPTION_RECORD *ExceptionRecord,
    void * EstablisherFrame,
    struct _CONTEXT *ContextRecord,
-  void * DispatcherContext
+   void * DispatcherContext
 );
 ```
 3. It receives a wealth of information and decide what to do.
@@ -58,9 +58,9 @@ DWORD handler = (DWORD)_except_handler;
 
 // Build EXCEPTION_REGISTRATION record:
 __asm {     
-  push handler // Address of handler function
-  push FS:[0] // Address of previous handler
-  mov FS:[0],ESP // Install new EXECEPTION_REGISTRATION
+    push handler // Address of handler function
+    push FS:[0] // Address of previous handler
+    mov FS:[0],ESP // Install new EXECEPTION_REGISTRATION
 }
   
  __asm
@@ -81,31 +81,3 @@ __asm {
 ```
 
 P.S> Compiler's `__try/__except` syntax, the compiler also builds the `EXCEPTION_REGISTRATION` struct on the stack.
-
-### There are two MSVC SEH (Structured Exception handling) mechanisms:
-1. **_Exception handlers_** `"__except" blocks` -> respond to or dismiss the exception.
-2. **_Termination handlers_** `"__finally" blocks` -> are always called, whether an exception causes termination or not.
-
-#### 1. Try-except statement (exception handlers)
-```c++
-__try { /* guarded code */ }
-__except ( /* filter expression */ ) {  /* termination code */ }
-```
-#### 2. Try-finally statement (termination handlers)
-```c++
-__try { /* guarded code */ }
-__finally { /* termination code */ }
-```
-
-### Visual C++ SEH x86
-
-* Keywords `__try`, `__except` and `__finally` can be used for compiler-level `SEH` support
-* The compiler uses:
-  1. **_A single exception handler per all functions_** with `SEH`
-  2. But different supporting structures (**_scope tables_**) per function
-* The `SEH` **_handler registration frame is placed on the stack_**
-
-
-* **_ExceptionHandler_** points to `__except_handler3` (`SEH3`) or `__except_handler4` (`SEH4`)
-* The frame set-up is often delegated to compiler helper (`__SEH_prolog`/`__SEH_prolog4/etc`)
-* **_ScopeTable_** points to a table of entries describing all `__try` blocks in the function

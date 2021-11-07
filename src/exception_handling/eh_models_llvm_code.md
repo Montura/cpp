@@ -1,7 +1,7 @@
 # [Exception Handling LLVM overview](https://llvm.org/docs/ExceptionHandling.html#introduction)
 1. [`Setjmp/Longjmp`](eh_gcc_sj_lj.md)
 2. [`Zero-cost (LSDA)`](eh_gcc_zero_cost.md)
-3. [`Windows Runtime SEH x86`](eh_msvc_SEH_win32_x86.md)
+3. [`Windows Runtime SEH x86`](eh_msvc_SEH_win32.md)
 4. [`Windows Runtime C++ EH x64`](eh_msvc_cxx_EH_x64.md)
 
 ## Overview LLVM
