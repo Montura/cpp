@@ -2,8 +2,8 @@
 #include <cxxabi.h>    // __cxa_demangle
 #include <execinfo.h>  // backtrace
 #include <libunwind.h> // unw_step
-#include <stdio.h>
-#include <stdlib.h> // free
+#include <cstdio>
+#include <cstdlib> // free
 
 void gcc_builtin_bt() {
   void *pc0 = __builtin_return_address(0);
