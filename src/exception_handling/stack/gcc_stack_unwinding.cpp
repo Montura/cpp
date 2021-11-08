@@ -104,7 +104,7 @@ void baz() {
   bar();
 }
 
-int main() {
+int stack_unwinding() {
   baz();
   return 0;
 }
