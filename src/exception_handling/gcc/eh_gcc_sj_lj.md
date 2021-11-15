@@ -97,3 +97,11 @@ struct Resource {
 1. `setjmp(env_)` must be called at the beginning of the every `"__try"-block` and the `List<jmp_buf*>` must be maintained.
 2. The `List<Resource*>` on the stack must be maintained at all times and kept a consistent state with respect to the list of `List<jmp_buf*>`.
 3. All the variables are stored in the registers and that are declared outside the `"__try"-block` have to be restored to their initial values when `longjmp(env_, 1)` is invoked.
+
+## GCC exceptions: zero-cost
+* `Zero-cost` refers to no code overhead in the case of no exceptions (unlike `SjLj` which has set-up/tear-down code that is always executed)
+* Uses a set of tables encoding address ranges, so does not need any state variables in the code
+* Format and encoding is based on `Dwarf2/Dwarf3/Dwarf4`
+* The first-level (language-independent) format is described in [Linux Standard Base Core Specification](http://refspecs.linuxbase.org/LSB_4.1.0/LSB-Core-generic/LSB-Core-generic/ehframechpt.html
+  )
+* Second-level (language-specific) is based on HP [Itanium implementation](https://itanium-cxx-abi.github.io/cxx-abi/exceptions.pdf) but differs from it in some details
