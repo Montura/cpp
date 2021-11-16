@@ -275,3 +275,58 @@ struct MyUnwind {
    * Figure 7 shows how a `UnwindTable` may look like
 
 ![](https://www.codeproject.com/KB/cpp/exceptionhandler/figure7.gif)
+
+## Stack Frame Cleanup
+
+C++ standard says that when the stack is being unwound, destructor for all the local objects alive at the time of exception should be called.
+
+
+### Destructor indication point for local objects
+The compiler encounters object definition:
+1. It assigns each _local object_ a _**unique**_ `id`:
+2. It adds statement after the definition (after the point when object will be created) to write its `id` _**value**_ on the frame:
+```c++
+void foo() {
+  T t1;
+  _id = t1_id; // statement added by the compiler
+}
+```
+3. It creates a hidden _**local variable**_ (`_id` in the above code) that overlaps with the `id` field of the `EXCEPTION_REGISTRATION` structure:
+4. It generates a short routine `void CLEANUP_FUNC()` that:
+   1. Knows about:
+      1. The object's address on the frame 
+      2. Or object's offset from the frame pointer
+   2. Destroys this object.
+```c++
+typedef void (*CLEANUP_FUNC)(); // statement added by the compiler
+```
+5. It generates for the function data structure `UnwindTable`:
+   * It is available through `FuncInfo::UnwindTable` (see Figure 5).
+   * `UnwindTable` is a linked list of `MyUnwind` structures:
+     * `MyUnwind` structure:
+       1. Corresponds to object
+       2. Contains information to destroy the object
+       3. There is one `MyUnwind` for every special region in the function
+  * `MyUnwind` entries appear in the `UnwindTable` in the same order as their corresponding regions appear in the function.
+```c++
+struct MyUnwind {
+  int prev;        // an index in `UnwindTable`  
+  CLEANUP_FUNC cf; // has 0 value for `try block`
+};
+```
+
+* This `id` is an indication that the code in the function up to the point to which current id corresponds executed without any exception. All the objects above this point were created. Destructors for all or some of the objects above this point need to be called.
+
+### When `EHer` has to clean up the frame
+1. It reads the current `id` from the frame:
+   * `EXCEPTION_REGISTRATION::id` or
+   * `4 bytes` below the frame pointer (`EBP - 4`)
+2. It uses the `id` as an index into the `UnwindTable`.
+3. It reads the `MyUnwind` structure at that index.
+4. It calls the `CLEANUP_FUNC cf`:
+   * This destroys the object corresponding to this `id`.
+5. It reads the previous `MyUnwind` from `UnwindTable` by `prev`:
+   * This continues until end of list is reached (`prev != -1`). 
+   * Figure 7 shows how a `UnwindTable` may look like
+
+![](https://www.codeproject.com/KB/cpp/exceptionhandler/figure7.gif)
