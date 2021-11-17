@@ -191,14 +191,14 @@ EXCEPTION_DISPOSITION (*__CxxFrameHandler3)(
 * If the `EHer` cannot find `catch block`, it returns `ExceptionContinueSearch` value back to the OS. 
 * `_EXCEPTION_RECORD` structure is defined in `WINNT.H` as:
 ```c++
-struct _EXCEPTION_RECORD {
+typedef struct _EXCEPTION_RECORD {
   DWORD ExceptionCode; 
   DWORD ExceptionFlags; 
   _EXCEPTION_RECORD *ExcRecord;
   PVOID   ExceptionAddress; 
   DWORD NumberParameters;
   DWORD ExceptionInformation[15]; 
-} EXCEPTION_RECORD;
+} EXCEPTION_RECORD, *PEXCEPTION_RECORD;
 ```
 * If (`ExceptionCode` == `0xe06d7363`) then:
   1. The exception occurs due to `throw`
